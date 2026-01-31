@@ -21,24 +21,19 @@ class Rand_window(QMainWindow):
         QApplication.setFont(QFont("Roboto  ", 10))
         self.data_from_xls()
         pygame.mixer.init()
-        self.all_of_lessons=[]  # список всех уроков
-        for x in self.alls_dict:
-            if x['Lesson'] not in self.all_of_lessons:
-                self.all_of_lessons.append(x['Lesson'])
-        self.all_of_lessons.sort()
-        self.len_of_words = max(self.all_of_lessons) # максимальное количество уроков
-        self.all_of_lessons.insert(0,'Выбрать один урок')
+        # Уроки и счётчик задаются после выбора листа и нажатия "Далее"
+        self.all_of_lessons = ['Выбрать один урок']
+        self.len_of_words = 0
+        self.current_sheet = None  # выбранный лист до нажатия "Далее"
         self.options_for_zero()
         self.main()
 
     def data_from_xls(self):
         self.xl = ExcelFile('J_e_all_my.xlsx')
-        self.df = self.xl.parse('Dictio')
-        self.alls_dict  = self.df.reset_index().to_dict('records')
-        self.sheet_names = self.xl.sheet_names # self.sp_vib in other file
-        self.chast_rechi = self.df['Sush'].unique().tolist()
+        self.sheet_names = self.xl.sheet_names
         self.df_w = self.xl.parse('Words')
-        self.alls_words  = self.df_w.reset_index().to_dict('records')
+        self.alls_words = self.df_w.reset_index().to_dict('records')
+        # df, alls_dict, chast_rechi загружаются в load_sheet_data() после выбора листа
 
     def options_for_zero(self):
         self.shet_know = 0 # счетчик знаю или не знаю слово
@@ -59,15 +54,65 @@ class Rand_window(QMainWindow):
         self.all_variations = {}
 
 
+    def load_sheet_data(self, sheet_name):
+        """Загружает данные выбранного листа и обновляет поля уроков."""
+        self.df = self.xl.parse(sheet_name)
+        self.alls_dict = self.df.reset_index().to_dict('records')
+        lessons = sorted(set(x['Lesson'] for x in self.alls_dict))
+        self.len_of_words = max(lessons) if lessons else 0
+        self.all_of_lessons = ['Выбрать один урок'] + [str(x) for x in lessons]
+        if sheet_name == 'Dictio':
+            self.chast_rechi = self.df['Sush'].unique().tolist()
+        # Обновляем виджеты уроков под реальное количество уроков листа
+        self.ent_less.setText('1')
+        self.ent_less_end.setText(str(self.len_of_words))
+        self.lb_max_ur.setText(f'Всего уроков = {self.len_of_words}')
+        self.choose_one_lesson.clear()
+        self.choose_one_lesson.addItems(self.all_of_lessons)
+
     def main(self):
         self.setGeometry(300, 300, 480, 560)
 
         self.frame_main = QFrame()
         self.frame_main.setStyleSheet("background-color: transparent;")
+
+        # Шаг 1: только выбор листа и кнопка "Далее"
+        self.frame_initial = QFrame()
+        self.frame_initial.setStyleSheet("background-color: transparent;")
+        self.context_menu = QMenu(self)
+        self.sheets_dict = {}
+        self.menu_button = QPushButton("Выберите лист", self)
+        self.menu_button.setStyleSheet(st.btn_test)
+        self.menu_button.setFixedSize(400, 40)
+        self.menu_button.setMenu(self.context_menu)
+        for sheet_name in self.sheet_names:
+            df = self.xl.parse(sheet_name)
+            columns = [col for col in df.columns if col not in ['Lesson', 'Num','Sush']]
+            self.sheets_dict[sheet_name] = columns
+            action = QAction(sheet_name, self)
+            action.triggered.connect(lambda checked, sheet_name=sheet_name: self.on_sheet_selected(sheet_name))
+            self.context_menu.addAction(action)
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.customContextMenuRequested.connect(lambda pos: self.context_menu.exec_(self.mapToGlobal(pos)))
+        self.btn_dalee = QPushButton("Далее")
+        self.btn_dalee.setStyleSheet(st.btn_test)
+        self.btn_dalee.setFixedSize(400, 40)
+        self.btn_dalee.setVisible(False)
+        self.btn_dalee.clicked.connect(self.on_dalee_clicked)
+        layout_initial = QVBoxLayout()
+        layout_initial.addWidget(self.menu_button)
+        layout_initial.addWidget(self.btn_dalee)
+        self.frame_initial.setLayout(layout_initial)
+
+        # Остальной интерфейс (появляется после нажатия "Далее")
+        self.frame_rest = QFrame()
+        self.frame_rest.setStyleSheet("background-color: transparent;")
+        self.frame_rest.setVisible(False)
+
         self.frame_up = QFrame()
         nbur = self.len_of_words
         self.label_type_of_test = QLabel('Выберите тип теста')
-        self.chec_type_of_test = QCheckBox ('Если галочки нет-то тест с 4-мя вариантами\nесли есть- тест без вариантов, с таблицей') 
+        self.chec_type_of_test = QCheckBox ('Если галочки нет-то тест с 4-мя вариантами\nесли есть- тест без вариантов, с таблицей')
         self.lb_start = QLabel('Первый урок')
         self.ent_less = QLineEdit(text='1')
         self.ent_less.setStyleSheet(st.but_line_check)
@@ -94,30 +139,10 @@ class Rand_window(QMainWindow):
         self.lb_max_ur = QLabel(f'Всего уроков = {self.len_of_words}')
         self.check_r_or_st = QCheckBox('Показывать слова рандомно')
 
-        self.context_menu = QMenu(self)
-        self.sheets_dict = {}
-
-        self.menu_button = QPushButton("Выберите лист", self)
-        self.menu_button.setStyleSheet(st.btn_test)
-        self.menu_button.setFixedSize(400, 40)  # изменить ширину на 400
-        self.menu_button.setMenu(self.context_menu)
-
-        for sheet_name in self.sheet_names:
-            df = self.xl.parse(sheet_name)
-            columns = [col for col in df.columns if col not in ['Lesson', 'Num','Sush']]
-            self.sheets_dict[sheet_name] = columns
-            action = QAction(sheet_name, self)
-            # Связываем обработчик нажатия на действие
-            action.triggered.connect(lambda checked, sheet_name=sheet_name: self.on_sheet_selected(sheet_name))
-            self.context_menu.addAction(action)
-        # Устанавливаем контекстное меню для главного окна
-        self.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.customContextMenuRequested.connect(lambda pos: self.context_menu.exec_(self.mapToGlobal(pos)))
-
         self.btn3 = QPushButton("Включить тест")
         self.btn3.setVisible(False)
         self.btn3.setStyleSheet(st.btn_test)
-        self.btn3.setFixedSize(400, 50)  # изменить ширину на 150, высоту на 50
+        self.btn3.setFixedSize(400, 50)
         self.btn_witn_zero = QPushButton("Пройти тест с нуля")
         self.but_contin = QPushButton("Продолжить\n сохраненный тест")
         self.but_contin.setStyleSheet(st.but_line_check)
@@ -142,7 +167,6 @@ class Rand_window(QMainWindow):
         layout_frame_up.addWidget(self.choose_one_lesson)
         layout_frame_up.addWidget(self.lb_max_ur)
         layout_frame_up.addWidget(self.check_r_or_st)
-        layout_frame_up.addWidget(self.menu_button)
         layout_frame_up.addWidget(self.choose_lang)
         self.frame_up.setLayout(layout_frame_up)
 
@@ -165,14 +189,19 @@ class Rand_window(QMainWindow):
         layout_frame_down.addWidget(self.clear_save)
         self.frame_down.setLayout(layout_frame_down)
 
+        layout_frame_rest = QVBoxLayout()
+        layout_frame_rest.addWidget(self.frame_up)
+        layout_frame_rest.addWidget(self.frame_center)
+        layout_frame_rest.addWidget(self.label)
+        layout_frame_rest.addWidget(self.frame_center2)
+        layout_frame_rest.addWidget(self.frame_for_options1)
+        layout_frame_rest.addWidget(self.frame_for_options2)
+        layout_frame_rest.addWidget(self.frame_down)
+        self.frame_rest.setLayout(layout_frame_rest)
+
         main_layout = QVBoxLayout()
-        main_layout.addWidget(self.frame_up)
-        main_layout.addWidget(self.frame_center)
-        main_layout.addWidget(self.label)
-        main_layout.addWidget(self.frame_center2)
-        main_layout.addWidget(self.frame_for_options1)
-        main_layout.addWidget(self.frame_for_options2)
-        main_layout.addWidget(self.frame_down)
+        main_layout.addWidget(self.frame_initial)
+        main_layout.addWidget(self.frame_rest)
         self.frame_main.setLayout(main_layout)
         self.scroll_with_backgr()
         self.btn3.clicked.connect(self.checks)
@@ -189,24 +218,38 @@ class Rand_window(QMainWindow):
         self.scroll_area.setStyleSheet(st.scroll)
         self.setCentralWidget(self.scroll_area)
 
-    def on_sheet_selected(self,sheet_name):
-        # Получаем столбцы для выбранного листа
+    def on_sheet_selected(self, sheet_name):
+        """Выбор листа: показываем кнопку «Далее» или обновляем форму, если уже открыта."""
         self.menu_button.setText(sheet_name)
         self.current_sheet = sheet_name
-        columns = self.get_filtered_columns(self.xl, sheet_name)
-        # Очищаем текущий слой с радиокнопками и галочками
+        if self.frame_rest.isVisible():
+            # Пользователь сменил лист после нажатия «Далее» — обновляем уроки и опции
+            self.load_sheet_data(sheet_name)
+            self.build_sheet_options()
+        else:
+            self.btn_dalee.setVisible(True)
+
+    def on_dalee_clicked(self):
+        """После нажатия «Далее» загружаем данные листа, обновляем уроки и показываем остальной интерфейс."""
+        self.load_sheet_data(self.current_sheet)
+        self.build_sheet_options()
+        self.frame_rest.setVisible(True)
+        self.btn_dalee.setVisible(False)
+
+    def build_sheet_options(self):
+        """Строит радиокнопки столбцов и (для Dictio) чекбоксы частей речи."""
         self.clear_layout(self.layout_frame_centr1)
         self.clear_layout(self.layout_frame_centr2)
         self.choose_lang.setVisible(True)
         self.label.setVisible(False)
         self.btn3.setVisible(False)
-        # Добавляем радиокнопки для каждого столбца
+        columns = self.get_filtered_columns(self.xl, self.current_sheet)
         for column in columns:
             radio_button = QRadioButton(column, self)
             radio_button.setStyleSheet(st.radios)
             radio_button.clicked.connect(lambda checked, column=column: self.on_column_selected(column))
             self.layout_frame_centr1.addWidget(radio_button)
-        if sheet_name == 'Dictio':
+        if self.current_sheet == 'Dictio':
             self.checkboxes = []
             for i in range(len(self.chast_rechi)):
                 self.checkboxes.append(QCheckBox(self.chast_rechi[i]))
