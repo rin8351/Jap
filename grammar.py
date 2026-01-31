@@ -276,7 +276,7 @@ class GrammarWindow(QMainWindow):
         self.button_back.clicked.connect(self.main)
         buttons_layout.addWidget(self.button_back)
         buttons_layout.addStretch()
-        if self.type_test == 'japanesse' and self.test_style == 'grammar':
+        if self.type_test == 'japanesse' and (self.test_style == 'grammar' or self.test_style == 'times'):
             self.button_listening = QPushButton('Listening')
             self.button_listening.clicked.connect(self.listening)
             buttons_layout.addWidget(self.button_listening)
@@ -300,7 +300,7 @@ class GrammarWindow(QMainWindow):
                 self.label_question.setText('Test is completed')
                 self.progress_label.setText('Completed! (0 remaining)')
                 self.function_name_label.setText('')
-                if self.test_style == 'grammar':
+                if self.test_style == 'grammar' or self.test_style == 'times':
                     self.button_show_name_of_function.setText('Показать название функции')
                     self.spisok = self.get_grammar_dict()
                     self.spisok_all=[]
@@ -344,7 +344,7 @@ class GrammarWindow(QMainWindow):
                 self.label_answer.setText('')
                 # Очищаем поле названия функции и обновляем кнопку при новом вопросе
                 self.function_name_label.setText('')
-                if self.test_style == 'grammar':
+                if self.test_style == 'grammar' or self.test_style == 'times':
                     self.button_show_name_of_function.setText('Показать название функции')
                 if self.hiragana_choose==1 and self.type_test == 'japanesse':
                     self.label_hiragana.setText(self.current_question[1])
@@ -366,7 +366,7 @@ class GrammarWindow(QMainWindow):
             pygame.mixer.music.stop()
             pygame.mixer.music.unload()
 
-        tts = gTTS(text=self.current_question[1], lang='ja')
+        tts = gTTS(text=self.current_question[0], lang='ja')
         tts.save('output.mp3')
 
         pygame.mixer.init()

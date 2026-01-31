@@ -33,6 +33,11 @@ def lists_words_times():
     sp.append(until_reading())
     sp.append(immediately_after_reading())
     sp.append(will_have_time_to_read())
+    sp.append(toki_movement_dict_main_dict())
+    sp.append(toki_movement_dict_main_dict_habit())
+    sp.append(toki_movement_past_main_past())
+    sp.append(toki_movement_dict_main_past())
+    sp.append(toki_movement_past_main_dict())
     return sp
 
 # словарь для дней недели
@@ -173,6 +178,31 @@ duration_long_short = {
     '短い間': {'hir': 'みじかいあいだ', 'ru': 'недолго'},
 }
 
+# 時 с глаголами движения: придаточное (движение) + главное (действие)
+# Форма глагола перед 時 и в главном предложении задаёт смысл (до/после, будущее/прошлое)
+movement_toki = {
+    '日本へ行く': {'hir_dict': 'にほんへいく', 'hir_past': 'にほんへいった', 'ru': 'в Японию'},
+    '駅へ行く': {'hir_dict': 'えきへいく', 'hir_past': 'えきへいった', 'ru': 'на станцию'},
+    '家に帰る': {'hir_dict': 'いえにかえる', 'hir_past': 'いえにかえった', 'ru': 'домой'},
+    '学校へ行く': {'hir_dict': 'がっこうへいく', 'hir_past': 'がっこうへいった', 'ru': 'в школу'},
+}
+main_action_toki = {
+    '本を買う': {'hir_dict': 'ほんをかう', 'hir_past': 'ほんをかった', 'hir_masu': 'ほんをかいます', 'hir_neg': 'ほんをかいません', 'ru_pres': 'покупаю книгу', 'ru_past': 'купил книгу', 'ru_neg': 'не покупаю книгу'},
+    '本を読む': {'hir_dict': 'ほんをよむ', 'hir_past': 'ほんをよんだ', 'hir_masu': 'ほんをよみます', 'hir_neg': 'ほんをよみません', 'ru_pres': 'читаю книгу', 'ru_past': 'прочитал книгу', 'ru_neg': 'не читаю книгу'},
+    '写真を撮る': {'hir_dict': 'しゃしんをとる', 'hir_past': 'しゃしんをとった', 'hir_masu': 'しゃしんをとります', 'hir_neg': 'しゃしんをとりません', 'ru_pres': 'делаю фото', 'ru_past': 'сделал фото', 'ru_neg': 'не делаю фото'},
+}
+# Маркер будущего для намерения: "в следующий раз когда поеду..."
+toki_future_marker = {
+    '今度': {'hir': 'こんど', 'ru': 'в следующий раз'},
+    '次': {'hir': 'つぎ', 'ru': 'в следующий раз'},
+}
+# Наречия для привычки (обычно, часто, иногда, редко)
+toki_habit_adverb = {
+    'よく': {'hir': 'よく', 'ru': 'часто'},
+    '時々': {'hir': 'ときどき', 'ru': 'иногда'},
+    'いつも': {'hir': 'いつも', 'ru': 'всегда'},
+}
+
 
 def one():
     # Регулярность: "по понедельникам" / "каждый понедельник"
@@ -231,8 +261,8 @@ def finished_reading_time_ago():
     mae = '前に' if use_ni else '前'
     mae_hir = 'まえに' if use_ni else 'まえ'
 
-    jap = ''.join([dur, mae, '私', 'は', '本', 'を', '読み終わりました', '。'])
-    hir = ''.join([dur_hir, mae_hir, 'わたし', 'は', 'ほん', 'を', 'よみおわりました', '。'])
+    jap = ''.join([dur, mae, '私', 'は', '本', 'を', '読み終えました', '。'])
+    hir = ''.join([dur_hir, mae_hir, 'わたし', 'は', 'ほん', 'を', 'よみあえました', '。'])
     rus = ' '.join([dur_ru, 'назад', 'я', 'закончила', 'читать', 'книгу', '(завершение в прошлом)'])
     return jap, hir, rus, finished_reading_time_ago.__name__
 
@@ -434,7 +464,6 @@ def reading_time_of_day_habit():
     rus = ' '.join([time_ru, 'я', 'читаю', 'книгу', '(привычка/регулярно)'])
     return jap, hir, rus, reading_time_of_day_habit.__name__
 
-print(usually_reading())
 
 def always_never_reading():
     # Всегда/никогда читаю: "いつも本を読みます" / "決して本を読みません"
@@ -482,10 +511,67 @@ def until_reading():
 def immediately_after_reading():
     # Сразу после чтения: "本を読んだ後すぐ、音楽を聞きます"
     jap = ['本', 'を', '読んだ後、', 'すぐ音楽', 'を', '聞きます', '。']
-    hir = ''.join(['ほん', 'を', 'よんだあとすぐ、', 'すぐおんがく', 'を', 'ききます', '。'])
+    hir = ''.join(['ほん', 'を', 'よんだあと、', 'すぐおんがく', 'を', 'ききます', '。'])
     rus = ' '.join(['сразу после чтения', 'я', 'слушаю', 'музыку'])
     jap = ''.join(jap)
     return jap, hir, rus
 
 
-#print(already_reading_for_duration())
+
+
+
+
+
+
+# 時 с глаголами движения: разное время в придаточном и главном предложении
+def toki_movement_dict_main_dict():
+    # Намерение на будущее: "в следующий раз когда поеду — куплю". 今度/次 + 行く時 + 買う
+    mov = ran(movement_toki)
+    act = ran(main_action_toki)
+    marker = ran(toki_future_marker)
+    jap = marker + mov + '時、' + act + '。'
+    hir = toki_future_marker[marker]['hir'] + movement_toki[mov]['hir_dict'] + 'とき、' + main_action_toki[act]['hir_dict'] + '。'
+    rus = ' '.join([toki_future_marker[marker]['ru'], 'когда', 'поеду', movement_toki[mov]['ru'], ',', main_action_toki[act]['ru_pres'], '(намерение на будущее)'])
+    return jap, hir, rus, toki_movement_dict_main_dict.__name__
+
+
+def toki_movement_dict_main_dict_habit():
+    # Привычка: "обычно/часто/иногда когда еду — покупаю". Наречие + 行く時 + 買います
+    mov = ran(movement_toki)
+    act = ran(main_action_toki)
+    adv = ran(toki_habit_adverb)
+    jap = adv + mov + '時、' + act.replace('買う', '買います').replace('読む', '読みます').replace('撮る', '撮ります') + '。'
+    hir = toki_habit_adverb[adv]['hir'] + movement_toki[mov]['hir_dict'] + 'とき、' + main_action_toki[act]['hir_masu'] + '。'
+    rus = ' '.join([toki_habit_adverb[adv]['ru'], 'когда', 'еду', movement_toki[mov]['ru'], ',', main_action_toki[act]['ru_pres'], '(привычка)'])
+    return jap, hir, rus, toki_movement_dict_main_dict_habit.__name__
+
+
+def toki_movement_past_main_past():
+    # 日本へ行った時、本を買った。 — Когда приехал, купил книгу. (оба в прошлом)
+    mov = ran(movement_toki)
+    act = ran(main_action_toki)
+    jap = mov.replace('行く', '行った').replace('帰る', '帰った') + '時、' + act.replace('買う', '買った').replace('読む', '読んだ').replace('撮る', '撮った') + '。'
+    hir = movement_toki[mov]['hir_past'] + 'とき、' + main_action_toki[act]['hir_past'] + '。'
+    rus = ' '.join(['когда', 'приехал', movement_toki[mov]['ru'], ',', main_action_toki[act]['ru_past'], '(сначала первое действие, потом второе)'])
+    return jap, hir, rus, toki_movement_past_main_past.__name__
+
+
+def toki_movement_dict_main_past():
+    # 日本へ行く時、本を買った。 — Перед поездкой (уже) купил книгу. (до отъезда сделал действие в прошлом)
+    mov = ran(movement_toki)
+    act = ran(main_action_toki)
+    jap = mov + '時、' + act.replace('買う', '買った').replace('読む', '読んだ').replace('撮る', '撮った') + '。'
+    hir = movement_toki[mov]['hir_dict'] + 'とき、' + main_action_toki[act]['hir_past'] + '。'
+    rus = ' '.join(['перед тем как поехать', movement_toki[mov]['ru'], ',', main_action_toki[act]['ru_past'], '(До первого действия уже сделал второе)'])
+    return jap, hir, rus, toki_movement_dict_main_past.__name__
+
+
+def toki_movement_past_main_dict():
+    # 日本へ行った時、本を買う。 — Когда приеду (приехав), куплю книгу. (после приезда — будущее в главном)
+    mov = ran(movement_toki)
+    act = ran(main_action_toki)
+    jap = mov.replace('行く', '行った').replace('帰る', '帰った') + '時、' + act + '。'
+    hir = movement_toki[mov]['hir_past'] + 'とき、' + main_action_toki[act]['hir_dict'] + '。'
+    rus = ' '.join(['когда', 'приезжаю', movement_toki[mov]['ru'], ',', main_action_toki[act]['ru_pres'], '(сначала первое действие, потом второе в качестве привычки)'])
+    return jap, hir, rus, toki_movement_past_main_dict.__name__
+
