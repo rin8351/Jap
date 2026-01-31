@@ -4,8 +4,8 @@ from path_for_files import resource_path
 import styles as st
 import random
 from PyQt5.QtCore import Qt
-from filling import lists_words
-from filling import list_lessons
+from filling import lists_words_by_numbers, lists_words_by_names
+from filling import list_lessons_numbers, list_lessons_names
 from fill_num import lists_words_num
 from fill_suff import lists_words_suff
 from fill_desu import lists_words_desu
@@ -13,6 +13,7 @@ from te_form import lists_teform
 from ta_form_past import lists_taform
 from fill_numbers import lists_words_numbers
 from fill_names import lists_words_names
+from fill_times import lists_words_times
 import pygame
 from gtts import gTTS
 
@@ -27,7 +28,40 @@ class GrammarWindow(QMainWindow):
         self.setStyleSheet(st.minimalizm)
         self.frame_main = QFrame()
         self.main()
-        self.list_lessons = list_lessons
+        self.lesson_mode = 'numbers'  # 'numbers' | 'names'
+        self.list_lessons = list_lessons_numbers
+        self.spisok = lists_words_by_numbers()
+
+    def get_grammar_dict(self):
+        if self.lesson_mode == 'names':
+            return lists_words_by_names()
+        return lists_words_by_numbers()
+
+    def set_lesson_mode(self, mode):
+        if mode not in ('numbers', 'names'):
+            return
+        self.lesson_mode = mode
+        self.list_lessons = list_lessons_names if mode == 'names' else list_lessons_numbers
+        self.spisok = self.get_grammar_dict()
+        if hasattr(self, 'scroll_layout'):
+            self.rebuild_lesson_checkboxes()
+
+    def rebuild_lesson_checkboxes(self):
+        # Clear old widgets
+        if not hasattr(self, 'scroll_layout'):
+            return
+        while self.scroll_layout.count():
+            item = self.scroll_layout.takeAt(0)
+            w = item.widget()
+            if w is not None:
+                w.deleteLater()
+
+        self.list_checks = []
+        for lesson in self.list_lessons:
+            checkbox = QCheckBox(str(lesson))
+            checkbox.setChecked(True)
+            self.list_checks.append(checkbox)
+            self.scroll_layout.addWidget(checkbox)
 
     def main(self):
         self.frame_main.deleteLater()
@@ -41,6 +75,7 @@ class GrammarWindow(QMainWindow):
         self.button_teform = QPushButton('Те-формы, деепричастия')
         self.button_taform = QPushButton('Та-формы, прошй, простая форма')
         self.button_names = QPushButton('Имена')
+        self.button_times = QPushButton('Время')
         self.button_grammar.clicked.connect(self.grammar_t)
         self.button_numerals.clicked.connect(self.numerals_t)
         self.button_suffixes.clicked.connect(self.suffixes_t)
@@ -49,6 +84,7 @@ class GrammarWindow(QMainWindow):
         self.button_taform.clicked.connect(self.taform_t)
         self.button_numbers.clicked.connect(self.numbers)
         self.button_names.clicked.connect(self.names)
+        self.button_times.clicked.connect(self.times)
         layout = QVBoxLayout()
         layout.addStretch()
         layout.addWidget(self.button_grammar)
@@ -59,6 +95,7 @@ class GrammarWindow(QMainWindow):
         layout.addWidget(self.button_teform)
         layout.addWidget(self.button_taform)
         layout.addWidget(self.button_names)
+        layout.addWidget(self.button_times)
         layout.addStretch()
         self.frame_main.setLayout(layout)
         self.setCentralWidget(self.frame_main)
@@ -66,6 +103,11 @@ class GrammarWindow(QMainWindow):
     def names(self):
         self.spisok_all= lists_words_names()
         self.test_style = 'names'
+        self.choose_language()
+
+    def times(self):
+        self.spisok_all= lists_words_times()
+        self.test_style = 'times'
         self.choose_language()
         
     def suffixes_t(self):
@@ -84,7 +126,7 @@ class GrammarWindow(QMainWindow):
         self.choose_language()
 
     def grammar_t(self):
-        self.spisok = lists_words()
+        self.spisok = self.get_grammar_dict()
         self.test_style = 'grammar'
         self.choose_language()
 
@@ -126,17 +168,25 @@ class GrammarWindow(QMainWindow):
         if self.test_style == 'grammar':
             self.label_lessons = QLabel('Lessons')
             main_layout.addWidget(self.label_lessons)
+
+            # Переключатель набора уроков
+            self.lesson_mode_layout = QHBoxLayout()
+            self.button_lessons_numbers = QPushButton("Уроки по номерам")
+            self.button_lessons_names = QPushButton("Уроки по названиям")
+            self.lesson_mode_layout.addWidget(self.button_lessons_numbers)
+            self.lesson_mode_layout.addWidget(self.button_lessons_names)
+            main_layout.addLayout(self.lesson_mode_layout)
+
+            self.button_lessons_numbers.clicked.connect(lambda: self.set_lesson_mode('numbers'))
+            self.button_lessons_names.clicked.connect(lambda: self.set_lesson_mode('names'))
+
             self.scroll_area = QScrollArea()
             self.scroll_area.setWidgetResizable(True)
             self.scroll_content = QWidget()
             self.scroll_layout = QVBoxLayout(self.scroll_content)
 
             self.list_checks = []
-            for lesson in self.list_lessons:
-                checkbox = QCheckBox(lesson)
-                checkbox.setChecked(True)
-                self.list_checks.append(checkbox)
-                self.scroll_layout.addWidget(checkbox)
+            self.rebuild_lesson_checkboxes()
 
             self.scroll_area.setWidget(self.scroll_content)
             main_layout.addWidget(self.scroll_area)
@@ -178,6 +228,8 @@ class GrammarWindow(QMainWindow):
             for rb in self.list_checks:
                 if rb.isChecked():
                     self.checked_lesson.append(rb.text())
+            # Ensure dictionary matches the chosen mode
+            self.spisok = self.get_grammar_dict()
             for i in self.checked_lesson:
                 for j in self.spisok[i]:
                     self.spisok_all.append(j)
@@ -193,6 +245,11 @@ class GrammarWindow(QMainWindow):
         self.function_name_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
         self.function_name_label.setCursor(Qt.IBeamCursor)
         layout.addWidget(self.function_name_label)
+
+         
+        self.button_show_name_of_function = QPushButton('Показать название функции')
+        self.button_show_name_of_function.clicked.connect(self.show_name_of_function)
+        layout.addWidget(self.button_show_name_of_function)
 
         self.label_question = QLabel('')
         self.label_question.setTextInteractionFlags(Qt.TextSelectableByMouse)
@@ -244,7 +301,8 @@ class GrammarWindow(QMainWindow):
                 self.progress_label.setText('Completed! (0 remaining)')
                 self.function_name_label.setText('')
                 if self.test_style == 'grammar':
-                    self.spisok= lists_words()
+                    self.button_show_name_of_function.setText('Показать название функции')
+                    self.spisok = self.get_grammar_dict()
                     self.spisok_all=[]
                     for i in self.checked_lesson:
                         for j in self.spisok[i]:
@@ -263,6 +321,8 @@ class GrammarWindow(QMainWindow):
                     self.spisok_all= lists_words_numbers()
                 elif self.test_style == 'names':
                     self.spisok_all= lists_words_names()
+                elif self.test_style == 'times':
+                    self.spisok_all= lists_words_times()
                 self.label_answer.setText('')
                 self.label_hiragana.setText('')
             else:
@@ -271,8 +331,6 @@ class GrammarWindow(QMainWindow):
                 self.progress_label.setText(f'Вопрос {current} of {self.total_questions} ({remaining-1} осталось)')
                 
                 self.current_question = random.choice(self.spisok_all)
-                if self.test_style == 'grammar':
-                    self.function_name_label.setText(f'Название функции: {self.current_question[3]}')
                 if self.type_test == 'japanesse':
                     self.label_question.setText(self.current_question[0])
                     self.current_answer = self.current_question[2]
@@ -284,6 +342,10 @@ class GrammarWindow(QMainWindow):
                         self.listening()
                 self.spisok_all.remove(self.current_question)
                 self.label_answer.setText('')
+                # Очищаем поле названия функции и обновляем кнопку при новом вопросе
+                self.function_name_label.setText('')
+                if self.test_style == 'grammar':
+                    self.button_show_name_of_function.setText('Показать название функции')
                 if self.hiragana_choose==1 and self.type_test == 'japanesse':
                     self.label_hiragana.setText(self.current_question[1])
                 else:
@@ -317,6 +379,20 @@ class GrammarWindow(QMainWindow):
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Space:
             self.next_question()
+
+    def show_name_of_function(self):
+        if self.test_style == 'grammar' or self.test_style == 'times':
+            # Проверяем, заполнено ли поле
+            if self.function_name_label.text():
+                # Если заполнено - очищаем и меняем текст кнопки
+                self.function_name_label.setText('')
+                self.button_show_name_of_function.setText('Показать название функции')
+            else:
+                # Если пустое - заполняем и меняем текст кнопки
+                self.function_name_label.setText(self.current_question[3])
+                self.button_show_name_of_function.setText('Убрать название функции')
+        else:
+            return
 
 if __name__ == '__main__':
     import sys

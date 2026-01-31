@@ -67,7 +67,7 @@ class Rand_window(QMainWindow):
         self.frame_up = QFrame()
         nbur = self.len_of_words
         self.label_type_of_test = QLabel('Выберите тип теста')
-        self.chec_type_of_test = QCheckBox ('Поставьте галочку, если нужен,\n старый тест без вариантов') 
+        self.chec_type_of_test = QCheckBox ('Если галочки нет-то тест с 4-мя вариантами\nесли есть- тест без вариантов, с таблицей') 
         self.lb_start = QLabel('Первый урок')
         self.ent_less = QLineEdit(text='1')
         self.ent_less.setStyleSheet(st.but_line_check)
@@ -295,7 +295,7 @@ class Rand_window(QMainWindow):
             self.lb_err.setText('Выберите хотя бы одно\n свойство для теста')
         else:
             if len(self.test_for_answer) >1 and self.value_of_test == 0:
-                self.lb_err.setText('Выберите один вариант\n для теста')
+                self.lb_err.setText('Для этого типа теста нужно выбрать\nтолько один вариант что тестировать')
             else:
                 self.lb_err.setText('')
                 self.df2 = self.xl.parse(self.current_sheet)
@@ -328,18 +328,27 @@ class Rand_window(QMainWindow):
             self.alls =  [i for i in self.alls if i['Lesson'] == int(self.choose_one_lesson.currentText())]
         if self.current_sheet == 'Dictio':
             self.alls =  [i for i in self.alls if i['Sush'] in self.property_choose]
-            if len(self.test_for_answer)==1 and self.test_for_answer[0]=='Kanji' and self.current_sheet=='Dictio' and (self.current_column =='Trans' or self.current_column == 'Kun'):
-                if self.menu_button3.currentText() == 'Только слова с мнемоникой':
-                    self.alls = [i for i in self.alls if i['Mnem'] != '0' and i['Mnem'] != 0]
-                elif self.menu_button3.currentText() == 'Слова без мнемоники':
-                    self.alls = [i for i in self.alls if i['Mnem'] == '0' or i['Mnem'] == 0]
+            try:
+                if hasattr(self, "menu_button3") and self.menu_button3 is not None:
+                    text = self.menu_button3.currentText()
+                    if text == 'Только слова с мнемоникой':
+                        self.alls = [i for i in self.alls if i['Mnem'] != '0' and i['Mnem'] != 0]
+                    elif text == 'Слова без мнемоники':
+                        self.alls = [i for i in self.alls if i['Mnem'] == '0' or i['Mnem'] == 0]
+            except RuntimeError:
+                # Виджет был удален, пропускаем проверку
+                pass
             if self.current_column == 'Kun' or self.current_column=='Trans':
-                if self.menu_button2.currentText() == 'Только слова с кандзи':
-                    self.alls = [i for i in self.alls if i['Kanji'] != '0' and i['Kanji'] != 0]
-                elif self.menu_button2.currentText() == 'Слова без кандзи':
-                    self.alls = [i for i in self.alls if i['Kanji'] == '0' or i['Kanji'] == 0]
-                else:
-                    self.alls = [i for i in self.alls]
+                try:
+                    if hasattr(self, "menu_button2") and self.menu_button2 is not None:
+                        text = self.menu_button2.currentText()
+                        if text == 'Только слова с кандзи':
+                            self.alls = [i for i in self.alls if i['Kanji'] != '0' and i['Kanji'] != 0]
+                        elif text == 'Слова без кандзи':
+                            self.alls = [i for i in self.alls if i['Kanji'] == '0' or i['Kanji'] == 0]
+                except RuntimeError:
+                    # Виджет был удален, пропускаем проверку
+                    pass
         if len(self.test_for_answer) == 1:
             self.alls_for_copy = [i for i in self.alls if str(i[self.test_for_answer[0]]) != '0' and str(i[self.current_column]) != '0']
         else:
@@ -418,7 +427,7 @@ class Rand_window(QMainWindow):
 
     def main2(self):
         self.frame_main.deleteLater()
-        self.setGeometry(300, 300, 700, 600)
+        self.setGeometry(300, 300, 700, 750)  # Увеличена высота окна для таблицы
         self.frame_main = QFrame()
         self.frame_main.setStyleSheet("background-color: transparent;")
 
@@ -480,13 +489,13 @@ class Rand_window(QMainWindow):
         self.btn_save.setVisible(False)
         self.audio.setVisible(False)
         self.table_widget = QTableWidget(self)
-        self.table_widget.setGeometry(QRect(100, 150, 400, 400))
+        self.table_widget.setMinimumHeight(300)  # Минимальная высота таблицы
         self.table_widget.setStyleSheet(st.table)
         if len(self.test_for_answer) == 1:
             self.table_widget.setVisible(False)
         layout_frame_know.addWidget(self.but_know)
         layout_frame_know.addWidget(self.audio)
-        layout_frame_know.addWidget(self.table_widget)
+        layout_frame_know.addWidget(self.table_widget, 1)  # Stretch factor = 1, таблица займет максимум места
         if self.value_of_test==1:  # старый вид теста
             layout_frame_know.addWidget(self.label_answer)
         else:
@@ -559,6 +568,7 @@ class Rand_window(QMainWindow):
         if not text.strip():  
             return
         
+        print('text for audio ===============================: ',text)
         if pygame.mixer.get_init() is not None:
             pygame.mixer.music.stop()
             pygame.mixer.music.unload()

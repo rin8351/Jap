@@ -141,7 +141,7 @@ var_glag = {
                     'dob':' - формально'},
         'fri_desyou':{'jap':{ '行':'く','帰':'る','歩':'く'},
                     'rus':{'行':'наверное, идёт','帰':'наверное,возвращается','歩':'наверное, идёт пешком'},
-                    'des':'だろう',
+                    'des':'とおもう',
                     'dob':' - фамильярно'},
         },
     'no':{
@@ -168,7 +168,7 @@ var_glag = {
                     'dob':' - формально'},
         'fri_desyou':{'jap':{ '行':'か','帰':'ら','歩':'か'},
                     'rus':{'行':'наверное, не идёт','帰':'наверное, не возвращается','歩':'наверное,не идёт пешком'},
-                    'des':'ないだろう',
+                    'des':'ないとおもう',
                     'dob':' - фамильярно'},
         },
 }
@@ -228,15 +228,15 @@ var_pril = {
     'form_pres':{'jap':'い','rus':' -  фамильярно','ne':''},
     'form_past':{'jap':'かった','rus':' - фамильярно','ne':'был'},
     'form_desyou':{'jap':'いでしょう','rus':' -　формально','ne':', наверное,'},
-    'fri_desyou':{'jap':'かっただろう','rus':' - фамильярно','ne':', наверное,'},
+    'fri_desyou':{'jap':'かったとおもう','rus':' - фамильярно','ne':', наверное,'},
     },
     'no':{
-    'form_pres':{'jap':'くないです','rus':' - формально','ne':' не '},
+    'form_pres':{'jap':'くありません','rus':' - формально','ne':' не '},
     'form_past':{'jap':'くなかったです','rus':' - формально','ne':' не был'},
     'form_pres':{'jap':'くない','rus':' - фамильярно','ne':' не '},
     'form_past':{'jap':'くなかった','rus':' - фамильярно','ne':' не был'},
     'form_desyou':{'jap':'くないでしょう','rus':' - формально','ne':', наверное, не'},
-    'fri_desyou':{'jap':'くなかっただろう','rus':' - фамильярно','ne':', наверное, не'},
+    'fri_desyou':{'jap':'くなかったとおもう','rus':' - фамильярно','ne':', наверное, не'},
     }
 }
 
@@ -296,12 +296,8 @@ def pril_vars(yn, var):
     pril_jap = ran(a['adj_for_small_object'][obj])
     pril_hir = a['adj_for_small_object_hir'][obj][pril_jap]
     pril_rus = a['adj_for_small_object'][obj][pril_jap]
-    if var=='form_past' or var=='fri_past':
-       ha = ' был '
-    else:
-        ha = ''
     jap = [un,obj,'は',pril_jap,des_jap]
     hir = ' '.join([un,obj_hir,'は',pril_hir,des_jap])
-    rus = ' '.join([un_rus,obj_rus,ne,ha,pril_rus,des_rus])
+    rus = ' '.join([un_rus,obj_rus,ne,pril_rus,des_rus])
     jap = ' '.join(jap)
     return jap,hir,rus

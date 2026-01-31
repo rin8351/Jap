@@ -51,7 +51,11 @@ def nundred():
         hiragana = special_hiragana[hundreds_digit]  # Use special Hiragana reading
     else:
         kanji += numb_kanji[hundreds_digit] + numb_kanji[100]
-        hiragana = numb_hiragana[hundreds_digit] + numb_hiragana[100]
+        # For 100, don't add "いち" before "ひゃく"
+        if hundreds_digit == 1:
+            hiragana = numb_hiragana[100]
+        else:
+            hiragana = numb_hiragana[hundreds_digit] + numb_hiragana[100]
 
     # Handling tens and ones in Kanji and Hiragana
     if tens_and_ones >= 10:
@@ -68,11 +72,12 @@ def thousand():
     special_thousands_hiragana = {3: 'さんぜん', 8: 'はっせん'}
     
     rand_numb = random.randint(10, 100) * 100  # Generate a random number between 1000 and 10000, multiple of 100
-
     kanji = ''
     thousands_digit = rand_numb // 1000
+    print('thousands_digit - ',thousands_digit)
     hundreds = rand_numb % 1000
-
+    print('hundreds - ',hundreds)
+    
     # Handling thousands in Kanji and Hiragana
     if thousands_digit in special_thousands_hiragana:
         kanji += numb_kanji[thousands_digit] + numb_kanji[1000]  # Use Kanji for special thousands
@@ -82,8 +87,13 @@ def thousand():
         hiragana = numb_hiragana[thousands_digit] + numb_hiragana[1000]
 
     # Handling hundreds in Kanji and Hiragana
-    kanji += numb_kanji[hundreds // 100] + numb_kanji[100]
-    hiragana += numb_hiragana[hundreds // 100] + numb_hiragana[100]
+    if hundreds >= 100:
+        kanji += numb_kanji[hundreds // 100] + numb_kanji[100]
+        # For 100, don't add "いち" before "ひゃく"
+        if hundreds // 100 == 1:
+            hiragana += numb_hiragana[100]
+        else:
+            hiragana += numb_hiragana[hundreds // 100] + numb_hiragana[100]
 
     return str(kanji),str(hiragana),str(rand_numb)
 
@@ -124,7 +134,11 @@ def man():
         hiragana += special_hiragana[hundreds]
     else:
         kanji += numb_kanji[hundreds // 100] + numb_kanji[100]
-        hiragana += numb_hiragana[hundreds // 100] + numb_hiragana[100]
+        # For 100, don't add "いち" before "ひゃく"
+        if hundreds // 100 == 1:
+            hiragana += numb_hiragana[100]
+        else:
+            hiragana += numb_hiragana[hundreds // 100] + numb_hiragana[100]
 
     return str(kanji),str(hiragana),str(rand_numb)
 

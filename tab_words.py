@@ -1,4 +1,4 @@
-from pandas import DataFrame, ExcelWriter, concat
+from pandas import DataFrame, ExcelWriter
 from PyQt5.QtWidgets import QTabWidget, QMessageBox,QGridLayout, QLabel, QLineEdit, QPushButton,QTableWidget,QTableWidgetItem
 from PyQt5.QtGui import QFont
 import pandas as pd
@@ -11,6 +11,7 @@ class TabWords(QTabWidget):
         self.xl = xl
         self.sheet_names = self.xl.sheet_names
         self.df_w = df_w
+        self.current_row_for_delete = None
         self.df_w['Num'] = self.df_w['Num'].astype(int)
 
         for i in range(len(self.df_w)):
@@ -234,7 +235,7 @@ class TabWords(QTabWidget):
                 last_num = int(self.df_w['Num'].max())
                 new_num = last_num + 1
             new_data = DataFrame([[lesson, new_num, kanji, read, trans]], columns=['Lesson', 'Num', 'Kanji', 'Read', 'Trans'])
-            self.df_w  = concat([self.df_w, new_data], ignore_index=True)
+            self.df_w = pd.concat([self.df_w, new_data], ignore_index=True)
             self.sheets['Words'] = self.df_w
             with ExcelWriter('J_e_all_my.xlsx', mode='w') as writer:
                 for sheet_name, sheet_df in self.sheets.items():
@@ -267,8 +268,10 @@ class TabWords(QTabWidget):
             self.table.removeRow(current_row) # Remove the row from the table
 
     def undo_data(self):
-        if self.current_row_for_delete is not None:
-            self.df_w = concat([self.df_w, self.current_row_for_delete], ignore_index=True)
+        if hasattr(self, 'current_row_for_delete') and self.current_row_for_delete is not None:
+            # Convert Series to DataFrame for concat
+            row_df = self.current_row_for_delete.to_frame().T
+            self.df_w = pd.concat([self.df_w, row_df], ignore_index=True)
             self.sheets['Words'] = self.df_w
             self.populate_table(self.df_w)
 
