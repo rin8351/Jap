@@ -20,23 +20,23 @@ def ran(x):
 def lists_words_by_numbers():  # список функций с разделением на уроки-номера, которые можно выбирать в приложении
 
     sp = { # Список функций всех уроков, которые можно выбирать в приложении
-        'simple':[uk_rod_mest_f(),uk_koko_f()],
+        'simple':[uk_rod_mest_f(),uk_koko_f(), uk_koko_f_2()],
         '10': [napravl_f_with_mo(),event_start_stop()],
         '11':[aru(),where_how_much(),inside_outside_home(), uk_rod_mest_f_chisl(), iru_only(),iru_hito()],
-        '12':[info_to_who(),what_he_doing_suru(),adjective_predicate()],
+        '12':[info_to_who(),what_he_doing_suru(),adjective_predicate(), what_he_doing()],
         '13':[ga_ski(), masyou(),take_nado(), kudasai(), kudasai_number(), prop_noadj_adverbs(),ga_ski_doing()],
-        '14_15': [accus_ni_iku(),isyoni_in_build(),walk_and_doing(),reason_sorede(),probability_low_and_notlow()],
+        '14_15': [accus_ni_iku(),isyoni_in_build(),walk_and_doing(),reason_sorede(),probability_low_and_notlow(),hairu_desu_nanika_to()],
         '16': [ageru_simple(),kureru_simple(),morau_simple(),hairu_desu_nanika(),people_walk_there(),jyouzu_heta(),kara_and_donoka()],
         '17':[two_actions_de_form(), kara_made(), he_mistake(), to_meeting_go_with_friends(), masyou_after_event(), after_action_will_address()],
         '18': [ageru(),kureru(),morau(), all_demo(),all_demo_janai(), put_kudasai(),he_or_event_doing_and_continue(),condition(),
                kureru_help(),naru_senmon(), reason_kara(),naru_prop_and_like_it(),begining_action()],
         '19':[reason_de(),comparison_1(),he_have(), the_same(), he_talking_about_how(), comparison_2(),name_of_something(),this_property_conna(),
-              homogeneous_predicates(),homogeneous_definitions(),if_that_then_that()],
-        '20':[he_can(),i_want(), takunaritai(), intention(),adjective_predicate_2(),definitions_expressed_by_the_verb(),reason_node()],
+              homogeneous_predicates(),homogeneous_definitions(),if_that_then_that(), niyotte],
+        '20':[he_can(),i_want(), takunaritai(), intention(),adjective_predicate_2(),definitions_expressed_by_the_verb(),reason_node(), day_and_time()],
         '21':[can_do_it(),two_actions_formal(),qualifying_clause(),stable_its_sounds_good(),stable_ko_to_ga_aru(),stable_i_decited_to(), this_man_tell_about(),
                 dake()],
         '22':[stable_actions_from_condition(),result_type(),negative_verb_gerund(),going_to_in_time(),tameni(),saying_that(),
-              action_in_time_after_time()],
+              action_in_time_after_time(), trying_type()],
         '23':[passive(),passive_opportunity(), result_oku(),result_simau(), repetitive_aspect(), repetitive_aspect_adjectives(),double_case(),
               conditional_temporal_eba(), conditional_form_verb_ba_ii(), concessive_subordinate_noni(), substantivization_of_verbs(),substantivization_of_verbs_mono(),
               substantivization_of_verbs_no()],
@@ -68,7 +68,7 @@ def lists_words_by_names():  # список функций с разделени
     sp = {
     "Именные": [uk_rod_mest_f(), uk_rod_mest_f_chisl(), uk_koko_f(),prop_noadj_adverbs(),
                 naru_senmon(),homogeneous_predicates(),adjective_predicate_2(),uk_koko_f_2()],
-    "Субстантиваторы":[substantivization_of_verbs_mono(),definitions_expressed_by_the_verb(),substantivization_of_verbs_no()],
+    "Субстантиваторы":[substantivization_of_verbs_mono(),definitions_expressed_by_the_verb(),substantivization_of_verbs_no(), day_and_time()],
     'Простые': [napravl_f_with_mo(),event_start_stop(),what_he_doing(),what_he_doing_suru(),
                take_nado(),accus_ni_iku(),isyoni_in_build(),walk_and_doing(),people_walk_there(),
                to_meeting_go_with_friends(),kara_made(),naru_prop_and_like_it(),he_mistake(),he_or_event_doing_and_continue(),
@@ -97,7 +97,7 @@ def lists_words_by_names():  # список функций с разделени
     'эмоциональное':[this_property_conna(),],
     'Два_действия':[two_actions_de_form(),homogeneous_definitions(), two_actions_formal()],
     'Намерения':[intention(),stable_i_decited_to()],
-    "Виды глаголов":[result_type(),result_oku(),result_simau(),became_capable_youni(),auxiliary_kuru(),
+    "Виды глаголов":[result_type(),trying_type(),result_oku(),result_simau(),became_capable_youni(),auxiliary_kuru(),
                      auxiliary_iku(),distancing_in_time(),going_to_build()],
     'Особые слова':[niyotte(),repetitive_aspect(),repetitive_aspect_adjectives(),intention_tsumori(),
                     intention_tokoro(),intention_tokoro_2(),bakari(),subordinate_clause_uti(),measure_degree_hodo_kurai(),
@@ -151,9 +151,6 @@ glag_in_func={ # избирательные глаголы и слова в фу
     'naru_senmon':(('先生','教授','中学校の教師','大学生')),
     'naru_prop_and_like_it':(('買','ちゅうもん','探')),
     'reason_kara':   (('見物','散歩','コンサート','パーティ','お祭り','お花見')),
-    'he_can_but_mistake': (('答え','話')),
-    'he_can_but_mistake_2':(('しかし','でも')),
-    'he_can_but_mistake_3':(('ふだん','時々','よく')),
     'put_kudasai':(('はこ','料理','れいぞころ')),
     'put_kudasai':(('しお','さとう')),
     'put_kudasai':(('ぎゅうにく','ぶたにく','とりにく')),
@@ -183,10 +180,7 @@ def prop_no_sush(chosen_sush, var,var_ne): # выбор принадлежнос
             jap = ran(a['adj_for_small_object'][chosen_sush])
             hir = a['adj_for_small_object_hir'][chosen_sush][jap]
             rus = a['adj_for_small_object'][chosen_sush][jap]
-            if jap in a['pril_with_no']:
-                jap = jap +'の'
-                hir = hir +'の'
-            elif jap in a['adj_non_predicative']:
+            if jap in a['adj_non_predicative']:
                 jap =jap+ 'な'
                 hir = hir+'な'
             else:
@@ -1840,27 +1834,9 @@ def he_can():
             glag_hir = a['glagol'][i][glag]
     glag_rus = a['glag_verb_stem'][glag]
     form = a['glag_form'][glag][3]
-    work = ran(a['at_work'])
-    work_hir = a['at_work_hir'][work]
-    work_rus = a['at_work'][work]
-    but_list = {'しかし': 'однако,', 'でも': 'но,'}
-    if work == '間違っている' or work == '言葉を忘れている':
-        but = random.choice(('しかし', 'でも'))
-        but_hir = but
-        but_rus = but_list[but]
-        dop_jap = random.choice(('ふだん', '時々', 'よく'))
-        dop_hir = dop_jap
-        dop_rus = a['adverbs']['person'][dop_jap]
-    else:
-        dop_jap, dop_hir, dop_rus = dop_time('person')
-        but = ran(a['time_at'])
-        but_hir = a['time_at_hir'][but]
-        but_rus = a['time_at'][but]
-    jap = [podl, 'は', lang, 'で', glag, form, 'ことができる。', but, dop_jap, work]
-    hir = ''.join([podl_hir, 'は', lang_hir, 'で', glag_hir, form, 'ことができる。',
-        but_hir, dop_hir, work_hir])
-    rus = ' '.join([podl_rus, 'умеет', glag_rus, lang_rus, '.', but_rus,
-        dop_rus, work_rus])
+    jap = [podl, 'は', lang, 'で', glag, form, 'ことができる。']
+    hir = ''.join([podl_hir, 'は', lang_hir, 'で', glag_hir, form, 'ことができる。'])
+    rus = ' '.join([podl_rus, 'умеет', glag_rus, lang_rus, '.'])
     jap = ''.join(jap)
     return jap, hir, rus, he_can.__name__
 
@@ -1888,26 +1864,17 @@ def he_mistake():
 
 def this_man_tell_about():
     print('this_man_tell_about')
-    name = ran(a['names'])
-    rus_who = a['names'][name]
-    hir_who = a['names_hir'][name]
-    char = ran(a['character'])
-    char_hir = a['character_hir'][char]
-    char_rus = a['character'][char]
     about = ran(a['telling'])
     about_hir = a['telling_hir'][about]
     about_rus = a['end_telling'][about]
-    jap = ['あの方', 'は', name, '先生です。彼', 'は', 'とても', char, 'です。学生たち', 'に',
-        about, 'について', '話す', 'のが', '好きです']
-    hir = ''.join(['あのかた', 'は', hir_who, 'せんせいです。かれ', 'は', 'とても', char_hir,
-        'です。がくせいたち', 'に', about_hir, 'について', 'はなす', 'のが', 'すきです'])
-    rus = ' '.join(['Это преподаватель', rus_who, '. Он очень', char_rus,
-        '. Он любит рассказывать (обобщенно, НЕ личная история) ученикам',
-        about_rus])
+    jap = ['あの方', 'は', '学生たち', 'に', about, 'について', '話しました']
+    hir = ''.join(['あのかた', 'は','がくせいたち', 'に', about_hir, 'について', 'はなしました'])
+    rus = ' '.join(['Это преподаватель рассказал (обобщенно, НЕ личная история) ученикам о ', about_rus])
     jap = ''.join(jap)
     return jap, hir, rus, this_man_tell_about.__name__
 
 
+print(this_man_tell_about())
 def he_talking_about_how():
     print('he_talking_about_how')
     jap_podl, jap_podl_hir, jap_podl_rus = event_f()
@@ -2536,10 +2503,6 @@ def homogeneous_predicates():
 
 def homogeneous_definitions():
     print('homogeneous_definitions')
-    glag_jap = random.choice(('買', 'ちゅうもん', '探'))
-    glag_hir = a['glagol']['accusative'][glag_jap]
-    glag_rus = a['glag_im_going_todo'][glag_jap]
-    form = a['glag_form'][glag_jap][2]
     accus = ran(a['small object'])
     accus_hir = a['small object_hir'][accus]
     accus_rus = a['end_get_small_object'][accus]
@@ -2551,17 +2514,16 @@ def homogeneous_definitions():
         while jap2 == jap1:
             jap2, hir2, rus2, jap2_ne, jap2_ne_hir, jap2_ne_rus = prop_no_sush(
                 accus, 'only_sush', 'only_pos')
-    if jap1[:-1] in a['pril_with_no'] or jap1[:-1] in a['adj_non_predicative']:
+    if jap1[:-1] in a['adj_non_predicative']:
         copula = 'で、'
     else:
         copula = 'くて、'
     if jap1[:-1] in a['adj_non_predicative']:
         jap1 = jap1[:-1]
-    jap = ['私', 'は', jap1, copula, jap2, jap2_ne, accus, 'を', glag_jap,
-        form, 'ます']
-    hir = ''.join(['わたし', 'は', hir1, copula, hir2, jap2_ne_hir, accus_hir,
-        'を', glag_hir, form, 'ます'])
-    rus = ' '.join(['Я', glag_rus, rus1, 'и', rus2, accus_rus])
+    jap = ['この', accus, 'は', jap1, copula, jap2, jap2_ne, accus, 'です']
+    hir = ''.join(['この', accus_hir, 'は', hir1, copula,  hir2, jap2_ne_hir, accus_hir,
+        'です'])
+    rus = ' '.join(['Этот', accus_rus, rus1, 'и', rus2, accus_rus])
     jap = ''.join(jap)
     return jap, hir, rus, homogeneous_definitions.__name__
 
@@ -2583,7 +2545,7 @@ def intention():
     elif rand == 1:
         copula = ''.join(['と', '思います'])
         copula_hir = ''.join(['と', 'おもいます'])
-        cop_rus = 'я собираюсь\u3000(сейчас появилось желание)'
+        cop_rus = 'я собираюсь\(сейчас появилось желание)'
         form = a['glag_form'][glag_jap][5]
         glag_rus = a['glag_verb_stem_2'][glag_jap]
     elif rand == 2:
@@ -2651,7 +2613,7 @@ def adjective_predicate_2():
 
 def definitions_expressed_by_the_verb():
     print('definitions_expressed_by_the_verb')
-    rand = random.randint(0, 2)
+    rand = random.randint(0, 1)
     if rand == 0:
         who = ran(a['names'])
         who_hir = a['names_hir'][who]
@@ -2673,17 +2635,6 @@ def definitions_expressed_by_the_verb():
         jap = [opr_jap, '人', 'は', who, 'さん', 'です']
         hir = ''.join([opr_hir, 'ひと', 'は', who_hir, 'さん', 'です'])
         rus = ' '.join(['Человек, который', opr_rus, ' - ', who_rus])
-    elif rand == 1:
-        reas = ran(a['reason_3_form'])
-        reas_hir = a['reason_3_form_hir'][reas]
-        reas_rus = a['reason_3_form'][reas]
-        glag_jap, glag_hir, glag_rus, accus, accus_hir, accus_rus = (
-            choose_glag_accus('glag_past_post'))
-        form = a['glag_form'][glag_jap][3]
-        jap = [reas, '日', 'に、', '私', 'は', accus, 'を', glag_jap, form]
-        hir = ''.join([reas_hir, 'にち', 'に、', 'わたし', 'は', accus_hir, 'を',
-            glag_hir, form])
-        rus = ' '.join(['В день, когда ', reas_rus, 'я', glag_rus, accus_rus])
     else:
         jap_podl, jap_podl_hir, jap_podl_rus = who_f('end_family3',
             'end_know3', 'suff')
@@ -2702,6 +2653,23 @@ def definitions_expressed_by_the_verb():
             jap_podl_rus, '-', rus2, build_rus])
     jap = ''.join(jap)
     return jap, hir, rus, definitions_expressed_by_the_verb.__name__
+
+
+def day_and_time():
+    print('day_and_time')
+    reas = ran(a['reason_3_form'])
+    reas_hir = a['reason_3_form_hir'][reas]
+    reas_rus = a['reason_3_form'][reas]
+    glag_jap, glag_hir, glag_rus, accus, accus_hir, accus_rus = (
+        choose_glag_accus('glag_past_post'))
+    form = a['glag_form'][glag_jap][3]
+    jap = [reas, '日', 'に、', '私', 'は', accus, 'を', glag_jap, form]
+    hir = ''.join([reas_hir, 'にち', 'に、', 'わたし', 'は', accus_hir, 'を',
+        glag_hir, form])
+    rus = ' '.join(['В день, когда ', reas_rus, 'я', glag_rus, accus_rus])
+    jap = ''.join(jap)
+    return jap, hir, rus, definitions_expressed_by_the_verb.__name__
+
 
 def reason_node():
     print('reason_node')
@@ -2911,7 +2879,7 @@ def negative_verb_gerund():
     print('15')
     jap_who, hir_podl_who, rus_podl_who = who_f('family', 'know_people', 'suff'
         )
-    g = Glagols('glag_past_post', 'choose', ['move', 'accusative',
+    g = Glagols('glag_past_one_moment', 'choose', ['move', 'accusative',
         'address', 'withs', 'not_trans_slow'])
     (glag_jap, glag_hir, glag_rus, jap_podl, jap_podl_hir, jap_podl_rus,
         padez, padez_rus, rand_glag) = g.main()
@@ -2921,6 +2889,8 @@ def negative_verb_gerund():
     (glag_jap2, glag_hir2, glag_rus2, jap_podl2, jap_podl_hir2,
         jap_podl_rus2, padez2, padez_rus2, rand_glag2) = g2.main()
     form2 = a['glag_form'][glag_jap2][1]
+    if form2 =='さ(せ)':
+        form2 = 'せ'
     jap = [jap_who, 'は', jap_podl2, padez2, glag_jap2, form2, 'ず', 'に',
         jap_podl, padez, glag_jap, form, 'ました']
     hir = ''.join([hir_podl_who, 'は', jap_podl_hir2, padez2, glag_hir2,
@@ -2930,6 +2900,7 @@ def negative_verb_gerund():
     jap = ''.join(jap)
     return jap, hir, rus, negative_verb_gerund.__name__
 
+
 def result_type():
     print('16')
     glag_jap, glag_hir, glag_rus, accus, accus_hir, accus_rus = (
@@ -2937,9 +2908,22 @@ def result_type():
     form = a['glag_form'][glag_jap][6]
     jap = [accus, 'が', glag_jap, form, 'あります']
     hir = ''.join([accus_hir, 'が', glag_hir, form, 'あります'])
-    rus = ' '.join([accus_rus, glag_rus, '(/а/о)'])
+    rus = ' '.join([accus_rus, glag_rus, '(результативный вид)'])
     jap = ''.join(jap)
     return jap, hir, rus, result_type.__name__
+
+
+def trying_type():
+    print('trying_type')
+    glag_jap, glag_hir, glag_rus, accus, accus_hir, accus_rus = (
+        choose_glag_accus('glag_verb_stem_2'))
+    form = a['glag_form'][glag_jap][6]
+    jap = [accus, 'を', glag_jap, form, 'みます']
+    hir = ''.join([accus_hir, 'を', glag_hir, form, 'みます'])
+    rus = ' '.join(['я попробую ',accus_rus, glag_rus,])
+    jap = ''.join(jap)
+    return jap, hir, rus, trying_type.__name__
+
 
 def stable_actions_from_condition():
     print('17')
@@ -2996,6 +2980,7 @@ def going_to_in_time():
         ' (речь о временном промежутке)'])
     jap = ''.join(jap)
     return jap, hir, rus, going_to_in_time.__name__
+
 
 def tameni():
     print('19')
@@ -3158,7 +3143,7 @@ def takunaritai():
     glag_jap = ran(a['glagol']['move'])
     glag_hir = a['glagol']['move'][glag_jap]
     glag_rus = a['glag_verb_stem_2'][glag_jap]
-    form = a['glag_form'][glag_jap][3]
+    form = a['glag_form'][glag_jap][2]
     jap = ['私', 'は', jap_podl, 'へ', glag_jap, form, 'たくなり', 'ます']
     hir = ''.join(['わたし', 'は', jap_podl_hir, 'へ', glag_hir, form,
         'たくなり', 'ます'])
@@ -4717,7 +4702,6 @@ def i_want_hosii():
     jap = ''.join(jap)
     return jap, hir, rus, i_want_hosii.__name__
 
-print(i_want_hosii())
 
 def state_mama():
     print('state_mama')
@@ -5067,7 +5051,7 @@ def ga_ski_doing():
         ski = 'きらい'
         ski_hir = 'きらい'
         ski_rus = 'не любит'
-    jap = [podl1, 'は', jap_podl, padez, glag_jap, form1, 'ののが', ski, 'です']
+    jap = [podl1, 'は', jap_podl, padez, glag_jap, form1, 'のが', ski, 'です']
     hir = ''.join([podl1_hir, 'は', jap_podl_hir, padez, glag_hir, form1,
         'のが', ski_hir, 'です'])
     rus = ' '.join([podl1_rus, ski_rus, glag_rus, padez_rus, jap_podl_rus])
