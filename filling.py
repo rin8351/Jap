@@ -1874,7 +1874,6 @@ def this_man_tell_about():
     return jap, hir, rus, this_man_tell_about.__name__
 
 
-print(this_man_tell_about())
 def he_talking_about_how():
     print('he_talking_about_how')
     jap_podl, jap_podl_hir, jap_podl_rus = event_f()
@@ -2238,11 +2237,7 @@ def he_have():
         jap_prop = ran(a['adj_for_small_object'][obj])
         hir_prop = a['adj_for_small_object_hir'][obj][jap_prop]
         rus_prop = a['adj_for_small_object'][obj][jap_prop]
-        if jap_prop in a['pril_with_no']:
-            ok_jap = 'いい' + jap_prop + 'の'
-            ok_hir = 'いい' + hir_prop + 'の'
-            rus_prop = 'лучший (ая)' + rus_prop
-        elif jap_prop in a['adj_non_predicative']:
+        if jap_prop in a['adj_non_predicative']:
             ok_jap = jap_prop + 'な'
             ok_hir = hir_prop + 'な'
         else:
@@ -2270,11 +2265,7 @@ def the_same():
         jap_prop = ran(a['adj_for_small_object'][obj])
         hir_prop = a['adj_for_small_object_hir'][obj][jap_prop]
         rus_prop = a['adj_for_small_object'][obj][jap_prop]
-        if jap_prop in a['pril_with_no']:
-            ok_jap = 'いい' + jap_prop + 'の'
-            ok_hir = 'いい' + hir_prop + 'の'
-            rus_prop = 'хороший (ая)' + rus_prop
-        elif jap_prop in a['adj_non_predicative']:
+        if jap_prop in a['adj_non_predicative']:
             ok_jap = jap_prop + 'な'
             ok_hir = hir_prop + 'な'
         else:
@@ -2545,7 +2536,7 @@ def intention():
     elif rand == 1:
         copula = ''.join(['と', '思います'])
         copula_hir = ''.join(['と', 'おもいます'])
-        cop_rus = 'я собираюсь\(сейчас появилось желание)'
+        cop_rus = 'я собираюсь (сейчас появилось желание)'
         form = a['glag_form'][glag_jap][5]
         glag_rus = a['glag_verb_stem_2'][glag_jap]
     elif rand == 2:
@@ -2742,8 +2733,7 @@ def uk_koko_f_2():
     build_rus = a['buildings'][ran_build]
     jap2, hir, rus2 = prop_no_build(ran_build)
     if jap2[:-1] not in a['adj_build_without_no'] and jap2[:-1] not in a[
-        'adj_build_with_no'] and jap2[:-1] not in a['adj_non_predicative'
-        ] and jap2[:-1] not in a['pril_with_no']:
+        'adj_build_with_no'] and jap2[:-1] not in a['adj_non_predicative']:
         jap2 = jap2[:-1] + 'く'
         hir = hir[:-1] + 'く'
     jap2_2, hir2, rus2_2 = prop_no_build(ran_build)
@@ -2889,7 +2879,7 @@ def negative_verb_gerund():
     (glag_jap2, glag_hir2, glag_rus2, jap_podl2, jap_podl_hir2,
         jap_podl_rus2, padez2, padez_rus2, rand_glag2) = g2.main()
     form2 = a['glag_form'][glag_jap2][1]
-    if form2 =='さ(せ)':
+    if glag_jap2 in a['kango_verbs']:
         form2 = 'せ'
     jap = [jap_who, 'は', jap_podl2, padez2, glag_jap2, form2, 'ず', 'に',
         jap_podl, padez, glag_jap, form, 'ました']
@@ -3055,6 +3045,7 @@ def saying_that():
         rus = ' '.join([rus_podl_who, 'сказал, что', rus_podl_who2,
             glag_rus, padez_rus, jap_podl_rus])
     elif rand == 1:
+        print('1')
         form = a['glag_form'][glag_jap][1]
         jap_who, hir_podl_who, rus_podl_who = who_f('family', 'know_people',
             'suff')
@@ -3077,6 +3068,7 @@ def saying_that():
             padez_rus, jap_podl_rus, '"'])
     jap = ''.join(jap)
     return jap, hir, rus, saying_that.__name__
+
 
 def action_in_time_after_time():
     print('21')
@@ -3251,6 +3243,7 @@ def passive():
     jap = ''.join(jap)
     return jap, hir, rus, passive.__name__
 
+
 def passive_opportunity():
     print('passive_opportunity')
     g = Glagols('glag_passive_eba', 'choose', ['accusative'])
@@ -3259,9 +3252,9 @@ def passive_opportunity():
     podl1, podl1_hir, podl1_rus = who_f('end_family3', 'end_know3', 'suff_no3')
     form = a['glag_form'][glag_jap][1]
     if glag_jap in a['glagol_2_conjugation']:
-        copula = 'られた'
+        copula = 'られます'
     else:
-        copula = 'れた'
+        copula = 'れます'
     jap = [jap_podl, 'は', podl1, 'が', glag_jap, form, copula]
     hir = ''.join([jap_podl_hir, 'は', podl1_hir, 'が', glag_hir, form, copula])
     rus = ' '.join([jap_podl_rus,
