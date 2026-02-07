@@ -6,8 +6,8 @@ def ran(x):
 def lists_words_num():
 
     sp = []
-    for i in a:
-        sp.append(hon_f(i,a))
+    for i in n:
+        sp.append(hon_f(i,n))
     for i in numb:
         sp.append(hon_f(i,numb))
     for j in k:
@@ -16,7 +16,7 @@ def lists_words_num():
     sp.append(generate_price())
     return sp
 
-a={
+n={
     '本':{
         'words':{'えんぴつ':'карандаш','傘':'зонт', 'ペン': 'ручка', 'バナナ':'банан','ふで': 'кисть','木':'дерево',},
         'read_words':{'えんぴつ':'えんぴつ','傘':'かさ', 'ペン': 'ペン', 'バナナ':'バナナ','ふで': 'ふで','木':'き',},
@@ -211,12 +211,12 @@ def hon_f(suff,dicts):
     return jap,hir,rus
 
 def ordinal_number():
-    suff = random.choice(list(a.keys())) 
-    rand = ran(a[suff]['words'])
+    suff = random.choice(list(n.keys())) 
+    rand = ran(n[suff]['words'])
     rand_num = ran(b1['kanji_numerical'])
     jap = b1['kanji_numerical'][rand_num] + suff +'目'+'の'+rand
-    hir = a[suff]['read'][rand_num]+'め'+'の'+a[suff]['read_words'][rand]
-    rus = b1['ordinal_number'][rand_num] +' '+ a[suff]['words'][rand]
+    hir = n[suff]['read'][rand_num]+'め'+'の'+n[suff]['read_words'][rand]
+    rus = b1['ordinal_number'][rand_num] +' '+ n[suff]['words'][rand]
     return jap,hir,rus
 
 def generate_price():
