@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import QTabWidget, QVBoxLayout
-from tab_dictio import TabDictio
-from tab_name import TabName
-from tab_words import TabWords
-from tab_frazes import TabFraze
+from Table.tab_dictio import TabDictio
+from Table.tab_name import TabName
+from Table.tab_words import TabWords
+from Table.tab_frazes import TabFraze
 from pandas import ExcelFile
 from PyQt5.QtGui import QPalette, QColor,QIcon
 import styles as st

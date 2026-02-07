@@ -4,16 +4,15 @@ from path_for_files import resource_path
 import styles as st
 import random
 from PyQt5.QtCore import Qt
-from filling import lists_words_by_numbers, lists_words_by_names
-from filling import list_lessons_numbers, list_lessons_names
-from fill_num import lists_words_num
-from fill_suff import lists_words_suff
-from fill_desu import lists_words_desu
-from te_form import lists_teform
-from ta_form_past import lists_taform
-from fill_numbers import lists_words_numbers
-from fill_names import lists_words_names
-from fill_times import lists_words_times
+from Grammar.filling import lists_words_by_numbers, lists_words_by_names, list_lessons_numbers, list_lessons_names
+from Grammar.fill_num import lists_words_num
+from Grammar.fill_suff import lists_words_suff
+from Grammar.fill_desu import lists_words_desu
+from Grammar.te_form import lists_teform
+from Grammar.ta_form_past import lists_taform
+from Grammar.fill_numbers import lists_words_numbers
+from Grammar.fill_names import lists_words_names
+from Grammar.fill_times import lists_words_times
 import pygame
 from gtts import gTTS
 

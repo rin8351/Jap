@@ -4,13 +4,12 @@ from path_for_files import resource_path
 import styles as st
 import random
 from PyQt5.QtCore import Qt
-from filling import lists_words
-from filling import list_lessons
-from fill_num import lists_words_num
-from fill_suff import lists_words_suff
-from fill_desu import lists_words_desu
-from te_form import lists_teform
-from ta_form_past import lists_taform
+from Grammar.filling import lists_words, list_lessons
+from Grammar.fill_num import lists_words_num
+from Grammar.fill_suff import lists_words_suff
+from Grammar.fill_desu import lists_words_desu
+from Grammar.te_form import lists_teform
+from Grammar.ta_form_past import lists_taform
 
 class GrammarWindow(QMainWindow):
     def __init__(self):
