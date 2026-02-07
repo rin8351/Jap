@@ -1,22 +1,13 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtGui import QIcon
 from pandas import ExcelFile
+from path_for_files import resource_path
 import os
-import sys
 import styles
 from jap_wind_test import Rand_window
 from all_tabs import Table_window
 from grammar import GrammarWindow
 
-
-def resource_path(relative_path):
-    """Get the absolute path to a resource in the bundled app or the local filesystem."""
-    try:
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath(".")
-
-    return os.path.join(base_path, relative_path)
     
 class Jap_app(QtWidgets.QMainWindow):
     def __init__(self, parent=None):

@@ -5,7 +5,7 @@
 import random
 
 from pandas.core.internals.blocks import DtypeBackend 
-from Grammar.fill_num import a as suff_numbs, b1,k
+from Grammar.fill_count_suff import a as suff_numbs, b1,k
 from Grammar.dictions_words import a
 
 def ran(x):
@@ -122,11 +122,6 @@ list_lessons_names = ['Именные','Субстантиваторы','Про�
                 'что-то_ничто_всё','эмоциональное','Два_действия','Намерения','Виды глаголов','Особые слова','Залоги',
                 'Хотя_Если','Можно_лучше','Учтивые формы']
 
-# --------------------------------------------------------------------
-# Backward compatibility:
-# - existing code imports `lists_words` and `list_lessons`
-# - keep them as the default "by numbers" mode
-# --------------------------------------------------------------------
 def lists_words():
     return lists_words_by_numbers()
 
