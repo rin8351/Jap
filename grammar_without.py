@@ -5,7 +5,7 @@ import styles as st
 import random
 from PyQt5.QtCore import Qt
 from Grammar.filling import lists_words, list_lessons
-from Grammar.fill_num import lists_words_num
+from Grammar.fill_count_suff import lists_words_num
 from Grammar.fill_suff import lists_words_suff
 from Grammar.fill_desu import lists_words_desu
 from Grammar.te_form import lists_teform
