@@ -1,6 +1,5 @@
 import random
 from Grammar.dictions_words import a
-from Grammar.fill_count_suff import n as k
 
 
 def ran(x):
@@ -9,50 +8,29 @@ def ran(x):
 
 # Функции Дополнительные
 
-def prop_no_sush(chosen_sush, var,var_ne): # выбор принадлежности предмета  или его свойства (цвет, форма и т.д.)
+def prop_no_sush(chosen_sush, var_ne): # выбор принадлежности предмета  или его свойства (цвет, форма и т.д.)
     jap_ne=''
     jap_ne_hir=''
     jap_ne_rus=''
-    if var =='only_sush': # выбор только свойства прилагательного
-        var = 0
-    elif var == 'all': # выбор меджду прилагательным и принадлежностью человеку
-        var = random.randint(0,1)
-    if var==0:
-        if chosen_sush in a['adj_for_small_object']:
-            jap = ran(a['adj_for_small_object'][chosen_sush])
-            hir = a['adj_for_small_object_hir'][chosen_sush][jap]
-            rus = a['adj_for_small_object'][chosen_sush][jap]
-            if jap in a['adj_non_predicative']:
-                jap =jap+ 'な'
-                hir = hir+'な'
-            else:
-                if var_ne =='only_pos': # только позитивные свойства, без отрицательного суффикса "кунай"
-                    var_ne = 0
-                elif var_ne == 'all':
-                    var_ne = random.randint(0,1)
-                if var_ne==1:
-                    jap_ne = 'くない'
-                    jap_ne_hir = 'くない'
-                else:
-                    jap_ne = 'い'
-                    jap_ne_hir = 'い'
-                    jap_ne_rus = ''
-        else:
-            jap,hir,rus = ('','','')
+    jap = ran(a['adj_for_small_object'][chosen_sush])
+    hir = a['adj_for_small_object_hir'][chosen_sush][jap]
+    rus = a['adj_for_small_object'][chosen_sush][jap]
+    if jap in a['adj_non_predicative']:
+        jap =jap+ 'な'
+        hir = hir+'な'
     else:
-        print('var==1')
-        rand = random.choice((a['names'],a['family']))
-        jap = ran(rand)
-        if rand == a['family']:
-            rus = a['end_family4'][jap]
-            hir = a['family_hur'][jap]
+        if var_ne =='only_pos': # только позитивные свойства, без отрицательного суффикса "кунай"
+            var_ne = 0
         else:
-            jap_suff = ran(a['suff'])
-            hir = a['names_hir'][jap]+jap_suff
-            rus = rand[jap]+a['suff_no'][jap_suff]
-            jap+jap_suff
-        jap = jap +'の'
-        hir = hir +'の'
+            var_ne = random.randint(0,1)
+        if var_ne==1:
+            jap_ne = 'くない'
+            jap_ne_hir = 'くない'
+            jap_ne_rus = 'не'
+        else:
+            jap_ne = 'い'
+            jap_ne_hir = 'い'
+            jap_ne_rus = ''
     return jap,hir,rus,jap_ne,jap_ne_hir,jap_ne_rus
 
 
@@ -139,38 +117,12 @@ class Times():
         self.funcs = funcs if funcs else ['we','ho','po','vov']
 
     def main(self):
-        if self.glag == 'glag_budush':
-            return random.choice((self.we(), self.ho(), self.po()))
-        elif self.glag == 'glag_nast_post':
-             return random.choice((self.kan(), self.kan_nagai()))
-        elif self.glag == 'glag_now':
-            return self.now()
-        elif self.glag == 'glag_past_post' or self.glag == 'glag_past_one_moment':
-            return random.choice((self.we(), self.ho(), self.po(),self.vov()))
+        if self.glag == 'glag_budush': # время в будущем
+            return random.choice((self.we(), self.po()))
         elif self.glag =='choose':
             if len(self.funcs) == 1:
                 return getattr(self, self.funcs[0])()
             return random.choice([getattr(self, func)() for func in self.funcs])
-
-    def now(self):
-        time_jap = '今'
-        time_hir = 'いま'
-        time_rus = 'сейчас'
-        return time_jap,time_hir,time_rus
-    
-    def kan(self):
-        time_jap = ran(a['hours']['午前'])
-        time_hir = a['hours_hir']['午前'][time_jap] + 'あいだ'
-        time_rus_dop =  'в течение '
-        time_rus = time_rus_dop+a['hours']['午前'][time_jap] +' '+ a['hours_rus']['午前'][time_jap]
-        time_jap = time_jap + '間'
-        return time_jap,time_hir,time_rus 
-    
-    def kan_nagai(self):
-        time_jap = '長い間'
-        time_hir = 'ながいあいだ'
-        time_rus = 'долгое время'
-        return time_jap,time_hir,time_rus
     
     def we(self):
         time_jap = ran(a['week'])
@@ -211,21 +163,10 @@ class Times():
         return time_jap,time_hir,time_rus
 
 
-def padez_napravl(): # выбор между двумя падежами направления
-    padez = random.choice(('へ','に'))
-    padez_hir = padez
-    if padez =='へ':
-        padez_rus =' к '
-        end = 'end_build3'
-    else:
-        padez_rus=' в '
-        end = 'end_build2'
-    return padez,padez_hir,padez_rus,end
-
-
 def date_year():
     year = random.randint(1980, 2024)
-    year_jap = ''.join(a['numbers_for_year'][digit] for digit in str(year))
+    years = {'1': '一', '2': '二', '3': '三', '4': '四', '5': '五', '6': '六', '7': '七', '8': '八', '9': '九', '10': '十', '0': '〇'},
+    year_jap = ''.join(years[digit] for digit in str(year))
      # Формирование написания года хираганой
     year_hir = ''
     year_str = str(year)
@@ -280,45 +221,3 @@ def rus_end_num(rand_num,rand_obj): # функция для выбора око�
     else:
         end_num = a['end_small_5'][rand_obj]
     return end_num
-
-
-
-# функции генерации глаголов для присоединения их в функции для теста
-
-def chose_glag_not_trans_fast(time_glag, podl): # функция для генерации подлеж и сказ. событие проиходит в какое то время, 
-                                                  #  или человек совершает действие непереходное длящееся и не длящееся          
-    if podl == 'rand':  # выбор подлежащего- либо рандомно, либо самим выбирать что будет- собвтие или человек что то сделал
-        if random.randint(0,1)==0:
-            podl = 'men'
-        else:
-            podl = 'even'
-    if podl == 'even':
-        jap_podl = ran(a['events'])
-        jap_podl_hir = a['events_hir'][jap_podl]
-        jap_podl_rus = a['events'][jap_podl]
-        glagol_type = 'not_trans_fast_ev'
-    else:
-        jap_podl, jap_podl_hir, jap_podl_rus = who_f('family','know_people','suff')
-        glagol_type = random.choice(('not_trans_fast_men','not_trans_slow'))
-    glag_jap = ran(a['glagol'][glagol_type])
-    glag_hir = a['glagol'][glagol_type][glag_jap]
-    glag_rus = a[time_glag][glag_jap]
-    return jap_podl, jap_podl_hir, jap_podl_rus,glag_jap,glag_hir,glag_rus
-
-
-def choose_glag_napravl(time_glag): # функция для генерации подлеж и сказ.- глагол направления
-    who, hir_who, rus_who = who_f('family','know_people','suff') # в фуцию передаем какой суффикс использовать и окончание для родственника, если они выпадут
-    glag_jap_origin = ran(a['glagol']['move'])
-    glag_jap = glag_jap_origin
-    glag_hir = a['glagol']['move'][glag_jap_origin]
-    glag_rus = a[time_glag][glag_jap_origin]
-    if glag_jap_origin == '行' or glag_jap_origin=='帰':
-        sush_de = ran(a['glag_instrument'][glag_jap_origin])
-        sush_de_hir = a['glag_instrument_hir'][glag_jap_origin][sush_de]
-        sush_de_rus = a['glag_instrument'][glag_jap_origin][sush_de]
-        padez = 'で'
-        glag_jap = sush_de + padez + glag_jap_origin
-        glag_hir = sush_de_hir + padez + glag_hir
-        glag_rus = sush_de_rus+' '+glag_rus
-    return glag_jap_origin, who, hir_who, rus_who,glag_jap,glag_hir,glag_rus
-

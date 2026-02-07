@@ -231,9 +231,15 @@ def two():
     # `今度の + 曜日 + に` = "в следующий (ближайший) понедельник"
     day_of_week = ran(days_of_week)  # тут days_of_week: 月曜日 -> "понедельник"
     day_of_week_hir = days_of_week_hir[day_of_week]
-    jap = '私は今度の' + day_of_week + 'に本を読みます。'
-    hir = 'わたしはこんどの' + day_of_week_hir + 'にほんをよみます。'
-    rus = ' '.join(['в следующий', days_of_week[day_of_week], 'я', 'буду читать', 'книгу'])
+    day_ru = days_of_week[day_of_week]
+    if random.randint(0, 1) == 1:
+        goro_jap, goro_hir, goro_ru = 'ごろ', 'ごろ', 'около '
+        day_ru = goro_ru + day_ru
+    else:
+        goro_jap, goro_hir = '', ''
+    jap = '私は今度の' + day_of_week + goro_jap + 'に本を読みます。'
+    hir = 'わたしはこんどの' + day_of_week_hir + goro_hir + 'にほんをよみます。'
+    rus = ' '.join(['в следующий', day_ru, 'я', 'буду читать', 'книгу'])
 
     return jap, hir, rus, two.__name__
 
@@ -243,8 +249,13 @@ def took_time_to_finish():
     dur = ran(durations)
     dur_hir = durations[dur]['hir']
     dur_ru = durations[dur]['ru']
-    jap = [dur, 'で', '私', 'は', '本', 'を', '読みました', '。']
-    hir = ''.join([dur_hir, 'で', 'わたし', 'は', 'ほん', 'を', 'よみました', '。'])
+    if random.randint(0, 1) == 1:
+        gurai_jap, gurai_hir, gurai_ru = 'ぐらい', 'ぐらい', 'примерно '
+        dur_ru = gurai_ru + dur_ru
+    else:
+        gurai_jap, gurai_hir = '', ''
+    jap = [dur, gurai_jap, 'で', '私', 'は', '本', 'を', '読みました', '。']
+    hir = ''.join([dur_hir, gurai_hir, 'で', 'わたし', 'は', 'ほん', 'を', 'よみました', '。'])
     rus = ' '.join(['я', 'прочитал(а)', 'книгу', 'за', dur_ru, '(сколько заняло времени)'])
     jap = ''.join(jap)
     return jap, hir, rus, took_time_to_finish.__name__
@@ -261,8 +272,14 @@ def finished_reading_time_ago():
     mae = '前に' if use_ni else '前'
     mae_hir = 'まえに' if use_ni else 'まえ'
 
-    jap = ''.join([dur, mae, '私', 'は', '本', 'を', '読み終えました', '。'])
-    hir = ''.join([dur_hir, mae_hir, 'わたし', 'は', 'ほん', 'を', 'よみあえました', '。'])
+    if random.randint(0, 1) == 1:
+        gurai_jap, gurai_hir, gurai_ru = 'ぐらい', 'ぐらい', 'примерно '
+        dur_ru = gurai_ru + dur_ru
+    else:
+        gurai_jap, gurai_hir = '', ''
+
+    jap = ''.join([dur, gurai_jap, mae, '私', 'は', '本', 'を', '読み終えました', '。'])
+    hir = ''.join([dur_hir, gurai_hir, mae_hir, 'わたし', 'は', 'ほん', 'を', 'よみあえました', '。'])
     rus = ' '.join([dur_ru, 'назад', 'я', 'закончила', 'читать', 'книгу', '(завершение в прошлом)'])
     return jap, hir, rus, finished_reading_time_ago.__name__
 
@@ -272,8 +289,13 @@ def already_reading_for_duration():
     dur = ran(durations)
     dur_hir = durations[dur]['hir']
     dur_ru = durations[dur]['ru']
-    jap = ['もう', dur, '本', 'を', '読んでいます', '。']
-    hir = ''.join(['もう', dur_hir, 'ほん', 'を', 'よんでいます', '。'])
+    if random.randint(0, 1) == 1:
+        gurai_jap, gurai_hir, gurai_ru = 'ぐらい', 'ぐらい', 'примерно '
+        dur_ru = gurai_ru + dur_ru
+    else:
+        gurai_jap, gurai_hir = '', ''
+    jap = ['もう', dur, gurai_jap, '本', 'を', '読んでいます', '。']
+    hir = ''.join(['もう', dur_hir, gurai_hir, 'ほん', 'を', 'よんでいます', '。'])
     rus = ' '.join(['я', 'читаю', 'уже', dur_ru, '(сколько длится)'])
     jap = ''.join(jap)
     return jap, hir, rus, already_reading_for_duration.__name__
@@ -310,8 +332,13 @@ def will_start_reading_at_time():
     t = ran(hours)
     t_hir = hours[t]['hir']
     t_ru_v = hours[t]['ru_v']
-    jap = [t, 'に', '私', 'は', '本', 'を', '読み始めます', '。']
-    hir = ''.join([t_hir, 'に', 'わたし', 'は', 'ほん', 'を', 'よみはじめます', '。'])
+    if random.randint(0, 1) == 1:
+        goro_jap, goro_hir, goro_ru = 'ごろ', 'ごろ', 'около '
+        t_ru_v = goro_ru + t_ru_v
+    else:
+        goro_jap, goro_hir = '', ''
+    jap = [t, goro_jap, 'に', '私', 'は', '本', 'を', '読み始めます', '。']
+    hir = ''.join([t_hir, goro_hir, 'に', 'わたし', 'は', 'ほん', 'を', 'よみはじめます', '。'])
     rus = ' '.join(['я', 'начну', 'читать', 'в', t_ru_v, '(время начала)'])
     jap = ''.join(jap)
     return jap, hir, rus, will_start_reading_at_time.__name__
@@ -321,8 +348,13 @@ def reading_since_time():
     t = ran(hours_pm)
     t_hir = hours_pm[t]['hir']
     t_ru_s = hours_pm[t]['ru_s']
-    jap = [t, 'から', '本', 'を', '読んでいます', '。']
-    hir = ''.join([t_hir, 'から', 'ほん', 'を', 'よんでいます', '。'])
+    if random.randint(0, 1) == 1:
+        goro_jap, goro_hir, goro_ru = 'ごろ', 'ごろ', 'около '
+        t_ru_s = goro_ru + t_ru_s
+    else:
+        goro_jap, goro_hir = '', ''
+    jap = [t, goro_jap, 'から', '本', 'を', '読んでいます', '。']
+    hir = ''.join([t_hir, goro_hir, 'から', 'ほん', 'を', 'よんでいます', '。'])
     rus = ' '.join(['я', 'читаю', 'с', t_ru_s, '(с какого времени)'])
     jap = ''.join(jap)
     return jap, hir, rus, reading_since_time.__name__
