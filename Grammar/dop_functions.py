@@ -163,35 +163,6 @@ class Times():
         return time_jap,time_hir,time_rus
 
 
-def date_year():
-    year = random.randint(1980, 2024)
-    years = {'1': '一', '2': '二', '3': '三', '4': '四', '5': '五', '6': '六', '7': '七', '8': '八', '9': '九', '10': '十', '0': '〇'},
-    year_jap = ''.join(years[digit] for digit in str(year))
-     # Формирование написания года хираганой
-    year_hir = ''
-    year_str = str(year)
-    # Тысячи
-    if year_str[0] != '1':
-        year_hir += a['numbers2'][year_str[0]]
-    year_hir += 'せん'
-    # Сотни
-    if year_str[1] != '0':
-        year_hir += a['numbers2'][year_str[1]] + 'ひゃく'
-    # Десятки
-    if year_str[2] != '0':
-        if year_str[2] == '1':
-            year_hir += 'じゅう'
-        else:
-            year_hir += a['numbers2'][year_str[2]] + 'じゅう'
-    # Единицы
-    if year_str[3] != '0':
-        year_hir += a['numbers2'][year_str[3]]
-    jap= year_jap+'年' 
-    hir = year_hir + 'ねん' 
-    rus =  str(year)+' год'
-    return jap, hir, rus
-
-
 def who_f(end_f,end_k,suff): # выбор имени/человека. обязательно надо выбирать окончания для семьи и знакомых людей
     list_who = random.choice((a['names'],a['family'],a['know_people']))
     who = ran(list_who)

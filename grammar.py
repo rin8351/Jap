@@ -9,10 +9,10 @@ from Grammar.fill_count_suff import lists_words_num
 from Grammar.fill_suff import lists_words_suff
 from Grammar.fill_desu import lists_words_desu
 from Grammar.te_form import lists_teform
-from Grammar.ta_form_past import lists_taform
 from Grammar.fill_numbers import lists_words_numbers
 from Grammar.fill_names import lists_words_names
 from Grammar.fill_times import lists_words_times
+from Grammar.fill_dates import lists_words_dates
 import pygame
 from gtts import gTTS
 
@@ -72,18 +72,18 @@ class GrammarWindow(QMainWindow):
         self.button_numerals = QPushButton('Счетные суффиксы')
         self.button_suffixes = QPushButton('Суффиксы- смыслообразующие')
         self.button_teform = QPushButton('Те-формы, деепричастия')
-        self.button_taform = QPushButton('Та-формы, прошедшее время, простая форма')
         self.button_names = QPushButton('Чтение имен')
         self.button_times = QPushButton('Тест на Определенеи времени')
+        self.button_dates = QPushButton('Тест на определение даты')
         self.button_grammar.clicked.connect(self.grammar_t)
         self.button_numerals.clicked.connect(self.numerals_t)
         self.button_suffixes.clicked.connect(self.suffixes_t)
         self.button_copula.clicked.connect(self.copula_t)
         self.button_teform.clicked.connect(self.teform_t)
-        self.button_taform.clicked.connect(self.taform_t)
         self.button_numbers.clicked.connect(self.numbers)
         self.button_names.clicked.connect(self.names)
         self.button_times.clicked.connect(self.times)
+        self.button_dates.clicked.connect(self.dates)
         layout = QVBoxLayout()
         layout.addStretch()
         layout.addWidget(self.button_grammar)
@@ -92,9 +92,9 @@ class GrammarWindow(QMainWindow):
         layout.addWidget(self.button_numerals)
         layout.addWidget(self.button_suffixes)
         layout.addWidget(self.button_teform)
-        layout.addWidget(self.button_taform)
         layout.addWidget(self.button_names)
         layout.addWidget(self.button_times)
+        layout.addWidget(self.button_dates)
         layout.addStretch()
         self.frame_main.setLayout(layout)
         self.setCentralWidget(self.frame_main)
@@ -107,6 +107,11 @@ class GrammarWindow(QMainWindow):
     def times(self):
         self.spisok_all= lists_words_times()
         self.test_style = 'times'
+        self.choose_language()
+
+    def dates(self):
+        self.spisok_all= lists_words_dates()
+        self.test_style = 'dates'
         self.choose_language()
         
     def suffixes_t(self):
@@ -132,11 +137,6 @@ class GrammarWindow(QMainWindow):
     def teform_t(self):
         self.spisok_all= lists_teform()
         self.test_style = 'teform'
-        self.choose_language()
-
-    def taform_t(self):
-        self.spisok_all= lists_taform()
-        self.test_style = 'taform'
         self.choose_language()
 
     def numbers(self):
@@ -275,7 +275,7 @@ class GrammarWindow(QMainWindow):
         self.button_back.clicked.connect(self.main)
         buttons_layout.addWidget(self.button_back)
         buttons_layout.addStretch()
-        if self.type_test == 'japanesse' and (self.test_style == 'grammar' or self.test_style == 'times'):
+        if self.type_test == 'japanesse' and (self.test_style == 'grammar' or self.test_style == 'times' or self.test_style == 'dates'):
             self.button_listening = QPushButton('Listening')
             self.button_listening.clicked.connect(self.listening)
             buttons_layout.addWidget(self.button_listening)
@@ -314,14 +314,14 @@ class GrammarWindow(QMainWindow):
                     self.spisok_all= lists_words_desu()
                 elif self.test_style == 'teform':
                     self.spisok_all= lists_teform()
-                elif self.test_style == 'taform':
-                    self.spisok_all= lists_taform()
                 elif self.test_style == 'numbers':
                     self.spisok_all= lists_words_numbers()
                 elif self.test_style == 'names':
                     self.spisok_all= lists_words_names()
                 elif self.test_style == 'times':
                     self.spisok_all= lists_words_times()
+                elif self.test_style == 'dates':
+                    self.spisok_all= lists_words_dates()
                 self.label_answer.setText('')
                 self.label_hiragana.setText('')
             else:
