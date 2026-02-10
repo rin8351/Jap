@@ -1,6 +1,6 @@
 from copy import deepcopy
 from PyQt5.QtWidgets import QMainWindow, QFrame, QTableWidgetItem,QTableWidget, QScrollArea, QLabel, QComboBox, QLineEdit,QCheckBox, QRadioButton, QVBoxLayout, QHBoxLayout, QPushButton,QMenu,QAction,QApplication,QMessageBox,QTextEdit
-from PyQt5.QtCore import Qt,QRect
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap,QIcon,QFont,QPainter
 from pandas import ExcelFile, read_excel
 import styles as st

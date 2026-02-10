@@ -75,10 +75,6 @@ class Jap_app(QtWidgets.QMainWindow):
         self.frame_UP_main.setStyleSheet('background-color: rgba(255, 255, 255, 0.2); border-radius: 5px; padding: 10px')
         self.frame_UP_main_layout = QtWidgets.QVBoxLayout(self.frame_UP_main)
 
-        self.btn1 = QtWidgets.QPushButton("Open_table", clicked=self.table_excel)
-        self.btn1.setStyleSheet(self.button_style)
-        self.frame_UP_main_layout.addWidget(self.btn1)
-
         self.btn1_1 = QtWidgets.QPushButton("Table", clicked=self.to_table_excel)
         self.btn1_1.setStyleSheet(self.button_style)
         self.frame_UP_main_layout.addWidget(self.btn1_1)
@@ -109,11 +105,7 @@ class Jap_app(QtWidgets.QMainWindow):
     def to_table_excel(self):
         self.new_window2 = Table_window()
         self.new_window2.show()
-        
-    def table_excel(self):
-        self.file_path = 'J_e_all_my.xlsx'
-        os.system("start "+self.file_path)
-    
+            
     def jap_rand_window(self):
         self.new_window = Rand_window()
         self.new_window.show()
