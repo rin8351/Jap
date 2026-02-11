@@ -58,7 +58,16 @@ class Rand_window(QMainWindow):
         """Загружает данные выбранного листа и обновляет поля уроков."""
         self.df = self.xl.parse(sheet_name)
         self.alls_dict = self.df.reset_index().to_dict('records')
-        lessons = sorted(set(x['Lesson'] for x in self.alls_dict))
+        # Только числовые уроки, без nan; отображаем как целые (40, не 40.0)
+        valid = []
+        for x in self.alls_dict:
+            v = x.get('Lesson')
+            try:
+                if v is not None and v == v and str(v).strip() != '':
+                    valid.append(int(float(v)))
+            except (TypeError, ValueError):
+                pass
+        lessons = sorted(set(valid))
         self.len_of_words = max(lessons) if lessons else 0
         self.all_of_lessons = ['Выбрать один урок'] + [str(x) for x in lessons]
         if sheet_name == 'Dictio':

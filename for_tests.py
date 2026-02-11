@@ -3,11 +3,9 @@ from Grammar.dop_functions import *
 from Grammar.fill_dates import *
 from Grammar.fill_numbers import *
 
-print("thousand():", thousand())
-print("man():", man())
-print("ten_man():", ten_man())
-print("hundred_million():", hundred_million())
+print( concessive_subordinate_noni())
 
+#glag_im_doing
 
 #Скрипт для тестирования функции lists_words с записью ошибок
 # import json

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from PyQt5.QtWidgets import (
     QTabWidget, QWidget, QVBoxLayout, QHBoxLayout, QTableWidget, QTableWidgetItem,
-    QPushButton, QHeaderView, QComboBox, QCheckBox, QSpinBox, QLabel, QScrollArea,
-    QFrame, QMessageBox, QAbstractItemView, QDoubleSpinBox, QApplication, QLineEdit
+    QPushButton, QHeaderView, QComboBox, QSpinBox, QLabel,
+    QFrame, QMessageBox, QAbstractItemView, QApplication, QLineEdit
 )
 from PyQt5.QtCore import Qt, QEvent
 from PyQt5.QtGui import QIcon, QBrush, QColor
-from pandas import ExcelFile, read_excel
+from pandas import ExcelFile
 import pandas as pd
 from path_for_files import resource_path
 import styles as st
@@ -14,6 +14,11 @@ import styles as st
 SUSH_OPTIONS = ['Сущ', 'Прил', 'Глаг', 'Нар']
 DEFAULT_ROWS = 1000
 EXCEL_PATH = 'J_e_all_my.xlsx'
+# Размер шрифта для столбцов: имя столбца -> размер (остальные — системный по умолчанию)
+COLUMN_FONT_SIZES = {'Kanji': 14,
+                    'On': 12, 
+                    'Kun': 12,
+                    'Read': 12 }
 
 
 def _ensure_num_column(df):
@@ -60,7 +65,7 @@ class SheetTableWidget(QWidget):
                         self._num_values.append(i + 1)
         else:
             self._num_values = list(range(1, n + 1)) if n else [1]
-        # Добиваем до DEFAULT_ROWS пустыми строками (Num продолжаем)
+        # Добиваем до DEFAULT_ROWS пустыми строками только если в файле меньше строк
         max_num = max(self._num_values) if self._num_values else 0
         for _ in range(n, DEFAULT_ROWS):
             max_num += 1
@@ -130,7 +135,7 @@ class SheetTableWidget(QWidget):
         self.table = QTableWidget()
         self.table.setColumnCount(len(self._display_columns))
         self.table.setHorizontalHeaderLabels(self._display_columns)
-        self.table.setRowCount(min(DEFAULT_ROWS, len(self._num_values)))
+        self.table.setRowCount(len(self._num_values))
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.table.setEditTriggers(QAbstractItemView.DoubleClicked)
         self.table.setAlternatingRowColors(True)
@@ -140,7 +145,7 @@ class SheetTableWidget(QWidget):
 
         # Заполняем из df
         n_data = len(df)
-        for r in range(min(DEFAULT_ROWS, len(self._num_values))):
+        for r in range(len(self._num_values)):
             for c, col in enumerate(self._display_columns):
                 if col == 'Sush' and self._has_sush:
                     combo = QComboBox()
@@ -160,7 +165,9 @@ class SheetTableWidget(QWidget):
                     val = df.iloc[r][col] if r < n_data else ''
                     if pd.isna(val):
                         val = ''
-                    item = QTableWidgetItem(str(val))
+                    display_val = self._format_lesson_display(val) if col == 'Lesson' and self._has_lesson else str(val)
+                    item = QTableWidgetItem(display_val)
+                    self._apply_column_font(col, item)
                     self.table.setItem(r, c, item)
 
         # Сортировка по клику на заголовок
@@ -202,6 +209,18 @@ class SheetTableWidget(QWidget):
         btn_layout.addWidget(self.rows_count_label)
         btn_layout.addStretch()
         layout.addLayout(btn_layout)
+
+    def _format_lesson_display(self, val):
+        """Для столбца Lesson: показывать 40, а не 40.0 (pandas из Excel даёт float)."""
+        if val is None or val == '' or (isinstance(val, float) and pd.isna(val)):
+            return ''
+        try:
+            v = float(val)
+            if v == int(v):
+                return str(int(v))
+            return str(val)
+        except (TypeError, ValueError):
+            return str(val)
 
     def _is_row_empty(self, row_dict):
         """Строка считается пустой, если пусты все столбцы кроме Sush (в Sush часто стоит «Сущ» по умолчанию)."""
@@ -261,7 +280,9 @@ class SheetTableWidget(QWidget):
                 else:
                     it = self.table.item(r, c)
                     if it:
-                        it.setText(str(row_dict.get(cname, '')))
+                        raw = row_dict.get(cname, '')
+                        text = self._format_lesson_display(raw) if cname == 'Lesson' and self._has_lesson else str(raw)
+                        it.setText(text)
         # после сортировки обновляем нумерацию и количество
         self._update_row_numbers_and_count()
 
@@ -394,6 +415,15 @@ class SheetTableWidget(QWidget):
                 return True
         return super().eventFilter(obj, event)
 
+    def _apply_column_font(self, col_name, item):
+        """Задать размер шрифта ячейке по настройке COLUMN_FONT_SIZES (имя столбца -> размер)."""
+        if not col_name or col_name not in COLUMN_FONT_SIZES:
+            return
+        size = COLUMN_FONT_SIZES[col_name]
+        font = item.font()
+        font.setPointSize(size)
+        item.setFont(font)
+
     def _cell_text(self, row, col):
         """Текст ячейки (для обычной ячейки или комбобокса Sush)."""
         w = self.table.cellWidget(row, col)
@@ -415,7 +445,9 @@ class SheetTableWidget(QWidget):
             if it:
                 it.setText(str(text))
             else:
-                self.table.setItem(row, col, QTableWidgetItem(str(text)))
+                it = QTableWidgetItem(str(text))
+                self._apply_column_font(col_name, it)
+                self.table.setItem(row, col, it)
 
     def _copy_selection(self):
         ranges = self.table.selectedRanges()
@@ -565,7 +597,10 @@ class SheetTableWidget(QWidget):
             item = self.table.item(row, c)
             if not item:
                 # создаём item, чтобы можно было покрасить фон
+                col_name = self._display_columns[c] if c < len(self._display_columns) else None
                 item = QTableWidgetItem(self._cell_text(row, c))
+                if col_name:
+                    self._apply_column_font(col_name, item)
                 self.table.setItem(row, c, item)
             item.setBackground(highlight_brush)
         self._highlighted_row = row
@@ -585,7 +620,9 @@ class SheetTableWidget(QWidget):
                         combo.addItem(v)
                     self.table.setCellWidget(r, c, combo)
                 else:
-                    self.table.setItem(r, c, QTableWidgetItem(''))
+                    item = QTableWidgetItem('')
+                    self._apply_column_font(col, item)
+                    self.table.setItem(r, c, item)
         # после добавления строк обновляем нумерацию и количество
         self._update_row_numbers_and_count()
 
@@ -600,7 +637,9 @@ class SheetTableWidget(QWidget):
             if 'Num' in df_new.columns:
                 df_new['Num'] = pd.to_numeric(df_new['Num'], errors='coerce').fillna(0).astype(int)
             if 'Lesson' in df_new.columns:
-                df_new['Lesson'] = pd.to_numeric(df_new['Lesson'], errors='coerce')
+                # Целые числа (40, не 40.0) для совместимости с jap_wind_test; пустые — как пусто
+                ser = pd.to_numeric(df_new['Lesson'], errors='coerce')
+                df_new['Lesson'] = ser.astype('Int64')
             xl = pd.ExcelFile(EXCEL_PATH, engine='openpyxl')
             sheets_dict = {name: xl.parse(name) for name in xl.sheet_names}
             sheets_dict[self.sheet_name] = df_new
