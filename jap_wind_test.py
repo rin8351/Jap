@@ -3,7 +3,9 @@ from PyQt5.QtWidgets import QMainWindow, QFrame, QTableWidgetItem,QTableWidget, 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap,QIcon,QFont,QPainter
 from pandas import ExcelFile, read_excel
+import math
 import styles as st
+
 from json import dump, load
 from ast import literal_eval
 from random import choice, sample,shuffle
@@ -11,6 +13,23 @@ import os
 from path_for_files import resource_path
 import pygame
 from gtts import gTTS
+
+
+def cell_has_value(val):
+    """Считает, что в ячейке есть значение: не пусто, не 0, не NaN (пустая ячейка из Excel)."""
+    if val is None:
+        return False
+    try:
+        if isinstance(val, float) and math.isnan(val):
+            return False
+    except (TypeError, ValueError):
+        pass
+    if val == 0 or val == '0':
+        return False
+    if isinstance(val, str) and val.strip() == '':
+        return False
+    return True
+
 
 class Rand_window(QMainWindow):
     def __init__(self):
@@ -32,6 +51,9 @@ class Rand_window(QMainWindow):
         self.xl = ExcelFile('J_e_all_my.xlsx')
         self.sheet_names = self.xl.sheet_names
         self.df_w = self.xl.parse('Words')
+        # Очистка self.df_w от элементов, у которых 'Lesson' == nan
+        if 'Lesson' in self.df_w.columns:
+            self.df_w = self.df_w[self.df_w['Lesson'].notna()]
         self.alls_words = self.df_w.reset_index().to_dict('records')
         # df, alls_dict, chast_rechi загружаются в load_sheet_data() после выбора листа
 
@@ -52,7 +74,6 @@ class Rand_window(QMainWindow):
         self.stat = {}
         self.check_new_words_for_stat()
         self.all_variations = {}
-
 
     def load_sheet_data(self, sheet_name):
         """Загружает данные выбранного листа и обновляет поля уроков."""
@@ -351,6 +372,8 @@ class Rand_window(QMainWindow):
             else:
                 self.lb_err.setText('')
                 self.df2 = self.xl.parse(self.current_sheet)
+                if 'Lesson' in self.df2.columns:
+                    self.df2 = self.df2[self.df2['Lesson'].notna()]
                 self.alls  = self.df2.reset_index().to_dict('records')
                 if self.choose_one_lesson.currentText() =='Выбрать один урок':
                     if self.ent_less.text() == '' or self.ent_less_end.text() == '':
@@ -384,9 +407,9 @@ class Rand_window(QMainWindow):
                 if hasattr(self, "menu_button3") and self.menu_button3 is not None:
                     text = self.menu_button3.currentText()
                     if text == 'Только слова с мнемоникой':
-                        self.alls = [i for i in self.alls if i['Mnem'] != '0' and i['Mnem'] != 0]
+                        self.alls = [i for i in self.alls if cell_has_value(i.get('Mnem'))]
                     elif text == 'Слова без мнемоники':
-                        self.alls = [i for i in self.alls if i['Mnem'] == '0' or i['Mnem'] == 0]
+                        self.alls = [i for i in self.alls if not cell_has_value(i.get('Mnem'))]
             except RuntimeError:
                 # Виджет был удален, пропускаем проверку
                 pass
@@ -395,9 +418,9 @@ class Rand_window(QMainWindow):
                     if hasattr(self, "menu_button2") and self.menu_button2 is not None:
                         text = self.menu_button2.currentText()
                         if text == 'Только слова с кандзи':
-                            self.alls = [i for i in self.alls if i['Kanji'] != '0' and i['Kanji'] != 0]
+                            self.alls = [i for i in self.alls if cell_has_value(i.get('Kanji'))]
                         elif text == 'Слова без кандзи':
-                            self.alls = [i for i in self.alls if i['Kanji'] == '0' or i['Kanji'] == 0]
+                            self.alls = [i for i in self.alls if not cell_has_value(i.get('Kanji'))]
                 except RuntimeError:
                     # Виджет был удален, пропускаем проверку
                     pass
@@ -437,6 +460,8 @@ class Rand_window(QMainWindow):
         self.alls_all_sheet = {}
         for i in new_stat:
             df_l = self.xl.parse(i)
+            if 'Lesson' in df_l.columns:
+                df_l = df_l[df_l['Lesson'].notna()]
             self.alls_all_sheet[i] = df_l.reset_index().to_dict('records')
 
         with open('stat.txt',encoding='utf-8') as f:
@@ -620,7 +645,6 @@ class Rand_window(QMainWindow):
         if not text.strip():  
             return
         
-        print('text for audio ===============================: ',text)
         if pygame.mixer.get_init() is not None:
             pygame.mixer.music.stop()
             pygame.mixer.music.unload()
@@ -741,7 +765,7 @@ class Rand_window(QMainWindow):
         correct_kanji = self.current_word['Kanji']
 
         # Исключаем слова с тем же кандзи
-        if correct_kanji == 0 or correct_kanji == '0':
+        if not cell_has_value(correct_kanji):
             filtered_words = [word for word in self.all_variations]
         else:
             filtered_words = [word for word in self.all_variations if word['Kanji'] != correct_kanji]
@@ -816,9 +840,9 @@ class Rand_window(QMainWindow):
                 if self.current_column == 'Kanji' or self.current_column=='Trans':
                     for i in self.alls:
                         if (self.current_column == 'Kanji' or self.current_column=='Trans') and self.current_sheet=='Dictio':
-                            if i['Mnem']!=0 and i['Mnem']!='0':
+                            if cell_has_value(i.get('Mnem')):
                                 self.label_stat.setText('есть мнемоника')
-                                self.label_stat.setToolTip(i['Mnem'])
+                                self.label_stat.setToolTip(str(i['Mnem']))
                             else:
                                 self.label_stat.setText('')
                                 self.label_stat.setToolTip('')
@@ -846,9 +870,9 @@ class Rand_window(QMainWindow):
                 if (self.current_column == 'Kanji' or self.current_column=='Trans') and self.current_sheet=='Dictio': # для установки мнеоники
                     for i in self.alls:
                         if i[self.current_column] == self.current_word_test:
-                            if i['Mnem']!=0 and i['Mnem']!='0':
+                            if cell_has_value(i.get('Mnem')):
                                 self.mnemonic_text=', есть мнемоника'
-                                self.label_stat.setToolTip(i['Mnem'])
+                                self.label_stat.setToolTip(str(i['Mnem']))
                             else:
                                 self.mnemonic_text=''
                                 self.label_stat.setToolTip('')
@@ -871,7 +895,7 @@ class Rand_window(QMainWindow):
                         self.label_question.setToolTip(text)
                         self.label_question.setStyleSheet('QTextEdit {color: #8B0000;}')
             elif self.current_sheet == 'Dictio' and self.current_column =='Trans':  # тип теста, где сначала показывается перевод, а потом кандзи
-                lines = []
+                lines = [] # список слов в которых встречается кандзи
                 text=''
                 lines_translations2=[]
                 for i in self.alls:

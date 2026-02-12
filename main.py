@@ -14,6 +14,8 @@ class Jap_app(QtWidgets.QMainWindow):
         
         xl = ExcelFile('J_e_all_my.xlsx')
         words = xl.parse('Words')
+        if 'Lesson' in words.columns:
+            words = words[words['Lesson'].notna()]
         dictionar = xl.parse('Dictio')
         alls_w = words.reset_index().to_dict('records')
         alls_d = dictionar.reset_index().to_dict('records')

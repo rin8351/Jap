@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtCore import Qt, QEvent
 from PyQt5.QtGui import QIcon, QBrush, QColor
 from pandas import ExcelFile
+import re
 import pandas as pd
 from path_for_files import resource_path
 import styles as st
@@ -65,11 +66,7 @@ class SheetTableWidget(QWidget):
                         self._num_values.append(i + 1)
         else:
             self._num_values = list(range(1, n + 1)) if n else [1]
-        # Добиваем до DEFAULT_ROWS пустыми строками только если в файле меньше строк
-        max_num = max(self._num_values) if self._num_values else 0
-        for _ in range(n, DEFAULT_ROWS):
-            max_num += 1
-            self._num_values.append(max_num)
+
 
         self._build_ui(df)
         self._apply_filters()
@@ -626,20 +623,82 @@ class SheetTableWidget(QWidget):
         # после добавления строк обновляем нумерацию и количество
         self._update_row_numbers_and_count()
 
+    def _get_dataframe_for_save(self):
+        """Возвращает DataFrame текущей таблицы для сохранения или None, если данных нет."""
+        data = self._get_table_data()
+        if not data:
+            return None
+        df_new = pd.DataFrame(data, columns=self._full_columns)
+        if 'Num' in df_new.columns:
+            df_new['Num'] = pd.to_numeric(df_new['Num'], errors='coerce').fillna(0).astype(int)
+        if 'Lesson' in df_new.columns:
+            ser = pd.to_numeric(df_new['Lesson'], errors='coerce')
+            df_new['Lesson'] = ser.astype('Int64')
+        return df_new
+
+    def _validate_rows_before_save(self, data):
+        """
+        Проверки перед сохранением. Возвращает (True, None) если всё ок, иначе (False, str) — сообщение об ошибке.
+        Для всех листов кроме Dictio: если в строке хоть одна ячейка заполнена, вся строка должна быть заполнена.
+        Для Dictio: особые правила (Lesson — целое число; Trans — обязателен; Kanji/On/Kun — хотя бы один).
+        """
+        for r, row_dict in enumerate(data):
+            # Во всех листах: если столбец Lesson заполнен — только целое число
+            if self._has_lesson:
+                lesson_val = str(row_dict.get('Lesson', '')).strip()
+                if lesson_val and not re.match(r'^-?\d+$', lesson_val):
+                    return False, (
+                        f'Строка {r + 1}: в столбце Lesson должно быть только целое число '
+                        '(без знаков препинания и дробной части).'
+                    )
+            if self.sheet_name != 'Dictio':
+                # Для не-Dictio: любая частично заполненная строка — ошибка
+                vals = [str(row_dict.get(col, '')).strip() for col in self._display_columns]
+                any_filled = any(vals)
+                all_filled = all(vals)
+                if any_filled and not all_filled:
+                    return False, (
+                        f'Строка {r + 1}: заполнена частично.\n'
+                        'Дозаполните строку полностью или очистите её полностью.'
+                    )
+            else:
+                # Dictio: пустая строка (только Sush заполнен) — не проверяем
+                if self._is_row_empty(row_dict):
+                    continue
+                # Lesson: для Dictio обязателен (формат целого числа проверяется выше для всех листов)
+                if self._has_lesson:
+                    lesson_val = str(row_dict.get('Lesson', '')).strip()
+                    if not lesson_val:
+                        return False, f'Строка {r + 1}: столбец Lesson должен быть заполнен.'
+                # Trans: нельзя оставлять пустым
+                if 'Trans' in self._display_columns:
+                    trans_val = str(row_dict.get('Trans', '')).strip()
+                    if not trans_val:
+                        return False, f'Строка {r + 1}: столбец Trans не может быть пустым.'
+                # Kanji, On, Kun: хотя бы один должен быть заполнен
+                kanji_on_kun = [c for c in ('Kanji', 'On', 'Kun') if c in self._display_columns]
+                if kanji_on_kun:
+                    filled = any(str(row_dict.get(c, '')).strip() for c in kanji_on_kun)
+                    if not filled:
+                        return False, (
+                            f'Строка {r + 1}: хотя бы один из столбцов Kanji, On, Kun должен быть заполнен.'
+                        )
+        return True, None
+
     def _save_to_file(self):
         data = self._get_table_data()
         if not data:
             QMessageBox.information(self, 'Сохранение', 'Нет данных для сохранения.')
             return
+        ok, err_msg = self._validate_rows_before_save(data)
+        if not ok:
+            QMessageBox.warning(self, 'Сохранение', err_msg)
+            return
+        df_new = self._get_dataframe_for_save()
+        if df_new is None:
+            QMessageBox.information(self, 'Сохранение', 'Нет данных для сохранения.')
+            return
         try:
-            df_new = pd.DataFrame(data, columns=self._full_columns)
-            # Приводим Num и Lesson к числовым типам для совместимости с jap_wind_test
-            if 'Num' in df_new.columns:
-                df_new['Num'] = pd.to_numeric(df_new['Num'], errors='coerce').fillna(0).astype(int)
-            if 'Lesson' in df_new.columns:
-                # Целые числа (40, не 40.0) для совместимости с jap_wind_test; пустые — как пусто
-                ser = pd.to_numeric(df_new['Lesson'], errors='coerce')
-                df_new['Lesson'] = ser.astype('Int64')
             xl = pd.ExcelFile(EXCEL_PATH, engine='openpyxl')
             sheets_dict = {name: xl.parse(name) for name in xl.sheet_names}
             sheets_dict[self.sheet_name] = df_new
