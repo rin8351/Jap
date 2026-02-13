@@ -1,9 +1,7 @@
 from copy import deepcopy
 from pandas import ExcelFile
 import pygame
-from json import dump, load
 from random import choice, sample,shuffle
-import os
 
 from PyQt5.QtWidgets import QMainWindow, QFrame, QTableWidgetItem,QTableWidget, QScrollArea, QLabel, QComboBox, QLineEdit,QCheckBox, QRadioButton, QVBoxLayout, QHBoxLayout, QPushButton,QMenu,QAction,QApplication,QMessageBox,QTextEdit
 from PyQt5.QtCore import Qt
@@ -249,7 +247,7 @@ class Rand_window(QMainWindow):
     def get_filtered_columns(self,xl, sheet_name):
         sheet = xl.parse(sheet_name)
         columns = list(sheet.columns)
-        excluded_columns = ['Lesson', 'Num','Sush']
+        excluded_columns = ['Lesson', 'Num','Sush', 'Mnem']
         return [col for col in columns if col not in excluded_columns]
 
     def on_column_selected(self, column):
@@ -260,6 +258,8 @@ class Rand_window(QMainWindow):
         self.current_column = column
         # Получаем список всех уникальных значений в выбранном столбце
         values = self.get_unique_values(self.current_sheet, column)
+        if 'Mnem' in values:
+            values.remove('Mnem')
         # Добавляем галочки для каждого уникального значения
         self.checkbox_for_test = []
         for value in values:
@@ -271,7 +271,7 @@ class Rand_window(QMainWindow):
             self.checkbox_for_test.append(checkbox)
             self.layout_frame_centr2.addWidget(checkbox)
             # положить все знаечния в список
-        if column == 'Kun' or column == 'Trans':
+        if column == 'Trans' and self.current_sheet == 'Dictio':
             self.clear_layout(self.layout_options2) 
             self.label_all_with_kanji = QLabel('Слова с кандзи или без?')
             self.layout_options2.addWidget(self.label_all_with_kanji) 
@@ -558,8 +558,11 @@ class Rand_window(QMainWindow):
             self.again_but.setVisible(True)
             self.btn_continue.setVisible(False)
             self.btn_save.setVisible(False)
-            prots = int(round((100 / self.len_of_count_for_proc * self.shet_know), 2))
-            self.label_count_right.setText(f'Общее число={self.len_of_count_for_proc}, Верно={self.shet_know}, процент верных = {prots}.')
+            if self.len_of_count_for_proc==0:
+                self.label_count_right.setText('Нет слов для теста')
+            else:
+                prots = int(round((100 / self.len_of_count_for_proc * self.shet_know), 2))
+                self.label_count_right.setText(f'Общее число={self.len_of_count_for_proc}, Верно={self.shet_know}, процент верных = {prots}.')
             return
 
         self.current_word = choice(self.alls)
@@ -638,15 +641,16 @@ class Rand_window(QMainWindow):
 
             self.current_word = choice(self.alls)
             self.current_word_test = self.current_word[self.current_column]
-            if self.current_column == 'Kanji' or self.current_column=='Trans':
+            if self.current_sheet=='Dictio' and self.current_column=='Trans':
                 for i in self.alls:
-                    if self.current_column=='Trans' and self.current_sheet=='Dictio':
-                        if cell_has_value(i.get('Mnem')):
+                    if cell_has_value(i.get('Mnem')):
+                        if i.get('Trans') == self.current_word['Trans']:
                             self.mnemonic_text.setText('есть мнемоника')
                             self.mnemonic_text.setToolTip(str(i['Mnem']))
-                        else:
-                            self.mnemonic_text.setText('нет мнемоники')
-                            self.mnemonic_text.setToolTip('')
+                            break
+                    else:
+                        self.mnemonic_text.setText('нет мнемоники')
+                        self.mnemonic_text.setToolTip('')
             self.past_word = self.current_word
             t = f'Количество слов= {len(self.count_for_proc)}'
             self.label_total.setText(t)
