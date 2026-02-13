@@ -332,6 +332,7 @@ class Rand_window(QMainWindow):
                 if 'Lesson' in self.df2.columns:
                     self.df2 = self.df2[self.df2['Lesson'].notna()]
                 self.alls  = self.df2.reset_index().to_dict('records')
+                self.lb_err.setText('')
                 if self.choose_one_lesson.currentText() =='Выбрать один урок':
                     if self.ent_less.text() == '' or self.ent_less_end.text() == '':
                         self.lb_err.setText('Введите номер урока')
@@ -386,10 +387,13 @@ class Rand_window(QMainWindow):
         else:
             self.alls_for_copy = [i for i in self.alls if str(i[self.current_column]) != '0']
         self.alls = deepcopy(self.alls_for_copy)
-        self.count_for_proc_funk()
-        if self.value_of_test==0:
-            self.all_variations = deepcopy(self.alls)
-        self.main2()
+        if self.value_of_test == 0 and len(self.alls) <=3:
+            self.lb_err.setText('Слишком мало слов для теста с 4-мя вариантами ответов')
+        else:
+            self.count_for_proc_funk()
+            if self.value_of_test==0:
+                self.all_variations = deepcopy(self.alls)
+            self.main2()
 
     def main2(self):
         self.frame_main.deleteLater()
