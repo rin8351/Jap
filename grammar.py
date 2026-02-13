@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QMainWindow, QFrame, QScrollArea, QWidget, QLabel,QApplication,QPushButton,QHBoxLayout,QVBoxLayout,QCheckBox
 from PyQt5.QtGui import QIcon,QFont
-from path_for_files import resource_path
+from others_scripts import resource_path
 import styles as st
 import random
 from PyQt5.QtCore import Qt

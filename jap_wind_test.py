@@ -1,34 +1,17 @@
 from copy import deepcopy
-from PyQt5.QtWidgets import QMainWindow, QFrame, QTableWidgetItem,QTableWidget, QScrollArea, QLabel, QComboBox, QLineEdit,QCheckBox, QRadioButton, QVBoxLayout, QHBoxLayout, QPushButton,QMenu,QAction,QApplication,QMessageBox,QTextEdit
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap,QIcon,QFont,QPainter
-from pandas import ExcelFile, read_excel
-import math
-import styles as st
-
+from pandas import ExcelFile
+import pygame
 from json import dump, load
-from ast import literal_eval
 from random import choice, sample,shuffle
 import os
-from path_for_files import resource_path
-import pygame
-from gtts import gTTS
 
+from PyQt5.QtWidgets import QMainWindow, QFrame, QTableWidgetItem,QTableWidget, QScrollArea, QLabel, QComboBox, QLineEdit,QCheckBox, QRadioButton, QVBoxLayout, QHBoxLayout, QPushButton,QMenu,QAction,QApplication,QMessageBox,QTextEdit
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon,QFont
 
-def cell_has_value(val):
-    """Считает, что в ячейке есть значение: не пусто, не 0, не NaN (пустая ячейка из Excel)."""
-    if val is None:
-        return False
-    try:
-        if isinstance(val, float) and math.isnan(val):
-            return False
-    except (TypeError, ValueError):
-        pass
-    if val == 0 or val == '0':
-        return False
-    if isinstance(val, str) and val.strip() == '':
-        return False
-    return True
+from others_scripts import resource_path, BackgroundScrollArea, cell_has_value
+import styles as st
+
 
 
 class Rand_window(QMainWindow):
@@ -55,11 +38,10 @@ class Rand_window(QMainWindow):
         if 'Lesson' in self.df_w.columns:
             self.df_w = self.df_w[self.df_w['Lesson'].notna()]
         self.alls_words = self.df_w.reset_index().to_dict('records')
-        # df, alls_dict, chast_rechi загружаются в load_sheet_data() после выбора листа
+
 
     def options_for_zero(self):
         self.shet_know = 0 # счетчик знаю или не знаю слово
-        self.unknown_words = []
         self.known_clicked = False
         self.current_word = None # текущее слово
         self.showing_translation = True
@@ -68,11 +50,6 @@ class Rand_window(QMainWindow):
         self.len_of_count_for_proc = 0
         self.current_word_test = None
         self.past_word = ''
-        self.stat_min_score = {}
-        self.stat2_t = {}
-        self.stat2 = {}
-        self.stat = {}
-        self.check_new_words_for_stat()
         self.all_variations = {}
 
     def load_sheet_data(self, sheet_name):
@@ -167,24 +144,10 @@ class Rand_window(QMainWindow):
         self.frame_for_options2 = QFrame()
         self.frame_down = QFrame()
         self.lb_max_ur = QLabel(f'Всего уроков = {self.len_of_words}')
-        self.check_r_or_st = QCheckBox('Показывать слова рандомно')
-
         self.btn3 = QPushButton("Включить тест")
         self.btn3.setVisible(False)
         self.btn3.setStyleSheet(st.btn_test)
         self.btn3.setFixedSize(400, 50)
-        self.btn_witn_zero = QPushButton("Пройти тест с нуля")
-        self.but_contin = QPushButton("Продолжить\n сохраненный тест")
-        self.but_contin.setStyleSheet(st.but_line_check)
-        self.clear_save = QPushButton("Очистить\n сохраненный тест")
-        self.clear_save.setStyleSheet(st.but_line_check)
-        self.btn_witn_zero.setStyleSheet(st.but_line_check)
-        self.clear_save.setVisible(False)
-        self.but_contin.setVisible(False)
-        self.btn_witn_zero.setVisible(False)
-        if not self.is_file_empty('test_progress.json'):
-            self.but_contin.setVisible(True)
-            self.clear_save.setVisible(True)
         self.choose_lang = QLabel('Выберите предмет теста')
         self.choose_lang.setVisible(False)
         layout_frame_up = QVBoxLayout()
@@ -196,7 +159,6 @@ class Rand_window(QMainWindow):
         layout_frame_up.addWidget(self.ent_less_end)
         layout_frame_up.addWidget(self.choose_one_lesson)
         layout_frame_up.addWidget(self.lb_max_ur)
-        layout_frame_up.addWidget(self.check_r_or_st)
         layout_frame_up.addWidget(self.choose_lang)
         self.frame_up.setLayout(layout_frame_up)
 
@@ -214,9 +176,6 @@ class Rand_window(QMainWindow):
         layout_frame_down = QVBoxLayout()
         layout_frame_down.addWidget(self.lb_err)
         layout_frame_down.addWidget(self.btn3)
-        layout_frame_down.addWidget(self.btn_witn_zero)
-        layout_frame_down.addWidget(self.but_contin)
-        layout_frame_down.addWidget(self.clear_save)
         self.frame_down.setLayout(layout_frame_down)
 
         layout_frame_rest = QVBoxLayout()
@@ -235,8 +194,6 @@ class Rand_window(QMainWindow):
         self.frame_main.setLayout(main_layout)
         self.scroll_with_backgr()
         self.btn3.clicked.connect(self.checks)
-        self.but_contin.clicked.connect(self.load_progress)
-        self.clear_save.clicked.connect(self.clear_progress)
 
     def scroll_with_backgr(self):
         self.scroll_area = QScrollArea()
@@ -430,77 +387,9 @@ class Rand_window(QMainWindow):
             self.alls_for_copy = [i for i in self.alls if str(i[self.current_column]) != '0']
         self.alls = deepcopy(self.alls_for_copy)
         self.count_for_proc_funk()
-        if self.check_r_or_st.isChecked():
-            self.rand_check = 1
-        else:
-            self.rand_check = 0
-        self.min_score()
-        if self.current_sheet=='Dictio' and self.current_column=='Kanji' and len(self.test_for_answer) == 1 and self.test_for_answer[0] == 'Trans':
-            keys_to_keep = set(item['Kanji'] for item in self.alls)
-            self.stat2_t = {k: v for k, v in self.stat2_t.items() if k in keys_to_keep}
         if self.value_of_test==0:
             self.all_variations = deepcopy(self.alls)
         self.main2()
-
-    def check_new_words_for_stat(self): # Проверка и сравнение текстового файла Words и словаря в файле stat.txt
-        df2 = read_excel('J_e_all_my.xlsx', sheet_name='Dictio')  # Блок для статистики2 и проверки новых слов
-        with open('stat2.txt',encoding='utf-8') as f:
-            data2 = f.read()
-        self.stat2 = literal_eval(data2)
-        if self.stat2 == {}:
-            self.stat2 = dict.fromkeys(df2['Kanji'].values, 0)
-        new_keys = df2['Kanji'].values
-        for key in new_keys:
-            if key not in self.stat2:
-                self.stat2[key] = 0
-        with open('stat2.txt', 'w+', encoding='utf-8') as file: # Сохраняем обновленную статистику в файл
-            dump(self.stat2, file, indent='    ', ensure_ascii=False)
-        self.stat2_t = deepcopy(self.stat2)
-        new_stat = {name: {} for name in self.sheet_names} # Блок для статистики остальных слов
-        self.alls_all_sheet = {}
-        for i in new_stat:
-            df_l = self.xl.parse(i)
-            if 'Lesson' in df_l.columns:
-                df_l = df_l[df_l['Lesson'].notna()]
-            self.alls_all_sheet[i] = df_l.reset_index().to_dict('records')
-
-        with open('stat.txt',encoding='utf-8') as f:
-            data = f.read()
-        self.stat = literal_eval(data)
-
-        if self.stat == {}:
-            self.stat = {name: {} for name in self.sheet_names}
-        alls_coly = self.alls_all_sheet.copy()
-        for s in alls_coly:
-            for i in alls_coly[s]:
-                j_dict = {}
-                for j in i:
-                    if j != 'Lesson' and j!='Num' and j!='Sush' and type(i[j]) != int and i[j] != '0':
-                        j_dict[i[j]] = 0
-                num_str = str(i['Num'])
-                new_stat[s][num_str] = j_dict
-
-        for k in new_stat:
-            for i in new_stat[k]:
-                if i not in self.stat[k]:
-                    self.stat[k][i] = {}
-                if self.stat[k][i] != new_stat[k][i]:
-                    new_line = {}
-                    for f in new_stat[k][i]:
-                        if f not in self.stat[k][i]:
-                            self.stat[k][i][f] = 0
-                        stat_copy = self.stat[k].copy()
-                        new_line[f] = stat_copy[i][f]
-                        self.stat[k][i].pop(f)
-                    self.stat[k][i] = new_line
-        stat_copy = self.stat.copy()
-        for i in stat_copy:
-            copy_3 = stat_copy[i].copy()
-            for j in copy_3:
-                if j not in new_stat[i]:
-                    del self.stat[i][j]
-        with open('stat.txt', 'w+', encoding='utf-8') as fle:
-            dump(self.stat, fle, indent='    ', ensure_ascii=False)
 
     def main2(self):
         self.frame_main.deleteLater()
@@ -525,8 +414,9 @@ class Rand_window(QMainWindow):
         self.btn_continue.setStyleSheet(st.btn_test) 
         self.btn_continue.setFixedHeight(40)
         self.btn_continue.setFixedWidth(400)
-        self.label_stat = QLabel("Статистика слова")
         self.label_total = QLabel("Всего слов")
+        self.mnemonic_text = QLabel("")
+        self.mnemonic_text.setStyleSheet("color: #8B0000;")
         self.label_question = QTextEdit()  # Слово
         self.label_question.setReadOnly(True)  # Make it read-only.
         self.label_question.setFrameStyle(QFrame.NoFrame)  # No border.
@@ -553,25 +443,22 @@ class Rand_window(QMainWindow):
         self.label_answer.setFont(font2)
         layout_frame_down2 = QVBoxLayout()
         layout_frame_down2.addWidget(self.btn_continue)
-        layout_frame_down2.addWidget(self.label_stat)
         layout_frame_down2.addWidget(self.label_total)
+        layout_frame_down2.addWidget(self.mnemonic_text)
         layout_frame_down2.addWidget(self.label_question)
         layout_frame_down2.addWidget(self.where_in_words_label)
         self.frame_down2.setLayout(layout_frame_down2)
 
         layout_frame_know = QVBoxLayout()
         self.but_know = QPushButton("Знаю")
-        self.audio = QPushButton("Аудио")
         self.but_know.setVisible(False)
         self.btn_save.setVisible(False)
-        self.audio.setVisible(False)
         self.table_widget = QTableWidget(self)
         self.table_widget.setMinimumHeight(300)  # Минимальная высота таблицы
         self.table_widget.setStyleSheet(st.table)
         if len(self.test_for_answer) == 1:
             self.table_widget.setVisible(False)
         layout_frame_know.addWidget(self.but_know)
-        layout_frame_know.addWidget(self.audio)
         layout_frame_know.addWidget(self.table_widget, 1)  # Stretch factor = 1, таблица займет максимум места
         if self.value_of_test==1:  # старый вид теста
             layout_frame_know.addWidget(self.label_answer)
@@ -597,25 +484,18 @@ class Rand_window(QMainWindow):
         else:
             self.btn_continue.clicked.connect(self.show_next_word2)
         self.but_know.clicked.connect(self.know)
-        self.audio.clicked.connect(self.play_audio)
         self.btn_back.clicked.connect(self.back)
-        self.btn_save.clicked.connect(self.save_progress)
 
     def repeat_frame(self):
         self.frame_repeat = QFrame()
         self.layout_frame_repeat = QVBoxLayout()  # Блок для повтора, статистики вернух слов и кнопки "Повторить"
         self.label_end = QLabel("")
         self.label_count_right = QLabel("")
-        self.again_but = QPushButton("Повторить с нуля")
+        self.again_but = QPushButton("Повторить")
         self.again_but.setFixedHeight(40)
         self.again_but.setFixedWidth(400)
         self.again_but.setVisible(False)
         self.again_but.setStyleSheet(st.btn_test)
-        self.again_unknow = QPushButton("Повторить не узнанные слова")
-        self.again_unknow.setVisible(False)
-        self.again_unknow.setStyleSheet(st.btn_test)
-        self.again_unknow.setFixedHeight(40)
-        self.again_unknow.setFixedWidth(400)
         self.again_label = QLabel("")
         if self.value_of_test ==0:
             # убрать все чекбоксы
@@ -625,39 +505,10 @@ class Rand_window(QMainWindow):
         self.layout_frame_repeat.addWidget(self.label_count_right)
         self.layout_frame_repeat.addWidget(self.again_but)
         self.layout_frame_repeat.addWidget(self.again_label)
-        self.layout_frame_repeat.addWidget(self.again_unknow)
         self.again_but.clicked.connect(self.reset_test)
-        self.again_unknow.clicked.connect(self.retry_unknown_words)
         self.frame_repeat.setLayout(self.layout_frame_repeat)
         self.main_layout.addWidget(self.frame_repeat)
 
-    def play_audio(self):
-        if self.current_column !='Trans':
-            text = self.current_word_test
-        else:
-            if self.showing_translation:
-                if len(self.test_for_answer) == 1:
-                    text = self.translations
-                else:
-                    text = ''
-            else:
-                text=''
-        if not text.strip():  
-            return
-        
-        if pygame.mixer.get_init() is not None:
-            pygame.mixer.music.stop()
-            pygame.mixer.music.unload()
-
-        tts = gTTS(text=text, lang='ja')
-        tts.save('output.mp3')
-
-        pygame.mixer.init()
-        pygame.mixer.music.load('output.mp3')
-        pygame.mixer.music.play()
-
-        while pygame.mixer.music.get_busy():
-            pygame.time.Clock().tick(10)
 
     def keyPressEvent(self, event):
             if event.key() == Qt.Key_Space:
@@ -680,11 +531,9 @@ class Rand_window(QMainWindow):
                         checkBox.setStyleSheet("QCheckBox { color: green; }")
                         checkBox.setText(checkBox.text() + " - Правильно")
                         self.shet_know += 1
-                        self.know2()
                     else:
                         checkBox.setStyleSheet("QCheckBox { color: red; }")
                         checkBox.setText(checkBox.text() + " - Неправильно")
-                        self.unknown_words.append(self.past_word)  
                         # выделить правильный результат зеленым
                         for checkBox in self.checkBoxes_in_test:
                             if checkBox.userData:
@@ -698,59 +547,23 @@ class Rand_window(QMainWindow):
         for checkBox in self.checkBoxes_in_test:
                 checkBox.setVisible(True)
         self.btn_continue.setVisible(False)
-        self.audio.setVisible(True)
-        self.audio.setStyleSheet('QPushButton {background-color: red; color: white;}')
         self.btn_save.setVisible(True)      
         if not self.alls: #Если все слова закончились
             self.past_word = ''
             self.label_question.setText("Тест завершен.")
             self.table_widget.setVisible(False)
             self.label_total.setText('')
-            self.label_stat.setText('')
             self.label_answer.setText("")
             self.repeat_frame()
             self.again_but.setVisible(True)
             self.btn_continue.setVisible(False)
             self.btn_save.setVisible(False)
-            self.audio.setVisible(False)
-            if self.unknown_words:
-                self.again_unknow.setVisible(True)
-            if self.len_of_count_for_proc == 0:
-                self.label_count_right.setText('Нет слов для теста.')
-            else:
-                prots = int(round((100 / self.len_of_count_for_proc * self.shet_know), 2))
-                self.label_count_right.setText(f'Общее число={self.len_of_count_for_proc}, Верно={self.shet_know}, процент верных = {prots}.')
+            prots = int(round((100 / self.len_of_count_for_proc * self.shet_know), 2))
+            self.label_count_right.setText(f'Общее число={self.len_of_count_for_proc}, Верно={self.shet_know}, процент верных = {prots}.')
             return
-        if self.rand_check==1: #Если слова идут в случайном порядке
-            self.current_word = choice(self.alls)
-            self.current_word_test = self.current_word[self.current_column]
-        else:
-            if self.current_sheet=='Dictio' and self.current_column=='Kanji' and len(self.test_for_answer) == 1 and self.test_for_answer[0] == 'Trans':
-                if self.current_word_test != None:
-                    del self.stat2_t[self.current_word_test]
-                self.current_word_test = min(self.stat2_t, key=self.stat2_t.get)
-                for i in self.alls:
-                    if i['Kanji'] == self.current_word_test:
-                        self.current_word = i
-                c_test = self.stat2_t[self.current_word_test]
-            else:
-                rand_num = choice([key for key in self.stat_min_score if
-                            self.stat_min_score[key] == min(self.stat_min_score.values())])
-                c_test = min(self.stat_min_score.values())
-                r = 'n'
-                for i in self.alls:
-                    if i['Num'] == int(rand_num):
-                        self.current_word = i
-                        r = i[self.current_column]
-                    if r != 'n':
-                        break
-                self.current_word_test = r
 
-            self.label_stat.setText('Статистика слова: ' + str(c_test)+str(self.mnemonic_text))
-            if self.current_sheet=='Dictio' and self.current_column=='Kanji':
-                pass
-            else:
-                del self.stat_min_score[rand_num]
+        self.current_word = choice(self.alls)
+        self.current_word_test = self.current_word[self.current_column]
         self.past_word = self.current_word
 
         t = f'Количество слов= {len(self.count_for_proc)}'
@@ -792,7 +605,6 @@ class Rand_window(QMainWindow):
                 lines_for_delete.append(i)
         for i in lines_for_delete:
             self.alls.remove(i) 
-            self.min_score()
 
     def show_next_word(self):
         self.btn_continue.setText("Следующее слово")
@@ -801,86 +613,40 @@ class Rand_window(QMainWindow):
             self.label_question.setStyleSheet('QTextEdit {color: #000000;}')
             self.label_question.setToolTip('')
             self.but_know.setVisible(True)
-            self.audio.setVisible(True)
-            self.audio.setStyleSheet('QPushButton {background-color: red; color: white;}')
             self.but_know.setDisabled(True)
             self.btn_save.setVisible(True)
             self.but_know.setStyleSheet('QPushButton {background-color: red; color: white;}')
             self.showing_translation = False 
             if self.past_word !='':
                 if self.known_clicked == True:
-                    self.known_clicked = False
-                else:
-                    self.unknown_words.append(self.past_word)         
+                    self.known_clicked = False     
             if not self.alls: #Если все слова закончились
                 self.past_word = ''
                 self.label_question.setText("Тест завершен.")
                 self.table_widget.setVisible(False)
                 self.label_total.setText('')
-                self.label_stat.setText('')
                 self.label_answer.setText("")
                 self.repeat_frame()
                 self.again_but.setVisible(True)
                 self.btn_continue.setVisible(False)
                 self.btn_save.setVisible(False)
                 self.but_know.setVisible(False)
-                self.audio.setVisible(False)
                 self.where_in_words_label.setText('')
-                if self.unknown_words:
-                    self.again_unknow.setVisible(True)
-                if self.len_of_count_for_proc == 0:
-                    self.label_count_right.setText('Нет слов для теста.')
-                else:
-                    prots = int(round((100 / self.len_of_count_for_proc * self.shet_know), 2))
-                    self.label_count_right.setText(f'Общее число={self.len_of_count_for_proc}, Верно={self.shet_know}, процент верных = {prots}.')
+                prots = int(round((100 / self.len_of_count_for_proc * self.shet_know), 2))
+                self.label_count_right.setText(f'Общее число={self.len_of_count_for_proc}, Верно={self.shet_know}, процент верных = {prots}.')
                 return
-            if self.rand_check==1: #Если слова идут в случайном порядке
-                self.current_word = choice(self.alls)
-                self.current_word_test = self.current_word[self.current_column]
-                if self.current_column == 'Kanji' or self.current_column=='Trans':
-                    for i in self.alls:
-                        if (self.current_column == 'Kanji' or self.current_column=='Trans') and self.current_sheet=='Dictio':
-                            if cell_has_value(i.get('Mnem')):
-                                self.label_stat.setText('есть мнемоника')
-                                self.label_stat.setToolTip(str(i['Mnem']))
-                            else:
-                                self.label_stat.setText('')
-                                self.label_stat.setToolTip('')
-            else:
-                if self.current_sheet=='Dictio' and self.current_column=='Kanji' and len(self.test_for_answer) == 1 and self.test_for_answer[0] == 'Trans':
-                    if self.current_word_test != None:
-                        del self.stat2_t[self.current_word_test]
-                    self.current_word_test = min(self.stat2_t, key=self.stat2_t.get)
-                    for i in self.alls:
-                        if i['Kanji'] == self.current_word_test:
-                            self.current_word = i
-                    c_test = self.stat2_t[self.current_word_test]
-                else:
-                    rand_num = choice([key for key in self.stat_min_score if
-                                self.stat_min_score[key] == min(self.stat_min_score.values())])
-                    c_test = min(self.stat_min_score.values())
-                    r = 'n'
-                    for i in self.alls:
-                        if i['Num'] == int(rand_num):
-                            self.current_word = i
-                            r = i[self.current_column]
-                        if r != 'n':
-                            break
-                    self.current_word_test = r
-                if (self.current_column == 'Kanji' or self.current_column=='Trans') and self.current_sheet=='Dictio': # для установки мнеоники
-                    for i in self.alls:
-                        if i[self.current_column] == self.current_word_test:
-                            if cell_has_value(i.get('Mnem')):
-                                self.mnemonic_text=', есть мнемоника'
-                                self.label_stat.setToolTip(str(i['Mnem']))
-                            else:
-                                self.mnemonic_text=''
-                                self.label_stat.setToolTip('')
-                self.label_stat.setText('Статистика слова: ' + str(c_test)+str(self.mnemonic_text))
-                if self.current_sheet=='Dictio' and self.current_column=='Kanji':
-                    pass
-                else:
-                    del self.stat_min_score[rand_num]
+
+            self.current_word = choice(self.alls)
+            self.current_word_test = self.current_word[self.current_column]
+            if self.current_column == 'Kanji' or self.current_column=='Trans':
+                for i in self.alls:
+                    if self.current_column=='Trans' and self.current_sheet=='Dictio':
+                        if cell_has_value(i.get('Mnem')):
+                            self.mnemonic_text.setText('есть мнемоника')
+                            self.mnemonic_text.setToolTip(str(i['Mnem']))
+                        else:
+                            self.mnemonic_text.setText('нет мнемоники')
+                            self.mnemonic_text.setToolTip('')
             self.past_word = self.current_word
             t = f'Количество слов= {len(self.count_for_proc)}'
             self.label_total.setText(t)
@@ -955,7 +721,6 @@ class Rand_window(QMainWindow):
                 self.label_answer.setText(self.translations)
                 for i in lines_for_delete:
                     self.alls.remove(i) 
-                    self.min_score()
             else:
                 self.translations = [self.current_word[prop] for prop in self.test_for_answer]
                 self.update_table(self.translations,self.current_word_test)
@@ -963,17 +728,7 @@ class Rand_window(QMainWindow):
     def reset_test(self):
         self.shet_know = 0
         self.alls = deepcopy(self.alls_for_copy)
-        self.stat2_t = deepcopy(self.stat2)
         self.count_for_proc_funk()
-        self.unknown_words = []
-        self.options_for_again()
-
-    def retry_unknown_words(self):
-        self.shet_know = 0
-        self.alls = self.unknown_words
-        self.stat2_t = deepcopy(self.stat2)
-        self.count_for_proc_funk()
-        self.unknown_words = []
         self.options_for_again()
 
     def count_for_proc_funk(self):
@@ -984,14 +739,10 @@ class Rand_window(QMainWindow):
 
     def options_for_again(self):
         self.btn_save.setVisible(True)
-        self.min_score()
         if len(self.test_for_answer)==1:
             self.table_widget.setVisible(False)
         else:
             self.table_widget.setVisible(True)
-        if self.current_sheet=='Dictio' and self.current_column=='Kanji':
-            keys_to_keep = set(item['Kanji'] for item in self.alls)
-            self.stat2_t = {k: v for k, v in self.stat2_t.items() if k in keys_to_keep}
         self.current_word = None
         self.current_word_test = None
         self.showing_translation = True
@@ -1000,7 +751,6 @@ class Rand_window(QMainWindow):
         self.label_count_right.setText('')
         self.again_but.setVisible(False)
         self.btn_continue.setVisible(True)
-        self.again_unknow.setVisible(False)
         self.frame_repeat.deleteLater()
         self.known_clicked = False
         if self.value_of_test ==1:
@@ -1011,103 +761,15 @@ class Rand_window(QMainWindow):
     def know(self):
         if self.showing_translation:  # Обновляем статистику только если показано слово, а не перевод
             if self.known_clicked == False:
-                self.shet_know += 1
                 self.but_know.setStyleSheet('QPushButton {background-color: lime; color: white;}')
                 if self.current_sheet=='Dictio' and self.current_column=='Kanji':
-                    self.stat2[self.current_word_test] += 1
                     self.known_clicked = True
-                    with open('stat2.txt', 'w+', encoding='utf-8') as file: # Сохраняем обновленную статистику в файл
-                        dump(self.stat2, file, indent='    ', ensure_ascii=False)
-                else:
-                    for i in self.stat[self.current_sheet]:
-                        if self.current_word_test in self.stat[self.current_sheet][i]:
-                            self.stat[self.current_sheet][i][self.current_word_test] += 1
-                            self.known_clicked = True
-                            with open('stat.txt', 'w+', encoding='utf-8') as file: # Сохраняем обновленную статистику в файл
-                                dump(self.stat, file, indent='    ', ensure_ascii=False)
-                            break
-
-    def know2(self):
-        if self.current_sheet=='Dictio' and self.current_column=='Kanji':
-            self.stat2[self.current_word_test] += 1
-            with open('stat2.txt', 'w+', encoding='utf-8') as file: # Сохраняем обновленную статистику в файл
-                dump(self.stat2, file, indent='    ', ensure_ascii=False)
-        else:
-            for i in self.stat[self.current_sheet]:
-                if self.current_word_test in self.stat[self.current_sheet][i]:
-                    self.stat[self.current_sheet][i][self.current_word_test] += 1
-                    with open('stat.txt', 'w+', encoding='utf-8') as file: # Сохраняем обновленную статистику в файл
-                        dump(self.stat, file, indent='    ', ensure_ascii=False)
-                    break
-
-    def min_score(self):
-        self.stat_min_score = {}  # Второй сбор Словаря всех слов для теста (уже без нулевых значений)
-        for i in self.alls:
-            num_str = str(i['Num'])
-            ku = i[self.current_column]
-            self.stat_min_score[num_str] = {}
-            self.stat_min_score[num_str] = self.stat[self.current_sheet][num_str][ku]
 
     def back(self):
         self.data_from_xls()
         self.options_for_zero()
         self.frame_main.deleteLater()
-        self.main()
-
-    def save_progress(self):
-        data = {
-            "test_type": self.current_column,
-            "test_for_answer": self.test_for_answer,
-            "remaining_words": self.alls,
-            "checking_random": self.rand_check,
-            "stat_min_score": self.stat_min_score,
-            "current_sheet": self.current_sheet,
-            "alls_for_copy": self.alls_for_copy,
-            "count_for_proc":self.count_for_proc,
-            "len_of_count_for_proc": self.len_of_count_for_proc,
-            "stat2_t": self.stat2_t,
-            "stat2": self.stat2,
-            'stat': self.stat,
-            'all_variations':self.all_variations,
-            'value_of_test':self.value_of_test
-        }
-        with open('test_progress.json', "w", encoding="utf-8") as file:
-            dump(data, file, ensure_ascii=False, indent=4)
-        QMessageBox.information(self, "Сохранение", "Прогресс сохранен. Напоминание- если у последнего элемента не посмотрели перевод, его в следующем тесте не будет")
-
-    def is_file_empty(self,file_path):
-        try:
-            return os.stat(file_path).st_size == 0
-        except FileNotFoundError:
-            return False
-        
-    def load_progress(self):
-        with open('test_progress.json', "r", encoding="utf-8") as file:
-            data = load(file)
-        self.current_column = data["test_type"]
-        self.test_for_answer = data["test_for_answer"]
-        self.alls = data["remaining_words"]
-        self.stat_min_score = data["stat_min_score"]
-        self.rand_check = data["checking_random"]
-        self.current_sheet = data['current_sheet']
-        self.alls_for_copy = data['alls_for_copy']
-        self.count_for_proc = data['count_for_proc']
-        self.len_of_count_for_proc = data['len_of_count_for_proc']
-        self.stat2_t = data['stat2_t']
-        self.stat2 = data['stat2']
-        self.stat = data['stat']
-        self.all_variations = data['all_variations']
-        self.value_of_test = data['value_of_test']
-        if self.current_sheet=='Dictio' and self.current_column=='Kanji' and len(self.test_for_answer) == 1 and self.test_for_answer[0] == 'Trans':
-            keys_to_keep = set(item['Kanji'] for item in self.alls)
-            self.stat2_t = {k: v for k, v in self.stat2_t.items() if k in keys_to_keep}
-        self.main2()
-
-    def clear_progress(self):
-        with open('test_progress.json', "w") as file:
-            file.write("")
-        self.but_contin.setVisible(False)
-        self.clear_save.setVisible(False)
+        self.main()       
 
     def update_table(self,translations,current_word):
         # Удаление всех строк таблицы
@@ -1152,17 +814,7 @@ class Rand_window(QMainWindow):
                 self.table_widget.setItem(row, i, item)
         for i in filtered_words:
             self.alls.remove(i) 
-            self.min_score()
 
         header = self.table_widget.horizontalHeader()
         header.setStretchLastSection(True)
                 
-class BackgroundScrollArea(QScrollArea):
-    def __init__(self, background_image_path, *args, **kwargs):
-        super(BackgroundScrollArea, self).__init__(*args, **kwargs)
-        self.background_image = QPixmap(background_image_path)
-
-    def paintEvent(self, event):
-        painter = QPainter(self.viewport())
-        painter.drawPixmap(0, 0, self.viewport().width(), self.viewport().height(), self.background_image)
-        super(BackgroundScrollArea, self).paintEvent(event)

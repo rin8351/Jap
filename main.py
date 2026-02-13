@@ -1,10 +1,13 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtGui import QIcon
+
 from pandas import ExcelFile
-from path_for_files import resource_path
+
+
+from others_scripts import resource_path
 import styles
 from jap_wind_test import Rand_window
-from all_tabs import Table_window
+from table import Table_window
 from grammar import GrammarWindow
 
     
