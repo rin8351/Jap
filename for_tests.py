@@ -3,7 +3,7 @@ from Grammar.dop_functions import *
 from Grammar.fill_dates import *
 from Grammar.fill_numbers import *
 
-print( concessive_subordinate_noni())
+#print( concessive_subordinate_noni())
 
 #glag_im_doing
 
@@ -55,3 +55,8 @@ print( concessive_subordinate_noni())
 #     print(f"Начинаю тестирование функции lists_words")
 #     error_count = test_lists_words(100)
 #     print(f"Тестирование завершено. Всего ошибок: {error_count}")
+
+
+stat = [
+   [{'index': 15, 'Lesson': 1, 'Num': 27, 'Kanji': '文', 'On': '0', 'Kun': 'もん', 'Trans': 'предложение, письмо', 'Sush': 'Сущ', 'Mnem': '0'}, {'index': 17, 'Lesson': 1, 'Num': 25, 'Kanji': '日', 'On': 'ニチ、ジツ', 'Kun': 'ひ、か', 'Trans': 'день, солнце', 'Sush': 'Сущ', 'Mnem': 'буквально квадратное солнце с прищуренным глазом'}, {'index': 10, 'Lesson': 1, 'Num': 34, 'Kanji': '何', 'On': 'カ', 'Kun': 'なに、なん', 'Trans': 'что', 'Sush': 'Сущ', 'Mnem': 'два человека о чем то разговаривают'}, {'index': 12, 'Lesson': 1, 'Num': 35, 'Kanji': '学', 'On': 'ガク', 'Kun': '0', 'Trans': 'учёба', 'Sush': 'Сущ', 'Mnem': 'ребенок просветляется'}, {'index': 8, 'Lesson': 1, 'Num': 21, 'Kanji': '一', 'On': 'イチ、イツ', 'Kun': 'ひとつ', 'Trans': 'один', 'Sush': 'Сущ', 'Mnem': 'одна черта'}, {'index': 20, 'Lesson': 1, 'Num': 33, 'Kanji': '生', 'On': '0', 'Kun': 'なま', 'Trans': 'сырой, неспелый', 'Sush': 'Сущ', 'Mnem': '0'}, {'index': 18, 'Lesson': 1, 'Num': 30, 'Kanji': '生', 'On': 'セイ、ショウ', 'Kun': '0', 'Trans': 'жизнь, живой', 'Sush': 'Сущ', 'Mnem': 'из земли рождается росток'}, {'index': 21, 'Lesson': 1, 'Num': 37, 'Kanji': '語', 'On': 'ゴ', 'Kun': '0', 'Trans': 'слово, язык', 'Sush': 'Сущ', 'Mnem': 'говорят 5 ртов'}, {'index': 11, 'Lesson': 1, 'Num': 29, 'Kanji': '先', 'On': 'セン', 'Kun': 'さき', 'Trans': 'раньше, впереди', 'Sush': 'Сущ', 'Mnem': 'впеерди всего- жизнь- из земли вырастает что то с корнями'}, {'index': 14, 'Lesson': 1, 'Num': 26, 'Kanji': '文', 'On': 'ブン', 'Kun': '0', 'Trans': 'литература, текст, культура', 'Sush': 'Сущ', 'Mnem': 'как будто человека скрутило от культуры'}, {'index': 9, 'Lesson': 1, 'Num': 22, 'Kanji': '人', 'On': 'ニン、ジン', 'Kun': 'ひと', 'Trans': 'человек, люди', 'Sush': 'Сущ', 'Mnem': 'две ножки человека'}, {'index': 16, 'Lesson': 1, 'Num': 24, 'Kanji': '方', 'On': '0', 'Kun': 'かた', 'Trans': 'человек, лицо', 'Sush': 'Сущ', 'Mnem': 'в правую сторону бегу'}]
+]
