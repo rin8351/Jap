@@ -96,8 +96,18 @@ def filter_items_for_test(items, stats=None, question=None, answer_column=None):
     - normal: то же, свой интервал.
     - hard: всегда; если wrong == 2 — 2 раза, если wrong >= 3 — 3 раза.
     - Любое слово с wrong > 0 показывается в каждом тесте (нужно выучить, пока не ответишь правильно).
+    - Дубликаты по Num отбрасываются (остаётся первое вхождение).
     """
     today = date.today()
+    # Убираем дубликаты по Num — оставляем первое вхождение каждой карточки
+    seen_num = set()
+    items_unique = []
+    for item in items:
+        num = item.get("Num")
+        if num not in seen_num:
+            seen_num.add(num)
+            items_unique.append(item)
+    items = items_unique
     result = []
 
     for item in items:

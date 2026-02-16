@@ -15,7 +15,7 @@ class Jap_app(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(Jap_app, self).__init__(parent)
         
-        xl = ExcelFile('J_e_all_my.xlsx')
+        xl = ExcelFile('Jp.xlsx')
         words = xl.parse('Words')
         if 'Lesson' in words.columns:
             words = words[words['Lesson'].notna()]
@@ -58,7 +58,7 @@ class Jap_app(QtWidgets.QMainWindow):
         self.background_label.setPixmap(self.background_image)
         self.background_label.setGeometry(0, 0, self.background_image.width(), self.background_image.height())
         self.setWindowIcon(QIcon(japanese_logo_path)) 
-        self.setWindowTitle('Japannese apps')
+        self.setWindowTitle('Menu')
         
         # Создаем контейнер для всех виджетов
         self.container = QtWidgets.QWidget(self)

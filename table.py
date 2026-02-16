@@ -14,7 +14,7 @@ import styles as st
 
 SUSH_OPTIONS = ['Сущ', 'Прил', 'Глаг', 'Нар']
 DEFAULT_ROWS = 1000
-EXCEL_PATH = 'J_e_all_my.xlsx'
+EXCEL_PATH = 'Jp.xlsx'
 # Размер шрифта для столбцов: имя столбца -> размер (остальные — системный по умолчанию)
 COLUMN_FONT_SIZES = {'Kanji': 14,
                     'On': 12, 
@@ -730,4 +730,4 @@ class Table_window(QTabWidget):
 
         japanese_logo_path = resource_path('japanese_logo.png')
         self.setWindowIcon(QIcon(japanese_logo_path))
-        self.setWindowTitle('Таблицы — ' + EXCEL_PATH)
+        self.setWindowTitle('Tables')
