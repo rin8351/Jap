@@ -1,9 +1,15 @@
 from PyQt5.QtWidgets import QMainWindow, QFrame, QScrollArea, QWidget, QLabel,QApplication,QPushButton,QHBoxLayout,QVBoxLayout,QCheckBox
 from PyQt5.QtGui import QIcon,QFont
+from PyQt5.QtCore import Qt
+
+
 from others_scripts import resource_path
 import styles as st
 import random
-from PyQt5.QtCore import Qt
+import pygame
+from gtts import gTTS
+
+from Grammar.funk_for_gram import choose_question_by_least_used, get_function_key, increment_function_stats
 from Grammar.filling import lists_words_by_numbers, lists_words_by_names, list_lessons_numbers, list_lessons_names
 from Grammar.fill_count_suff import lists_words_num
 from Grammar.fill_suff import lists_words_suff
@@ -13,8 +19,10 @@ from Grammar.fill_numbers import lists_words_numbers
 from Grammar.fill_names import lists_words_names
 from Grammar.fill_times import lists_words_times
 from Grammar.fill_dates import lists_words_dates
-import pygame
-from gtts import gTTS
+
+
+
+
 
 class GrammarWindow(QMainWindow):
     def __init__(self):
@@ -329,7 +337,10 @@ class GrammarWindow(QMainWindow):
                 current = self.total_questions - remaining + 1
                 self.progress_label.setText(f'Вопрос {current} of {self.total_questions} ({remaining-1} осталось)')
                 
-                self.current_question = random.choice(self.spisok_all)
+                self.current_question = choose_question_by_least_used(self.spisok_all, self.test_style)
+                if self.current_question is None:
+                    self.current_question = random.choice(self.spisok_all)
+                increment_function_stats(get_function_key(self.current_question, self.test_style))
                 if self.type_test == 'japanesse':
                     self.label_question.setText(self.current_question[0])
                     self.current_answer = self.current_question[2]

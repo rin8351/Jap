@@ -59,18 +59,22 @@ def _difficulty_rank(d):
 def sort_items_for_choice_test(items, stats=None, question=None, answer_column=None):
     """
     Для режима с 4 вариантами: статистика не меняется, порядок — слабые первые.
-    Сортировка: по уровню (hard → normal → easy), внутри уровня по убыванию wrong,
+    Сортировка: сначала слова, которых ещё нет в stats (in_stats=0), затем остальные.
+    Среди остальных: по уровню (hard → normal → easy), внутри уровня по убыванию wrong,
     при равном wrong — случайный порядок.
     """
     keyed = []
     for item in items:
         num_key, item_key = get_item_key(item, question, answer_column)
-        stat = (stats.get(num_key) or {}).get(item_key) or {}
+        stat = (stats.get(num_key) or {}).get(item_key)
+        in_stats = 1 if stat else 0  # 0 — нет в статистике (первые), 1 — есть
+        if not stat:
+            stat = {}
         difficulty = stat.get("difficulty", "normal")
         wrong = stat.get("wrong", 0)
-        keyed.append((_difficulty_rank(difficulty), -wrong, random.random(), item))
-    keyed.sort(key=lambda x: (x[0], x[1], x[2]))
-    return [x[3] for x in keyed]
+        keyed.append((in_stats, _difficulty_rank(difficulty), -wrong, random.random(), item))
+    keyed.sort(key=lambda x: (x[0], x[1], x[2], x[3]))
+    return [x[4] for x in keyed]
 
 
 def get_or_create_stat(stats, item, question=None, answer_column=None):
@@ -122,6 +126,7 @@ def filter_items_for_test(items, stats=None, question=None, answer_column=None):
         difficulty = stat.get("difficulty", "normal")
         wrong = stat.get("wrong", 0)
 
+
         if difficulty == "hard":
             if wrong >= 3:
                 result.extend([item, item])
@@ -129,7 +134,7 @@ def filter_items_for_test(items, stats=None, question=None, answer_column=None):
                 result.append(item)
             continue
 
-        # Слова с хотя бы одной ошибкой всегда в тесте — пока не ответишь правильно
+        # Слова с хотя бы одной ошибкой всегда в тесте — пока не ответить правильно
         if wrong > 0:
             result.append(item)
             continue
@@ -167,6 +172,8 @@ def record_correct(stats, item, difficulty_button=None, question=None, name_of_f
     stat["consecutive_wrong"] = 0
     stat["last_right"] = date.today().strftime("%d.%m.%Y")
     stat["wrong"] = 0  # правильный ответ — сбрасываем счётчик ошибок, слово снова по интервалу
+    stat["right_all"] = stat.get("right_all", 0) + 1
+    stat["wrong_all"] = stat.get("wrong_all", 0)
 
     if difficulty_button == "hard":
         stat["difficulty"] = "hard"
@@ -240,6 +247,8 @@ def record_wrong(stats, item, question=None, name_of_file=None, answer_column=No
     stat["wrong"] = stat.get("wrong", 0) + 1
     stat["consecutive_wrong"] = stat.get("consecutive_wrong", 0) + 1
     stat["right"] = 0
+    stat["wrong_all"] = stat.get("wrong_all", 0) + 1
+    stat["right_all"] = stat.get("right_all", 0)
 
     if stat["consecutive_wrong"] >= 2:
         d = stat.get("difficulty", "normal")

@@ -28,7 +28,7 @@ def lists_words_by_numbers():  # список функций с разделен
         '18': [ageru(),kureru(),morau(), all_demo(),all_demo_janai(), put_kudasai(),he_or_event_doing_and_continue(),condition(),
                kureru_help(),naru_senmon(), reason_kara(),naru_prop_and_like_it(),begining_action()],
         '19':[reason_de(),comparison_1(),he_have(), the_same(), he_talking_about_how(), comparison_2(),name_of_something(),this_property_conna(),
-              homogeneous_predicates(),homogeneous_definitions(),if_that_then_that(), niyotte],
+              homogeneous_predicates(),homogeneous_definitions(),if_that_then_that(), niyotte()],
         '20':[he_can(),i_want(), takunaritai(), intention(),adjective_predicate_2(),definitions_expressed_by_the_verb(),reason_node(), day_and_time()],
         '21':[can_do_it(),two_actions_formal(),qualifying_clause(),stable_its_sounds_good(),stable_ko_to_ga_aru(),stable_i_decited_to(), this_man_tell_about(),
                 dake()],
@@ -790,7 +790,7 @@ def kureru():
         rus_who2 = rus_who2 + '(близкий мне человек)'
     sen, sen_hir, sen_rus = '', '', ''
     glag = 'くれ'
-    glag_jp = random.choice(('買', 'ちゅうもん', '作', '持って来', '借り', 'かえ', '教え'))
+    glag_jp = random.choice(('買', 'ちゅうもん', '作', '持って来', '借り', 'かえ'))
     glag_hir = a['glagol']['accusative'][glag_jp]
     if glag_jp == '借り':
         glag_rus = 'дал взаймы'

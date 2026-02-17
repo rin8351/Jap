@@ -11,6 +11,7 @@ import re
 import pandas as pd
 from others_scripts import resource_path
 import styles as st
+from table_logger import table_log, clear_table_log
 
 SUSH_OPTIONS = ['Сущ', 'Прил', 'Глаг', 'Нар']
 DEFAULT_ROWS = 1000
@@ -51,6 +52,8 @@ class SheetTableWidget(QWidget):
         # сортировка: при повторном клике по тому же столбцу — обратный порядок
         self._sort_column = None
         self._sort_ascending = True
+        # блокировка лога при программном изменении ячеек (сортировка, вставка и т.д.)
+        self._block_cell_log = True
 
         n = len(df)
         if 'Num' in df.columns:
@@ -69,6 +72,8 @@ class SheetTableWidget(QWidget):
 
 
         self._build_ui(df)
+        self._block_cell_log = False
+        self.table.itemChanged.connect(self._on_cell_changed)
         self._apply_filters()
 
     def _build_ui(self, df):
@@ -207,6 +212,29 @@ class SheetTableWidget(QWidget):
         btn_layout.addStretch()
         layout.addLayout(btn_layout)
 
+    def _log_kanji_snapshot(self, label=''):
+        """Для отладки: записать в лог список (row, kanji) по видимым строкам Dictio, столбец Kanji."""
+        if self.sheet_name != 'Dictio' or 'Kanji' not in self._display_columns:
+            return
+        col_idx = self._display_columns.index('Kanji')
+        snapshot = []
+        for r in range(self.table.rowCount()):
+            if self.table.isRowHidden(r):
+                continue
+            val = self._cell_text(r, col_idx)
+            snapshot.append((r, val))
+        table_log('KANJI_SNAPSHOT', sheet=self.sheet_name, label=label, rows=snapshot)
+
+    def _on_cell_changed(self, item):
+        if self._block_cell_log:
+            return
+        row = item.row()
+        col = item.column()
+        if col < 0 or col >= len(self._display_columns):
+            return
+        col_name = self._display_columns[col]
+        table_log('CELL_EDIT', sheet=self.sheet_name, row=row, col=col, column=col_name, value=item.text())
+
     def _format_lesson_display(self, val):
         """Для столбца Lesson: показывать 40, а не 40.0 (pandas из Excel даёт float)."""
         if val is None or val == '' or (isinstance(val, float) and pd.isna(val)):
@@ -232,12 +260,14 @@ class SheetTableWidget(QWidget):
         if logical_index < 0 or logical_index >= len(self._display_columns):
             return
         col = self._display_columns[logical_index]
+        self._block_cell_log = True
         # Переключение направления при повторном клике по тому же столбцу
         if self._sort_column == col:
             self._sort_ascending = not self._sort_ascending
         else:
             self._sort_column = col
             self._sort_ascending = True
+        table_log('SORT', sheet=self.sheet_name, column=col, ascending=self._sort_ascending)
         # Собираем данные строк (с учётом виджетов)
         rows_data = []
         for r in range(self.table.rowCount()):
@@ -282,6 +312,8 @@ class SheetTableWidget(QWidget):
                         it.setText(text)
         # после сортировки обновляем нумерацию и количество
         self._update_row_numbers_and_count()
+        self._log_kanji_snapshot('after_sort')
+        self._block_cell_log = False
 
     def _get_table_data(self):
         """Возвращает список dict по строкам (все столбцы включая Num)."""
@@ -366,6 +398,8 @@ class SheetTableWidget(QWidget):
             self.table.setRowHidden(r, not show)
         # после применения фильтров обновляем нумерацию и количество
         self._update_row_numbers_and_count()
+        table_log('FILTER', sheet=self.sheet_name)
+        self._log_kanji_snapshot('after_filter')
 
     def _update_row_numbers_and_count(self):
         """Обновить порядковые номера видимых строк и счётчик."""
@@ -397,6 +431,7 @@ class SheetTableWidget(QWidget):
                 self._paste_selection()
                 return True
             if event.key() == Qt.Key_F and event.modifiers() == Qt.ControlModifier:
+                table_log('SEARCH_OPEN', sheet=self.sheet_name)
                 # показать строку поиска
                 if hasattr(self, "search_frame"):
                     self.search_frame.setVisible(True)
@@ -465,16 +500,19 @@ class SheetTableWidget(QWidget):
 
     def _clear_selection(self):
         """Очистить содержимое выделенных ячеек (клавиша Delete)."""
+        self._block_cell_log = True
         ranges = self.table.selectedRanges()
         if not ranges:
             r, c = self.table.currentRow(), self.table.currentColumn()
             if r >= 0 and c >= 0:
                 self._set_cell_text(r, c, '')
+            self._block_cell_log = False
             return
         for rng in ranges:
             for row in range(rng.topRow(), rng.bottomRow() + 1):
                 for col in range(rng.leftColumn(), rng.rightColumn() + 1):
                     self._set_cell_text(row, col, '')
+        self._block_cell_log = False
 
     def _delete_selected_rows(self):
         """Удалить выделенные строки (Ctrl+Delete)."""
@@ -488,17 +526,20 @@ class SheetTableWidget(QWidget):
                 rows.add(r)
         if not rows:
             return
+        table_log('DELETE_ROWS', sheet=self.sheet_name, rows=sorted(rows))
         for r in sorted(rows, reverse=True):
             if 0 <= r < self.table.rowCount():
                 self.table.removeRow(r)
                 if 0 <= r < len(self._num_values):
                     del self._num_values[r]
         self._update_row_numbers_and_count()
+        self._log_kanji_snapshot('after_delete_rows')
 
     def _paste_selection(self):
         text = QApplication.clipboard().text()
         if not text:
             return
+        self._block_cell_log = True
         lines = [line.split('\t') for line in text.replace('\r\n', '\n').split('\n') if line.strip()]
         if not lines:
             return
@@ -518,6 +559,7 @@ class SheetTableWidget(QWidget):
                 if c > max_col:
                     break
                 self._set_cell_text(r, c, value.strip())
+        self._block_cell_log = False
 
     def _search_next(self):
         """Найти следующее вхождение текста из строки поиска."""
@@ -555,9 +597,11 @@ class SheetTableWidget(QWidget):
         if pos is None:
             pos = iterate(0, 0)
         if pos is None:
+            table_log('SEARCH', sheet=self.sheet_name, pattern=pattern, found=None)
             QMessageBox.information(self, "Поиск", "Ничего не найдено.")
             return
         r, c = pos
+        table_log('SEARCH', sheet=self.sheet_name, pattern=pattern, found=(r, c))
         self._search_row, self._search_col = r, c
         self.table.setCurrentCell(r, c)
         self._highlight_row(r)
@@ -586,6 +630,7 @@ class SheetTableWidget(QWidget):
         self._clear_highlight()
         if row < 0 or row >= self.table.rowCount():
             return
+        self._block_cell_log = True
         highlight_brush = QBrush(QColor(135, 206, 250))  # светло-синий
         for c in range(len(self._display_columns)):
             # не трогаем ячейки с виджетами (например, комбобокс Sush)
@@ -601,8 +646,10 @@ class SheetTableWidget(QWidget):
                 self.table.setItem(row, c, item)
             item.setBackground(highlight_brush)
         self._highlighted_row = row
+        self._block_cell_log = False
 
     def _add_100_rows(self):
+        self._block_cell_log = True
         start = self.table.rowCount()
         max_num = max(self._num_values) if self._num_values else 0
         for i in range(100):
@@ -622,6 +669,7 @@ class SheetTableWidget(QWidget):
                     self.table.setItem(r, c, item)
         # после добавления строк обновляем нумерацию и количество
         self._update_row_numbers_and_count()
+        self._block_cell_log = False
 
     def _get_dataframe_for_save(self):
         """Возвращает DataFrame текущей таблицы для сохранения или None, если данных нет."""
@@ -688,14 +736,17 @@ class SheetTableWidget(QWidget):
     def _save_to_file(self):
         data = self._get_table_data()
         if not data:
+            table_log('SAVE', sheet=self.sheet_name, success=False, error='no_data')
             QMessageBox.information(self, 'Сохранение', 'Нет данных для сохранения.')
             return
         ok, err_msg = self._validate_rows_before_save(data)
         if not ok:
+            table_log('SAVE', sheet=self.sheet_name, success=False, error=err_msg)
             QMessageBox.warning(self, 'Сохранение', err_msg)
             return
         df_new = self._get_dataframe_for_save()
         if df_new is None:
+            table_log('SAVE', sheet=self.sheet_name, success=False, error='no_dataframe')
             QMessageBox.information(self, 'Сохранение', 'Нет данных для сохранения.')
             return
         try:
@@ -705,8 +756,10 @@ class SheetTableWidget(QWidget):
             with pd.ExcelWriter(EXCEL_PATH, engine='openpyxl') as writer:
                 for name, d in sheets_dict.items():
                     d.to_excel(writer, sheet_name=name, index=False)
+            table_log('SAVE', sheet=self.sheet_name, success=True)
             QMessageBox.information(self, 'Сохранение', f'Лист "{self.sheet_name}" сохранён в {EXCEL_PATH}.')
         except Exception as e:
+            table_log('SAVE', sheet=self.sheet_name, success=False, error=str(e))
             QMessageBox.critical(self, 'Ошибка', f'Не удалось сохранить: {e}')
 
 
@@ -731,3 +784,8 @@ class Table_window(QTabWidget):
         japanese_logo_path = resource_path('japanese_logo.png')
         self.setWindowIcon(QIcon(japanese_logo_path))
         self.setWindowTitle('Tables')
+        table_log('TABLE_OPEN', sheets=self.sheet_names)
+
+    def closeEvent(self, event):
+        clear_table_log()
+        event.accept()
