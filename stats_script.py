@@ -8,10 +8,10 @@ from pathlib import Path
 import random
 
 # Интервалы (дней): когда показывать слово после last_right
-EASY_DAYS_INITIAL = 2
-EASY_DAYS_ADD = 2
-NORMAL_DAYS_INITIAL = 1
-NORMAL_DAYS_ADD = 1
+EASY_DAYS_INITIAL = 4
+EASY_DAYS_ADD = 4
+NORMAL_DAYS_INITIAL = 2
+NORMAL_DAYS_ADD = 2
 
 
 def _parse_date(s):
@@ -21,7 +21,6 @@ def _parse_date(s):
         return datetime.strptime(s, "%d.%m.%Y").date()
     except ValueError:
         return None
-
 
 
 def get_item_key(item, question, answer_column=None):
@@ -36,7 +35,6 @@ def get_item_key(item, question, answer_column=None):
         a = item.get(answer_column, "")
         return str(num), f"{q}|{a}"
     return str(num), f"{q}"
-
 
 
 def save_stats(stats, name_of_file):
@@ -87,8 +85,7 @@ def get_or_create_stat(stats, item, question=None, answer_column=None):
             "wrong": 0,
             "right": 0,
             "last_right": None,
-            "interval_days": NORMAL_DAYS_INITIAL,
-            "consecutive_wrong": 0,
+            "interval_days": 0,
         }
     return by_num[item_key]
 
@@ -161,7 +158,7 @@ def record_correct(stats, item, difficulty_button=None, question=None, name_of_f
     answer_column — колонка ответа; ключ в статистике будет "вопрос|ответ".
     - Если "easy": ставим difficulty = "easy" (если не hard).
     - Если "hard": ставим difficulty = "hard".
-    - Увеличиваем right, сбрасываем consecutive_wrong, обновляем last_right и interval_days.
+    - Увеличиваем right, сбрасываем wrong, обновляем last_right и interval_days.
     - normal → easy: после 4 правильных подряд (уже учтено через right); при нажатии "easy" или при right==4 сбрасываем right и ставим easy.
     - hard → normal: после 2 правильных (сбрасываем right и ставим normal).
     """
@@ -169,7 +166,6 @@ def record_correct(stats, item, difficulty_button=None, question=None, name_of_f
         difficulty_button = None
     stat = get_or_create_stat(stats, item, question, answer_column)
 
-    stat["consecutive_wrong"] = 0
     stat["last_right"] = date.today().strftime("%d.%m.%Y")
     stat["wrong"] = 0  # правильный ответ — сбрасываем счётчик ошибок, слово снова по интервалу
     stat["right_all"] = stat.get("right_all", 0) + 1
@@ -178,7 +174,7 @@ def record_correct(stats, item, difficulty_button=None, question=None, name_of_f
     if difficulty_button == "hard":
         stat["difficulty"] = "hard"
         stat["right"] = 0
-        stat["interval_days"] = NORMAL_DAYS_INITIAL
+        stat["interval_days"] = 1
         save_stats(stats, name_of_file)
         return
 
@@ -240,23 +236,24 @@ def set_difficulty_only(stats, item, difficulty, question=None, name_of_file=Non
 
 def record_wrong(stats, item, question=None, name_of_file=None, answer_column=None):
     """
-    +1 wrong, +1 consecutive_wrong, right = 0.
-    Если consecutive_wrong >= 2: normal → hard, easy → normal.
+    +1 wrong, right = 0.
+    Если количество ошибок == 3: normal → hard, easy → normal.
     """
     stat = get_or_create_stat(stats, item, question, answer_column)
     stat["wrong"] = stat.get("wrong", 0) + 1
-    stat["consecutive_wrong"] = stat.get("consecutive_wrong", 0) + 1
     stat["right"] = 0
     stat["wrong_all"] = stat.get("wrong_all", 0) + 1
     stat["right_all"] = stat.get("right_all", 0)
 
-    if stat["consecutive_wrong"] >= 2:
+    if stat["wrong"] == 3:
         d = stat.get("difficulty", "normal")
         if d == "normal":
             stat["difficulty"] = "hard"
+            stat["interval_days"] = 1
         elif d == "easy":
             stat["difficulty"] = "normal"
-        stat["interval_days"] = NORMAL_DAYS_INITIAL
+            stat["interval_days"] = NORMAL_DAYS_INITIAL
+        
 
     save_stats(stats, name_of_file)
 
