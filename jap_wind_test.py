@@ -613,6 +613,7 @@ class Rand_window(QMainWindow):
 
 
     def keyPressEvent(self, event):
+        if self.value_of_test == 0:
             if event.key() == Qt.Key_Space:
                 self.show_next_word()
             if event.key() == Qt.Key_Return:
