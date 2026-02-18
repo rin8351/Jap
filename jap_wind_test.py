@@ -6,7 +6,7 @@ from random import sample,shuffle
 
 from PyQt5.QtWidgets import QMainWindow, QFrame, QTableWidgetItem,QTableWidget, QScrollArea, QLabel, QComboBox, QLineEdit,QCheckBox, QRadioButton, QVBoxLayout, QHBoxLayout, QGridLayout, QPushButton,QMenu,QAction,QApplication,QMessageBox,QTextEdit
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon,QFont
+from PyQt5.QtGui import QIcon, QFont, QCloseEvent
 
 from others_scripts import resource_path, BackgroundScrollArea, cell_has_value
 import styles as st
@@ -29,6 +29,12 @@ class Rand_window(QMainWindow):
         self.current_sheet = None  # выбранный лист до нажатия "Далее"
         self.options_for_zero()
         self.main()
+
+    def closeEvent(self, event: QCloseEvent):
+        """При закрытии окна сохраняем статистику, если тест был запущен."""
+        if getattr(self, 'name_of_file', None) and getattr(self, 'stats', None):
+            stat.save_stats(self.stats, self.name_of_file)
+        super().closeEvent(event)
 
     def data_from_xls(self):
         self.xl = ExcelFile('Jp.xlsx')
@@ -681,7 +687,7 @@ class Rand_window(QMainWindow):
                                 missed = False
                                 for col in self._columns_with_value(row):
                                     if (row.get('Num'), col) not in getattr(self, 'answered_right_pairs', set()):
-                                        stat.record_wrong(self.stats, row, self.current_column, self.name_of_file, col)
+                                        stat.record_wrong(self.stats, row, self.current_column, col)
                                         missed = True
                                 if missed:
                                     self.unknown_words.append(row)
@@ -690,7 +696,7 @@ class Rand_window(QMainWindow):
                                 if row.get('Num') not in getattr(self, 'answered_right_nums', set()):
                                     self.unknown_words.append(row)
                                     for col in self._columns_with_value(row):
-                                        stat.record_wrong(self.stats, row, self.current_column, self.name_of_file, col)
+                                        stat.record_wrong(self.stats, row, self.current_column, col)
                     else:
                         self.unknown_words.append(self.past_word)
                         if self.current_sheet in ('Dictio', 'Words') and self.current_column in ('Kanji', 'Trans', 'Kun'):
@@ -699,10 +705,10 @@ class Rand_window(QMainWindow):
                                 for row in getattr(self, 'current_table_rows', []):
                                     for col in self._columns_with_value(row):
                                         if col not in getattr(self, 'clicked_columns_for_current', set()):
-                                            stat.record_wrong(self.stats, row, self.current_column, self.name_of_file, col)
+                                            stat.record_wrong(self.stats, row, self.current_column, col)
                             else:
                                 if self.current_answer_column and self.current_answer_column in self._columns_with_value(self.past_word):
-                                    stat.record_wrong(self.stats, self.past_word, self.current_column, self.name_of_file, self.current_answer_column)
+                                    stat.record_wrong(self.stats, self.past_word, self.current_column, self.current_answer_column)
                 self.per_element_clicked = False
                 if getattr(self, 'all_answers_variant', False):
                     self._clear_all_answer_buttons()
@@ -995,7 +1001,7 @@ class Rand_window(QMainWindow):
         self.but_easy.setEnabled(False)
         if self.current_sheet in ('Dictio', 'Words') and self.current_column in ('Kanji', 'Trans', 'Kun'):
             if self.current_answer_column and self.current_answer_column in self._columns_with_value(self.current_word):
-                stat.set_difficulty_only(self.stats, self.current_word, "hard", self.current_column, self.name_of_file, self.current_answer_column)
+                stat.set_difficulty_only(self.stats, self.current_word, "hard", self.current_column, self.current_answer_column)
 
     def on_easy_clicked(self):
         if not self.but_easy.isEnabled():
@@ -1005,7 +1011,7 @@ class Rand_window(QMainWindow):
         self.but_hard.setEnabled(False)
         if self.current_sheet in ('Dictio', 'Words') and self.current_column in ('Kanji', 'Trans', 'Kun'):
             if self.current_answer_column and self.current_answer_column in self._columns_with_value(self.current_word):
-                stat.set_difficulty_only(self.stats, self.current_word, "easy", self.current_column, self.name_of_file, self.current_answer_column)
+                stat.set_difficulty_only(self.stats, self.current_word, "easy", self.current_column, self.current_answer_column)
 
     def on_table_column_clicked(self, col):
         """Нажатие на кнопку On/Kun/Trans: right только этой колонке для текущей строки."""
@@ -1015,7 +1021,7 @@ class Rand_window(QMainWindow):
         if not rows or col not in self._columns_with_value(rows[0]):
             return
         self.clicked_columns_for_current.add(col)
-        stat.record_correct(self.stats, rows[0], None, self.current_column, self.name_of_file, col)
+        stat.record_correct(self.stats, rows[0], self.current_column, col)
         self.per_element_clicked = True
         self.but_know.setEnabled(False)
         self.but_know.setStyleSheet('QPushButton {background-color: gray; color: white;}')
@@ -1033,20 +1039,27 @@ class Rand_window(QMainWindow):
                         # Вариант «со всеми ответами»: right всем строкам группы
                         for row in getattr(self, 'current_table_rows', []):
                             for col in self._columns_with_value(row):
-                                stat.record_correct(self.stats, row, None, self.current_column, self.name_of_file, col)
+                                stat.record_correct(self.stats, row, self.current_column, col)
                     elif len(self.test_for_answer) > 1:
                         for row in getattr(self, 'current_table_rows', []):
                             for col in self._columns_with_value(row):
-                                stat.record_correct(self.stats, row, None, self.current_column, self.name_of_file, col)
+                                stat.record_correct(self.stats, row, self.current_column, col)
                     else:
                         if self.current_answer_column and self.current_answer_column in self._columns_with_value(self.current_word):
-                            stat.record_correct(self.stats, self.current_word, None, self.current_column, self.name_of_file, self.current_answer_column)
+                            stat.record_correct(self.stats, self.current_word, self.current_column, self.current_answer_column)
                 self.shet_know += 1
                 self.known_clicked = True
                 if not getattr(self, 'all_answers_variant', False):
-                    self.but_easy.setEnabled(True)  # "Легко" доступна только после "Знаю"
+                    # "Легко" доступна только после "Знаю" и только если у слова не стоит сложность hard
+                    if self.current_answer_column and self.current_answer_column in self._columns_with_value(self.current_word):
+                        self.but_easy.setEnabled(stat.can_press_easy(self.stats, self.current_word, self.current_column, self.current_answer_column))
+                    else:
+                        self.but_easy.setEnabled(True)
 
     def back(self):
+        # Сохраняем статистику один раз при выходе из теста (вместо сохранения при каждом слове)
+        if getattr(self, 'name_of_file', None) and getattr(self, 'stats', None):
+            stat.save_stats(self.stats, self.name_of_file)
         self.data_from_xls()
         self.options_for_zero()
         self.frame_main.deleteLater()
@@ -1067,7 +1080,7 @@ class Rand_window(QMainWindow):
             return
         self.answered_right_nums.add(row.get('Num'))
         for col in self._columns_with_value(row):
-            stat.record_correct(self.stats, row, None, self.current_column, self.name_of_file, col)
+            stat.record_correct(self.stats, row, self.current_column, col)
         self.per_element_clicked = True
         self.but_know.setEnabled(False)
         self.but_know.setStyleSheet('QPushButton {background-color: gray; color: white;}')
@@ -1083,7 +1096,7 @@ class Rand_window(QMainWindow):
         if self.current_sheet not in ('Dictio', 'Words') or self.current_column not in ('Kanji', 'Trans', 'Kun'):
             return
         self.answered_right_pairs.add((row.get('Num'), col))
-        stat.record_correct(self.stats, row, None, self.current_column, self.name_of_file, col)
+        stat.record_correct(self.stats, row, self.current_column, col)
         self.per_element_clicked = True
         self.but_know.setEnabled(False)
         self.but_know.setStyleSheet('QPushButton {background-color: gray; color: white;}')

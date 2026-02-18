@@ -4,7 +4,6 @@ SRS-статистика для теста японских слов.
 """
 import json
 from datetime import datetime, date
-from pathlib import Path
 import random
 
 # Интервалы (дней): когда показывать слово после last_right
@@ -38,6 +37,7 @@ def get_item_key(item, question, answer_column=None):
 
 
 def save_stats(stats, name_of_file):
+    """Сохраняет stats в файл. """
     with open(name_of_file, "w", encoding="utf-8") as f:
         json.dump(stats, f, ensure_ascii=False, indent=2)
 
@@ -152,18 +152,13 @@ def filter_items_for_test(items, stats=None, question=None, answer_column=None):
     return result
 
 
-def record_correct(stats, item, difficulty_button=None, question=None, name_of_file=None, answer_column=None):
+def record_correct(stats, item, question=None, answer_column=None):
     """
-    difficulty_button: None, "easy", "hard". question — имя колонки (напр. "Kanji", "Trans"), по ней из item берётся ключ для статистики.
-    answer_column — колонка ответа; ключ в статистике будет "вопрос|ответ".
-    - Если "easy": ставим difficulty = "easy" (если не hard).
-    - Если "hard": ставим difficulty = "hard".
-    - Увеличиваем right, сбрасываем wrong, обновляем last_right и interval_days.
-    - normal → easy: после 4 правильных подряд (уже учтено через right); при нажатии "easy" или при right==4 сбрасываем right и ставим easy.
-    - hard → normal: после 2 правильных (сбрасываем right и ставим normal).
+    Учитывает правильный ответ: сбрасывает wrong, обновляет last_right, right_all, right и interval_days.
+    Сложность (easy/hard) меняется только через кнопки «Легко»/«Сложно» (set_difficulty_only в UI).
+    - hard → normal: после 2 правильных подряд.
+    - normal → easy: после 4 правильных подряд.
     """
-    if not isinstance(difficulty_button, str):
-        difficulty_button = None
     stat = get_or_create_stat(stats, item, question, answer_column)
 
     stat["last_right"] = date.today().strftime("%d.%m.%Y")
@@ -171,22 +166,6 @@ def record_correct(stats, item, difficulty_button=None, question=None, name_of_f
     stat["right_all"] = stat.get("right_all", 0) + 1
     stat["wrong_all"] = stat.get("wrong_all", 0)
 
-    if difficulty_button == "hard":
-        stat["difficulty"] = "hard"
-        stat["right"] = 0
-        stat["interval_days"] = 1
-        save_stats(stats, name_of_file)
-        return
-
-    if difficulty_button == "easy":
-        if stat.get("difficulty") != "hard":
-            stat["difficulty"] = "easy"
-            stat["right"] = 0
-            stat["interval_days"] = EASY_DAYS_INITIAL
-        save_stats(stats, name_of_file)
-        return
-
-    # Обычное "Правильно" без кнопки сложности
     difficulty = stat.get("difficulty", "normal")
     right = stat.get("right", 0) + 1
 
@@ -197,7 +176,6 @@ def record_correct(stats, item, difficulty_button=None, question=None, name_of_f
             stat["interval_days"] = NORMAL_DAYS_INITIAL
         else:
             stat["right"] = right
-        save_stats(stats, name_of_file)
         return
 
     if difficulty == "normal":
@@ -211,7 +189,6 @@ def record_correct(stats, item, difficulty_button=None, question=None, name_of_f
                 stat["interval_days"] = stat.get("interval_days", NORMAL_DAYS_INITIAL) + NORMAL_DAYS_ADD
             else:
                 stat["interval_days"] = 30
-        save_stats(stats, name_of_file)
         return
         
     if difficulty == "easy":
@@ -220,21 +197,21 @@ def record_correct(stats, item, difficulty_button=None, question=None, name_of_f
             stat["interval_days"] = stat.get("interval_days", EASY_DAYS_INITIAL) + EASY_DAYS_ADD
         else:
             stat["interval_days"] = 30
-        save_stats(stats, name_of_file)
         return
 
 
-def set_difficulty_only(stats, item, difficulty, question=None, name_of_file=None, answer_column=None):
+def set_difficulty_only(stats, item, difficulty, question=None, answer_column=None):
     """
     Меняет только ключ difficulty для элемента. Остальная статистика (right, wrong, last_right и т.д.) не трогается.
     difficulty: "easy", "hard" или "normal".
     """
     stat = get_or_create_stat(stats, item, question, answer_column)
     stat["difficulty"] = difficulty
-    save_stats(stats, name_of_file)
+    if difficulty == "easy":
+        stat["interval_days"] = EASY_DAYS_INITIAL
 
 
-def record_wrong(stats, item, question=None, name_of_file=None, answer_column=None):
+def record_wrong(stats, item, question=None, answer_column=None):
     """
     +1 wrong, right = 0.
     Если количество ошибок == 3: normal → hard, easy → normal.
@@ -254,9 +231,6 @@ def record_wrong(stats, item, question=None, name_of_file=None, answer_column=No
             stat["difficulty"] = "normal"
             stat["interval_days"] = NORMAL_DAYS_INITIAL
         
-
-    save_stats(stats, name_of_file)
-
 
 def can_press_easy(stats, item, question=None, answer_column=None):
     """Если сложность уже 'hard', кнопку 'Легко' не показывать."""
