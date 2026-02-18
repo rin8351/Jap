@@ -195,7 +195,7 @@ def record_correct(stats, item, difficulty_button=None, question=None, name_of_f
     right = stat.get("right", 0) + 1
 
     if difficulty == "hard":
-        if right >= 2:
+        if right == 3:
             stat["difficulty"] = "normal"
             stat["right"] = 0
             stat["interval_days"] = NORMAL_DAYS_INITIAL
@@ -205,25 +205,25 @@ def record_correct(stats, item, difficulty_button=None, question=None, name_of_f
         return
 
     if difficulty == "normal":
-        if right >= 4:
+        if right == 4:
             stat["difficulty"] = "easy"
             stat["right"] = 0
             stat["interval_days"] = EASY_DAYS_INITIAL
         else:
             stat["right"] = right
-            if stat["interval_days"] < 14:
+            if stat["interval_days"] < 30:
                 stat["interval_days"] = stat.get("interval_days", NORMAL_DAYS_INITIAL) + NORMAL_DAYS_ADD
             else:
-                stat["interval_days"] = 14
+                stat["interval_days"] = 30
         save_stats(stats, name_of_file)
         return
         
     if difficulty == "easy":
         stat["right"] = right
-        if stat["interval_days"] < 14:
+        if stat["interval_days"] < 30:
             stat["interval_days"] = stat.get("interval_days", EASY_DAYS_INITIAL) + EASY_DAYS_ADD
         else:
-            stat["interval_days"] = 14
+            stat["interval_days"] = 30
         save_stats(stats, name_of_file)
         return
 

@@ -11084,5 +11084,17 @@
       "wrong_all": 1,
       "right_all": 0
     }
+  },
+  "864": {
+    "札|бумажные деньги; билет; бирка, ярлык": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    }
   }
 }
