@@ -4639,12 +4639,22 @@
     "数|число, количество; считать": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "16.02.2026",
-      "interval_days": 2,
+      "right_all": 2,
+      "last_right": "18.02.2026",
+      "interval_days": 3,
       "consecutive_wrong": 0
+    },
+    "число, количество; считать|数": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
     }
   },
   "30": {
@@ -5905,22 +5915,22 @@
     "意|мысли, намерения, чувства; смысл, значение": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "16.02.2026",
-      "interval_days": 2,
+      "right_all": 2,
+      "last_right": "18.02.2026",
+      "interval_days": 3,
       "consecutive_wrong": 0
     },
     "мысли, намерения, чувства; смысл, значение|意": {
       "difficulty": "normal",
-      "wrong": 1,
-      "right": 0,
-      "last_right": null,
-      "interval_days": 1,
-      "consecutive_wrong": 1,
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
       "wrong_all": 1,
-      "right_all": 0
+      "right_all": 1
     }
   },
   "519": {
@@ -11088,6 +11098,28 @@
   "864": {
     "札|бумажные деньги; билет; бирка, ярлык": {
       "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "wrong_all": 1,
+      "right_all": 1
+    },
+    "бумажные деньги; билет; бирка, ярлык|札": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "888": {
+    "停|останавливаться; оставаться": {
+      "difficulty": "hard",
       "wrong": 1,
       "right": 0,
       "last_right": null,
@@ -11095,6 +11127,588 @@
       "consecutive_wrong": 1,
       "wrong_all": 1,
       "right_all": 0
+    },
+    "останавливаться; оставаться|停": {
+      "difficulty": "hard",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "860": {
+    "予|заранее, предварительно": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "заранее, предварительно|予": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "886": {
+    "第|префикс порядковых числительных": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "префикс порядковых числительных|第": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "844": {
+    "準|уровень, норма; приравниваемый к": {
+      "difficulty": "hard",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    },
+    "уровень, норма; приравниваемый к|準": {
+      "difficulty": "hard",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "856": {
+    "止|останавливаться; останавливать; прекращаться; прекращать": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "останавливаться; останавливать; прекращаться; прекращать|止": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "850": {
+    "線|линия, черта": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "линия, черта|線": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "846": {
+    "幹|основа; ствол": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "основа; ствол|幹": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "876": {
+    "改|контроль; обновляться; обновлять": {
+      "difficulty": "hard",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    },
+    "контроль; обновляться; обновлять|改": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "870": {
+    "江|бухта": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "бухта|江": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "878": {
+    "泊|останавливаться на ночлег": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "останавливаться на ночлег|泊": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "880": {
+    "並|обычный; стоять в ряд; выстраивать; наряду с": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    },
+    "обычный; стоять в ряд; выстраивать; наряду с|並": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "889": {
+    "備|снабжать; готовить": {
+      "difficulty": "hard",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    },
+    "снабжать; готовить|備": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "858": {
+    "戸|дом, семья; дверь": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "дом, семья; дверь|戸": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "884": {
+    "指|указывать; палец": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "указывать; палец|指": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "882": {
+    "直|прямо; немедленно; исправлять; исправляться": {
+      "difficulty": "hard",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    },
+    "прямо; немедленно; исправлять; исправляться|直": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "885": {
+    "特|в частности, особенно": {
+      "difficulty": "hard",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    },
+    "в частности, особенно|特": {
+      "difficulty": "hard",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "852": {
+    "選|выбирать, отбирать": {
+      "difficulty": "hard",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    },
+    "выбирать, отбирать|選": {
+      "difficulty": "hard",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "866": {
+    "代|поколение; цена, плата; менять; заменять": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    },
+    "поколение; цена, плата; менять; заменять|代": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "887": {
+    "窓|окно": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "окно|窓": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "862": {
+    "弁|речь, диалект; различие; лепесток": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "речь, диалект; различие; лепесток|弁": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "890": {
+    "続|продолжаться; продолжать": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "продолжаться; продолжать|続": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "874": {
+    "次|следующий": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "следующий|次": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "883": {
+    "発|начинать; возникать; издавать; взрываться": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    },
+    "начинать; возникать; издавать; взрываться|発": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "848": {
+    "算|счёт": {
+      "difficulty": "hard",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    },
+    "счёт|算": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "872": {
+    "当|данный; подходить; попадать": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    },
+    "данный; подходить; попадать|当": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "868": {
+    "列|ряд, шеренга, колонна": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    },
+    "ряд, шеренга, колонна|列": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 1,
+      "consecutive_wrong": 1,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "854": {
+    "心|центр; сердце, душа": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "центр; сердце, душа|心": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "18.02.2026",
+      "interval_days": 2,
+      "consecutive_wrong": 0,
+      "right_all": 1,
+      "wrong_all": 0
     }
   }
 }

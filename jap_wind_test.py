@@ -48,7 +48,6 @@ class Rand_window(QMainWindow):
         self.current_word = None # текущее слово
         self.showing_translation = True 
         self.mnemonic_text=''
-        self.count_for_proc = []
         self.len_of_count_for_proc = 0
         self.current_word_test = None
         self.past_word = ''
@@ -440,11 +439,11 @@ class Rand_window(QMainWindow):
                 json.dump(self.stats, f, ensure_ascii=False)
         if not self.all_test_without_filter.isChecked():
             self.alls = stat.filter_items_for_test(self.alls, self.stats, self.current_column, self.current_answer_column)
+        self.len_of_count_for_proc = len(self.alls)
         self.alls = stat.sort_items_for_choice_test(self.alls, self.stats, self.current_column, self.current_answer_column)
         if self.value_of_test == 1 and len(self.alls) <=3:
             self.lb_err.setText('Слишком мало слов для теста с 4-мя вариантами ответов')
         else:
-            self.count_for_proc_funk()
             if self.value_of_test==1:
                 self.all_variations = deepcopy(self.alls)
             self.main2()
@@ -608,7 +607,7 @@ class Rand_window(QMainWindow):
     def retry_unknown_words(self):
         self.shet_know = 0
         self.alls = self.unknown_words
-        self.count_for_proc_funk()
+        self.len_of_count_for_proc = len(self.alls)
         self.unknown_words = []
         self.options_for_again()
 
@@ -711,6 +710,8 @@ class Rand_window(QMainWindow):
             if not self.alls: #Если все слова закончились
                 self.past_word = ''
                 self.label_question.setText("Тест завершен.")
+                self.mnemonic_text.setText('')
+                self.mnemonic_text.setToolTip('')
                 self.name_of_difficulty.setText('')
                 self.part_of_speech.setText('')
                 self.table_widget.setVisible(False)
@@ -794,8 +795,6 @@ class Rand_window(QMainWindow):
                     self.label_question.setStyleSheet('QTextEdit {color: #8B0000;}')
             self.label_question.setText(self.current_word_test)
             self.label_answer.setText("")
-            if self.current_word_test in self.count_for_proc:
-                self.count_for_proc.remove(self.current_word_test)
         else:
             self.btn_continue.setText("Следующее слово")
             self.but_know.setDisabled(False)
@@ -895,6 +894,8 @@ class Rand_window(QMainWindow):
         if not self.alls: #Если все слова закончились
             self.past_word = ''
             self.label_question.setText("Тест завершен.")
+            self.mnemonic_text.setText('')
+            self.mnemonic_text.setToolTip('')
             self.name_of_difficulty.setText('')
             self.table_widget.setVisible(False)
             self.label_total.setText('')
@@ -920,11 +921,7 @@ class Rand_window(QMainWindow):
 
         t = f'Количество слов= {len(self.alls)}'
         self.label_total.setText(t)
-
         self.label_question.setText(self.current_word_test)
-
-        if self.current_word_test in self.count_for_proc:
-            self.count_for_proc.remove(self.current_word_test)
 
         correct_answer = self.current_word[self.test_for_answer[0]]
         correct_kanji = self.current_word['Kanji']
@@ -959,14 +956,7 @@ class Rand_window(QMainWindow):
         self.shet_know = 0
         self.alls = deepcopy(self.alls_for_copy)
         self.alls = stat.sort_items_for_choice_test(self.alls, self.stats, self.current_column, self.current_answer_column)
-        self.count_for_proc_funk()
         self.options_for_again()
-
-    def count_for_proc_funk(self):
-        for i in self.alls:
-            if i[self.current_column] not in self.count_for_proc:
-                self.count_for_proc.append(i[self.current_column])
-        self.len_of_count_for_proc = len(self.count_for_proc)
 
     def options_for_again(self):
         if getattr(self, 'all_answers_variant', False):
@@ -1162,23 +1152,20 @@ class Rand_window(QMainWindow):
         header.setStretchLastSection(True)
                 
 '''
+Заметки:
 self.value_of_test = 1 # Тестовый режим с 4-мя вариантами ответов
 self.value_of_test = 0 # стандартный тест
 self.current_sheet # выбранный лист до нажатия "Далее"
 self.shet_know = 0 # счетчик знаю или не знаю слово
-self.known_clicked = False
+self.known_clicked = False # флаг нажатия кнопки "Знаю"
 self.per_element_clicked = False  # нажата кнопка по одному варианту (таблица)
-self.unknown_words = []
+self.unknown_words = [] # список неизвестных слов для повторного теста
 self.current_word = None # текущее слово в виде словаря
-self.showing_translation = True 
-self.mnemonic_text=''
-self.count_for_proc = []
-self.len_of_count_for_proc = 0
+self.len_of_count_for_proc = 0 # количество слов в тесте для подсчета процента верных ответов
 self.current_word_test = None # текущее слово в виде строки
-self.past_word = ''
 self.current_table_rows = []  # строки таблицы для статистики (режим с несколькими ответами)
 self.clicked_columns_for_current = set()  # какие колонки (On/Kun/Trans) отмечены для текущего слова
-self.all_variations = {}
+self.all_variations = {} # список всех вариантов слов для теста. фильтрация по кандзи но не помню что конкретно это делает
 self.all_answers_variant = False  # вариант теста «со всеми ответами» (группа по кандзи/куну/ону)
 self.answered_right_nums = set()  # Num строк, по которым нажали кнопку ответа (right)
 self.answered_right_pairs = set()  # (Num, col) — по каким (строка, колонка) нажали (для кнопок по элементам)
