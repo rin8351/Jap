@@ -651,6 +651,37 @@ class Rand_window(QMainWindow):
                                 checkBox.setText(checkBox.text() + " - Правильно")
             self.btn_continue.setVisible(True)
             self.btn_continue.setText("Следующее слово")
+            
+            if self.current_sheet == 'Dictio' and self.current_column == 'Kanji':
+                lines = []
+                text=''
+                for i in self.alls_words:
+                    if self.current_word_test in i['Kanji'] and len(lines)<=5:
+                        strings = str(i['Kanji'])+', '+i['Trans']
+                        lines.append(strings)
+                    if len(lines)>=1:
+                        text = "Встречаются в словах:\n"+"\n".join(lines)
+                        self.label_question.setToolTip(text)
+                        self.label_question.setStyleSheet('QTextEdit {color: #8B0000;}')
+            elif self.current_sheet == 'Dictio' and self.current_column =='Trans':
+                lines = []
+                text=''
+                lines_translations2=[]
+                for i in self.alls:
+                    if i[self.current_column]==self.current_word_test:
+                        lines_translations2.append(i[self.test_for_answer[0]])
+                for j in lines_translations2:
+                    for i in self.alls_words:
+                        if j in i['Kanji'] and len(lines)<=5:
+                            strings = str(i['Kanji'])+', '+i['Trans']
+                            lines.append(strings)
+                if len(lines)>=1:
+                    text = "Встречаются в словах:\n"+"\n".join(lines)
+                    self.label_question.setToolTip(text)
+                    self.label_question.setStyleSheet('QTextEdit {color: #8B0000;}')
+        else:
+            self.label_question.setToolTip('')
+            self.label_question.setStyleSheet('QTextEdit {color: #000000;}')
 
     def show_next_word(self):
         
@@ -836,6 +867,7 @@ class Rand_window(QMainWindow):
                     text = "Встречаются в словах:\n"+"\n".join(lines)
                     self.label_question.setToolTip(text)
                     self.label_question.setStyleSheet('QTextEdit {color: #8B0000;}')
+            
             if getattr(self, 'all_answers_variant', False):
                 self._clear_all_answer_buttons()
                 if len(self.current_table_rows) == 1:

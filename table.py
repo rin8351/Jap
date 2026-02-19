@@ -202,9 +202,9 @@ class SheetTableWidget(QWidget):
         self.btn_save = QPushButton('Сохранить')
         self.btn_save.setStyleSheet(st.btn_test)
         self.btn_save.clicked.connect(self._save_to_file)
-        self.btn_add = QPushButton('Добавить 100 строк')
+        self.btn_add = QPushButton('Добавить 10 строк')
         self.btn_add.setStyleSheet(st.but_line_check)
-        self.btn_add.clicked.connect(self._add_100_rows)
+        self.btn_add.clicked.connect(self._add_10_rows)
         self.rows_count_label = QLabel()
         btn_layout.addWidget(self.btn_save)
         btn_layout.addWidget(self.btn_add)
@@ -648,11 +648,11 @@ class SheetTableWidget(QWidget):
         self._highlighted_row = row
         self._block_cell_log = False
 
-    def _add_100_rows(self):
+    def _add_10_rows(self):
         self._block_cell_log = True
         start = self.table.rowCount()
         max_num = max(self._num_values) if self._num_values else 0
-        for i in range(100):
+        for i in range(10):
             r = start + i
             max_num += 1
             self._num_values.append(max_num)

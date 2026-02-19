@@ -1,2 +1,3060 @@
 {
+  "454": {
+    "関心|интерес как внимание / обеспокоенность / внимание к теме": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "101": {
+    "辞典|словарь": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "253": {
+    "都市|город": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "143": {
+    "自ぶん|сам": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "92": {
+    "上の方|старший": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "258": {
+    "国土|территория страны": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "145": {
+    "たん生日|день рождения": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "206": {
+    "えん側|открытая галерея с двух или трех сторон японского дома": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "51": {
+    "授業|Урок, занятие": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "279": {
+    "植物|растения": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "374": {
+    "中心部|центральная часть": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "198": {
+    "地方|район": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "104": {
+    "一昨日|позавчера": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "247": {
+    "ろん文|сочинение, труд, статья": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "71": {
+    "洋食|европейская еда": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "285": {
+    "日ざし|лучи солнца": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "82": {
+    "小学校|младшая школа": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "250": {
+    "げいたい電話|мобильный телефон": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "281": {
+    "神社|синтоистский храм": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "7": {
+    "日本|Япония": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "310": {
+    "品物|товар, вещь": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "293": {
+    "書き出す|выписывать": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "241": {
+    "番号|номер": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "217": {
+    "宿だい|домашнее задание": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "330": {
+    "車両|вагон": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "286": {
+    "登山者|альпинист": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "117": {
+    "先々週|Неделя: позапрошлый": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "345": {
+    "弁当|бэнто": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "383": {
+    "上り|поезд в Токио из провинции": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "59": {
+    "ご飯|еда, вареный рис": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "316": {
+    "衣類|предметы одежды” (официально)": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "21": {
+    "東京|Токио": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "370": {
+    "少々|немного": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "301": {
+    "紳士|джентельмен": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "120": {
+    "先々月|Месяц: позапрошлый": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "249": {
+    "第一|сперва, прежде всего": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "216": {
+    "全然|совсем не (с отрицанием)": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "23": {
+    "午前　午後|до обеда, после обеда": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "87": {
+    "大ぜい|много(о людях)": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "267": {
+    "活動する|действовать": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "280": {
+    "国定|утвержденный законом": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "13": {
+    "文学部|филологич факультет": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "377": {
+    "出口|выход": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "49": {
+    "漢字|иероглиф": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "106": {
+    "今朝|сегодня утром": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "22": {
+    "ろう下|коридор": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "193": {
+    "紅葉|алые осенние листья": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "308": {
+    "年始回り|новогодние визиты": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "218": {
+    "絵葉書|открытка": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "90": {
+    "し事|работа": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "24": {
+    "食堂|столовая": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "296": {
+    "えい業する|работать, быть открытым": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "79": {
+    "名字|фамилия": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "392": {
+    "間に合う|успевать": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "208": {
+    "自動車|машина": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "317": {
+    "辺り|окрестности": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "84": {
+    "中学生|ученик средней школы": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "350": {
+    "旅行代理店|туристическое агентство": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "33": {
+    "時間|время": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "299": {
+    "放送|радовещание": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "164": {
+    "医者|врач": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "53": {
+    "文法|грамматика": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "86": {
+    "祖母|бабушка": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "160": {
+    "ふく習する|повторять": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "211": {
+    "紅葉|багряный цвет (листвы)": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "290": {
+    "歩き回る|ходить кругом": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "453": {
+    "気づく|заметить, осознать, вдруг понять": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "4": {
+    "学生|студент": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "261": {
+    "大たい|большей частью": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "265": {
+    "中央部|центральная часть": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "268": {
+    "休火山|спящий вулкан": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "119": {
+    "今週|Неделя: настоящий": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "121": {
+    "さ来月|Месяц: через следующий": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "192": {
+    "月見|любование луной": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "141": {
+    "各階|каждый этаж": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "91": {
+    "まん中|середина": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "93": {
+    "昨日|вчера": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "320": {
+    "改札|проверка билетов": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "159": {
+    "電しゃ|электропоезд": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "135": {
+    "昼食|обед": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "144": {
+    "講堂|аудитория, лекционный зал": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "37": {
+    "上野|Уено": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "226": {
+    "友人|друг": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "274": {
+    "気温|температура воздуха": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "329": {
+    "車内|в вагоне": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "314": {
+    "似合う|быть подходящим, быть к лицу (об одежде)": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "138": {
+    "上手（な）|умелый": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "227": {
+    "文房具|канцелярские товары": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "96": {
+    "気に入る|нравиться": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "215": {
+    "注文する|заказывать": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "236": {
+    "朝寝ぼう|соня, долго спать": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "276": {
+    "年平きん|среднегодовой": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "142": {
+    "下手（な）|неумелый": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "108": {
+    "天気|погода": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "259": {
+    "周辺|окрестности": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "337": {
+    "特急|экспресс": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "332": {
+    "出発|отправление": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "39": {
+    "台所|кухня": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "180": {
+    "四季|4 сезона": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "128": {
+    "黒ばん|классная доска": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "358": {
+    "改札口|проход для проверки билетов": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "254": {
+    "決まり|правила": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "203": {
+    "行事|обряд, торжество": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "326": {
+    "時代|эпоха, период": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "378": {
+    "展らん会|выставка": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "315": {
+    "家庭の事情|семейные обстоятельства": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "88": {
+    "毎週|каждая неделя": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "234": {
+    "電気製品|электротовары": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "89": {
+    "生と|ученик": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "100": {
+    "本屋|книжный магазин": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "207": {
+    "大雨|ливень": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "113": {
+    "公園|парк": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "73": {
+    "名前|имя": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "341": {
+    "早めに|раньше": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "391": {
+    "窓口|окошко, касса": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "230": {
+    "さんこう書|справочник": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "283": {
+    "外国人|иностранец": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "233": {
+    "満員|быть полным (людьми)": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "395": {
+    "目ざめる|просыпаться": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "263": {
+    "以上|свыше, сверх": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "137": {
+    "洋服ダンス|шкаф": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "225": {
+    "信号|светофор, знак, сигнал": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "156": {
+    "外出する|покидать дом": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "312": {
+    "食料品|продукты": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "14": {
+    "教室|аудитория": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "256": {
+    "行き先|место назначения": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "129": {
+    "歴史|история": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "375": {
+    "直前|непосредственно перед": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "9": {
+    "文学|литература": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "169": {
+    "病院|больница": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "184": {
+    "名所|достопримечательности": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "272": {
+    "流いき|бассейн(реки)": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "157": {
+    "動物園|зоопарк": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "76": {
+    "学校|школа": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "83": {
+    "教師|учитель": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "181": {
+    "うつり変わり|смена": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "68": {
+    "着物|кимоно": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "2": {
+    "電話|телефон": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "273": {
+    "平野|равнина": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "149": {
+    "はつ音|произношение": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "334": {
+    "地上|наземный": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "171": {
+    "大分|(довольно)много, достаточно": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "75": {
+    "地理|география": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "60": {
+    "れん習|упражнение": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "277": {
+    "以下|менее чем, ниже": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "210": {
+    "真っ赤な|ярко красный": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "168": {
+    "気分|настроение, самочуствие": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "127": {
+    "洋服|одежда": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "118": {
+    "先週|Неделя: прошлый": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "125": {
+    "さ来年|Год: через следующий": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "214": {
+    "各自|каждый (человек)": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "58": {
+    "本とう|правда, действительно": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "139": {
+    "自家製|собственное приготовление": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "48": {
+    "教科書|учебник": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "232": {
+    "自由|свобода": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "166": {
+    "夕方|вечер": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "322": {
+    "グリーン車|вагон 1-го класса": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "246": {
+    "出かける|выходить, отправляться": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "307": {
+    "習慣|привычка": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "248": {
+    "会社|компания, фирма": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "243": {
+    "かけ物|какэмоно (яп. Картина или калигр надпись)": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "81": {
+    "家族|семья": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "220": {
+    "切符|билет": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "162": {
+    "さ来週|следующая неделя": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "333": {
+    "食堂車|вагон-ресторан": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "452": {
+    "部活|клубные мероприятия": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "46": {
+    "洋間|комната в европ стиле": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "45": {
+    "ペン屋|булочная": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "348": {
+    "予約|предварительный заказ": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "179": {
+    "説明する|обьяснять": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "195": {
+    "大陸|континент": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "18": {
+    "留学生|иностранный студент": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "260": {
+    "平方|квадрат": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "344": {
+    "普通車|обычный вагон": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "202": {
+    "変化|изменение": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "336": {
+    "当日|тот день": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "109": {
+    "先月|прошлый месяц": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "189": {
+    "台風|тайфун": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "275": {
+    "国内|внутри страны": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "148": {
+    "自こ|сам": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "154": {
+    "着がえる|переодеваться": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "343": {
+    "広々とした|широкий, обширный": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "187": {
+    "南東|юго восточный": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "124": {
+    "来年|Год: следующий": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "38": {
+    "茶の間|гостинная в японс стиле": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "338": {
+    "乗りこむ|садиться (в поезд)": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "186": {
+    "むし暑い|душный, знойный": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "238": {
+    "用事|дело": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "65": {
+    "紅茶|черный чай": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "300": {
+    "約束|обещание": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "47": {
+    "和室|комната в япоснком стиле": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "19": {
+    "たて物|здание": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "282": {
+    "海岸|морской берег": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "199": {
+    "市内|городской": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "318": {
+    "江戸|Эдо, прежнее название Токио": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "331": {
+    "自由席|ненумерованное место": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "26": {
+    "日曜日|воскресенье": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "151": {
+    "洗たく|стирка": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "342": {
+    "はん売|продажа": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "304": {
+    "くつ下|носки": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "382": {
+    "乗せる|класть, ставить (на)": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "356": {
+    "LL教室|лингафонный кабинет": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "291": {
+    "なか間|компания, друзья": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "114": {
+    "散歩する|гулять": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "41": {
+    "階段|лестница": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "190": {
+    "秋分|осеннее равноденствие": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "163": {
+    "一日|целый день": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "69": {
+    "歴史的|исторический (история + суффикс прилагат.)": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "359": {
+    "かかり員|служащий": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "327": {
+    "次第に|постепенно": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "62": {
+    "果物屋|фруктовый магазин": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "194": {
+    "景色|пейзаж": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "140": {
+    "ぜん部|всё, все": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "67": {
+    "食事|принятие пищи": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "3": {
+    "大学|университет, институт": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "380": {
+    "日本製|«сделано в Японии»": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "244": {
+    "年をとる|становиться старше": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "456": {
+    "様子|поведение, вид, признаки, положение дел внешне": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "240": {
+    "音楽大学|консерватория": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "266": {
+    "温せん|горячий источник": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "130": {
+    "電とう|эл лампа": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "32": {
+    "金曜日|пятница": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "288": {
+    "人気がある|популярный": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "219": {
+    "文房具屋|магазин канц товаров": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "110": {
+    "今月|этот месяц": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "136": {
+    "電気スタンド|настольная электролампа": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "77": {
+    "講義|лекция": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "455": {
+    "興味|личный интерес": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "153": {
+    "持ってくる|приносить": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "105": {
+    "さつ業する|окончить (учебное заведение)": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "321": {
+    "下り|поезд из Токио в провинцию": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "173": {
+    "生け花|икебана": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "204": {
+    "気をつける|быть внимательным": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "25": {
+    "土曜日|суббота": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "95": {
+    "博物館|музей": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "183": {
+    "気候|климат": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "150": {
+    "音楽|музыка": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "297": {
+    "小物|мелкий предмет": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "262": {
+    "人口|население": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "72": {
+    "和食|японская еда": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "20": {
+    "お宅|ваш дом, вы": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "278": {
+    "各地|везде, повсеместно": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "347": {
+    "予算|бюджет, смета": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "10": {
+    "せん門|специальность": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "229": {
+    "小説|роман, повесть": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "123": {
+    "きょ年|Год: прошлый": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "235": {
+    "電気街|район  магазинов с электротоварами": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "66": {
+    "昼間|дневное время, днем": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "17": {
+    "図書館|библиотека": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "188": {
+    "一番|самый": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "115": {
+    "元気（な）|здоровый": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "209": {
+    "西部|западная часть": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "176": {
+    "夕べ|вечер": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "111": {
+    "来月|следующий месяц": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "251": {
+    "最近|недавно": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "174": {
+    "顔色|цвет лица": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "107": {
+    "病気|болезнь": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "52": {
+    "新聞|газета": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "126": {
+    "手紙|письмо": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "11": {
+    "文れい|образец предложения": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "339": {
+    "走り出す|побежать": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "311": {
+    "婦人|женщина": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "122": {
+    "一昨年|Год: позапрошлый": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "196": {
+    "北西|северо западный": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "182": {
+    "春分|весенне равноденствие": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "351": {
+    "列車|поезд": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "6": {
+    "先生|учитель, сенсей": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "99": {
+    "小鳥|маленькая птица": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "349": {
+    "旅館|гостиница японского типа": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "264": {
+    "首都|столица": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "239": {
+    "せん門学校|техникум": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "152": {
+    "お手洗い|ванная комната": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "257": {
+    "島国|островная страна": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "201": {
+    "自然|природа (само собой, естественно)": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "191": {
+    "満月|полная луна": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "30": {
+    "水曜日|среда": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "1": {
+    "ぎ師|инженер": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "313": {
+    "思い出す|вспоминать": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  }
 }

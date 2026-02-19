@@ -3,12 +3,12 @@ from PyQt5.QtGui import QIcon
 
 from pandas import ExcelFile
 
-
 from others_scripts import resource_path
 import styles
 from jap_wind_test import Rand_window
 from table import Table_window
 from grammar import GrammarWindow
+from file_stats import StatsWindow
 
     
 class Jap_app(QtWidgets.QMainWindow):
@@ -92,6 +92,10 @@ class Jap_app(QtWidgets.QMainWindow):
         self.btn3.setStyleSheet(self.button_style)
         self.frame_UP_main_layout.addWidget(self.btn3)
 
+        self.btn4 = QtWidgets.QPushButton('Stats',clicked = self.stats_window)
+        self.btn4.setStyleSheet(self.button_style)
+        self.frame_UP_main_layout.addWidget(self.btn4)
+
         t = f'Kanji = {len(alls_d2)},\nWords = {len(alls_w)},\ntrans_words = {len(alls_d3)}.'
         self.lb_count = QtWidgets.QLabel(t)
         self.frame_UP_main_layout.addWidget(self.lb_count)
@@ -113,6 +117,10 @@ class Jap_app(QtWidgets.QMainWindow):
     def jap_rand_window(self):
         self.new_window = Rand_window()
         self.new_window.show()
+
+    def stats_window(self):
+        self.new_window4 = StatsWindow()
+        self.new_window4.show()
           
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
