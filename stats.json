@@ -5889,9 +5889,9 @@
     "それとも|или": {
       "difficulty": "hard",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 3,
-      "right_all": 1,
+      "right_all": 2,
       "last_right": "20.02.2026",
       "interval_days": 1
     }
@@ -5910,12 +5910,12 @@
   "787": {
     "もうすぐ|скоро, но не немедленно, а чуть позже": {
       "difficulty": "normal",
-      "wrong": 2,
-      "right": 0,
+      "wrong": 0,
+      "right": 1,
       "wrong_all": 2,
-      "right_all": 0,
-      "last_right": null,
-      "interval_days": 1
+      "right_all": 1,
+      "last_right": "21.02.2026",
+      "interval_days": 3
     }
   },
   "16": {
@@ -5931,12 +5931,12 @@
   },
   "551": {
     "それほど|настолько, как (часто с отрицанием не так уж)": {
-      "difficulty": "normal",
-      "wrong": 2,
-      "right": 0,
-      "wrong_all": 2,
-      "right_all": 0,
-      "last_right": null,
+      "difficulty": "hard",
+      "wrong": 0,
+      "right": 1,
+      "wrong_all": 3,
+      "right_all": 1,
+      "last_right": "21.02.2026",
       "interval_days": 1
     }
   },
@@ -5945,21 +5945,21 @@
       "difficulty": "normal",
       "wrong": 0,
       "right": 1,
-      "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "wrong_all": 1,
+      "right_all": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 4
     }
   },
   "556": {
     "もちろん|безусловно": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "right_all": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 4
     }
   },
   "785": {
@@ -5977,11 +5977,11 @@
     "ふだん|в повседневной жизни, обычно (в быту)": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 1,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 3
+      "right_all": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 5
     }
   },
   "254": {
@@ -6032,22 +6032,22 @@
     "いかが|как, каким образом": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 1,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 3
+      "right_all": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 5
     }
   },
   "786": {
     "まっすぐ|прямо, сразу же": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "right_all": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 4
     }
   },
   "144": {
@@ -6087,11 +6087,11 @@
     "このように|таким образом (описание процесса)": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "right_all": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 4
     }
   },
   "245": {
@@ -6108,12 +6108,12 @@
   "548": {
     "それぞれ|каждый по своему": {
       "difficulty": "normal",
-      "wrong": 2,
-      "right": 0,
+      "wrong": 0,
+      "right": 1,
       "wrong_all": 2,
-      "right_all": 0,
-      "last_right": null,
-      "interval_days": 1
+      "right_all": 1,
+      "last_right": "21.02.2026",
+      "interval_days": 3
     }
   },
   "297": {
@@ -6261,12 +6261,12 @@
   },
   "545": {
     "しっかり|надежно, как следует, надёжно, внимательно": {
-      "difficulty": "normal",
-      "wrong": 2,
-      "right": 0,
-      "wrong_all": 2,
-      "right_all": 0,
-      "last_right": null,
+      "difficulty": "hard",
+      "wrong": 0,
+      "right": 1,
+      "wrong_all": 3,
+      "right_all": 1,
+      "last_right": "21.02.2026",
       "interval_days": 1
     }
   },
@@ -6305,12 +6305,12 @@
   },
   "543": {
     "ほとんど|почти, почти все / почти не": {
-      "difficulty": "normal",
-      "wrong": 2,
-      "right": 0,
-      "wrong_all": 2,
-      "right_all": 0,
-      "last_right": null,
+      "difficulty": "hard",
+      "wrong": 0,
+      "right": 1,
+      "wrong_all": 4,
+      "right_all": 1,
+      "last_right": "21.02.2026",
       "interval_days": 1
     }
   },
@@ -6384,9 +6384,9 @@
     "かなり|очень, довольно-таки, достаточно, вполне, нейтрально": {
       "difficulty": "hard",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 3,
-      "right_all": 1,
+      "right_all": 2,
       "last_right": "20.02.2026",
       "interval_days": 1
     }
@@ -6406,11 +6406,11 @@
     "むかし|давно, давность": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "right_all": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 4
     }
   },
   "867": {
@@ -6472,11 +6472,11 @@
     "ずっと|непрерывно / долго / всё время": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 1,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 3
+      "right_all": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 5
     }
   },
   "681": {
@@ -6527,11 +6527,11 @@
     "こんな|такой": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "right_all": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 4
     }
   },
   "104": {
@@ -6626,11 +6626,11 @@
     "やる|делать, давать (2-му лицу)": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 1,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 3
+      "right_all": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 5
     }
   },
   "758": {
@@ -6678,11 +6678,11 @@
   "478": {
     "あんないする|сопроводить": {
       "difficulty": "hard",
-      "wrong": 3,
-      "right": 0,
-      "wrong_all": 3,
-      "right_all": 0,
-      "last_right": null,
+      "wrong": 0,
+      "right": 1,
+      "wrong_all": 5,
+      "right_all": 3,
+      "last_right": "21.02.2026",
       "interval_days": 1
     }
   },
@@ -6701,11 +6701,11 @@
     "かかる|тратить(время)": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 1,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 3
+      "right_all": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 5
     }
   },
   "209": {
@@ -6754,10 +6754,10 @@
     "たすける|помочь (в беде)": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
+      "right": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
       "wrong_all": 0
     }
   },
@@ -6809,11 +6809,11 @@
     "あける|открывать": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "right_all": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4
     }
   },
   "217": {
@@ -6832,10 +6832,10 @@
       "difficulty": "normal",
       "wrong": 0,
       "right": 1,
-      "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "wrong_all": 1,
+      "right_all": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4
     }
   },
   "187": {
@@ -6875,22 +6875,22 @@
     "すぎる|проходить, миновать": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "right_all": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 4
     }
   },
   "537": {
     "おそう|нагрянуть, нападать (на что либо)": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "right_all": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 4
     }
   },
   "213": {
@@ -6951,11 +6951,11 @@
   "544": {
     "とける|таять": {
       "difficulty": "hard",
-      "wrong": 3,
-      "right": 0,
-      "wrong_all": 3,
-      "right_all": 0,
-      "last_right": null,
+      "wrong": 0,
+      "right": 2,
+      "wrong_all": 7,
+      "right_all": 2,
+      "last_right": "21.02.2026",
       "interval_days": 1
     }
   },
@@ -6994,11 +6994,11 @@
     "だまる|молчать": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "right_all": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 4
     }
   },
   "712": {
@@ -7016,22 +7016,22 @@
     "いう|говорить, сказать": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "right_all": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4
     }
   },
   "532": {
     "しる|знать": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "right_all": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 4
     }
   },
   "688": {
@@ -7049,11 +7049,11 @@
     "つづく|продолжаться": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "right_all": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 4
     }
   },
   "761": {
@@ -7236,11 +7236,11 @@
     "くれる|давать (1-му лицу)": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "right_all": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4
     }
   },
   "633": {
@@ -7267,10 +7267,10 @@
     "てつだう|помогать (в деле)": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
+      "right": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
       "wrong_all": 0
     }
   },
@@ -7323,21 +7323,21 @@
       "difficulty": "normal",
       "wrong": 0,
       "right": 1,
-      "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "wrong_all": 1,
+      "right_all": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 4
     }
   },
   "533": {
     "おどろく|удивляться": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "right_all": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 4
     }
   },
   "186": {
@@ -7492,11 +7492,11 @@
     "かえす|возвращать": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "right_all": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4
     }
   },
   "683": {
@@ -7592,10 +7592,10 @@
       "difficulty": "normal",
       "wrong": 0,
       "right": 1,
-      "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "wrong_all": 1,
+      "right_all": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4
     }
   },
   "849": {
@@ -7711,11 +7711,11 @@
   "553": {
     "ながめる|любоваться": {
       "difficulty": "hard",
-      "wrong": 3,
-      "right": 0,
-      "wrong_all": 3,
-      "right_all": 0,
-      "last_right": null,
+      "wrong": 0,
+      "right": 2,
+      "wrong_all": 4,
+      "right_all": 2,
+      "last_right": "21.02.2026",
       "interval_days": 1
     }
   },
@@ -7724,10 +7724,10 @@
       "difficulty": "normal",
       "wrong": 0,
       "right": 1,
-      "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "wrong_all": 1,
+      "right_all": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 4
     }
   },
   "618": {
@@ -7756,11 +7756,11 @@
     "いただく|получать, давать(1-му лицу)": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "right_all": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4
     }
   },
   "877": {
@@ -7866,11 +7866,11 @@
     "あびる|обливаться": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 1,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 3
+      "right_all": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 5
     }
   },
   "339": {
@@ -7888,22 +7888,22 @@
     "みてもらう|показаться врачу": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 1,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 3
+      "right_all": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 5
     }
   },
   "485": {
     "おくる|дарить": {
-      "difficulty": "hard",
-      "wrong": 3,
+      "difficulty": "normal",
+      "wrong": 0,
       "right": 0,
-      "wrong_all": 3,
-      "right_all": 0,
-      "last_right": null,
-      "interval_days": 1
+      "wrong_all": 4,
+      "right_all": 3,
+      "last_right": "21.02.2026",
+      "interval_days": 2
     }
   },
   "53": {
@@ -8028,11 +8028,11 @@
   "471": {
     "はかる|измерять": {
       "difficulty": "hard",
-      "wrong": 3,
-      "right": 0,
-      "wrong_all": 3,
-      "right_all": 0,
-      "last_right": null,
+      "wrong": 0,
+      "right": 1,
+      "wrong_all": 5,
+      "right_all": 2,
+      "last_right": "21.02.2026",
       "interval_days": 1
     }
   },
@@ -8171,11 +8171,11 @@
   "557": {
     "ぬれる|промокать": {
       "difficulty": "hard",
-      "wrong": 3,
-      "right": 0,
-      "wrong_all": 3,
-      "right_all": 0,
-      "last_right": null,
+      "wrong": 0,
+      "right": 1,
+      "wrong_all": 5,
+      "right_all": 2,
+      "last_right": "21.02.2026",
       "interval_days": 1
     }
   },
@@ -8282,11 +8282,11 @@
     "さしあげる|давать (2-му лицу)": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "right_all": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4
     }
   },
   "639": {
@@ -8311,13 +8311,13 @@
   },
   "476": {
     "けす|выключать": {
-      "difficulty": "hard",
-      "wrong": 3,
+      "difficulty": "normal",
+      "wrong": 0,
       "right": 0,
       "wrong_all": 3,
-      "right_all": 0,
-      "last_right": null,
-      "interval_days": 1
+      "right_all": 3,
+      "last_right": "21.02.2026",
+      "interval_days": 2
     }
   },
   "156": {
@@ -8388,24 +8388,24 @@
   },
   "433": {
     "たつ|покидать": {
-      "difficulty": "hard",
-      "wrong": 3,
+      "difficulty": "normal",
+      "wrong": 0,
       "right": 0,
-      "wrong_all": 3,
-      "right_all": 0,
-      "last_right": null,
-      "interval_days": 1
+      "wrong_all": 5,
+      "right_all": 3,
+      "last_right": "21.02.2026",
+      "interval_days": 2
     }
   },
   "474": {
     "おなかがすく|быть голодным": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "right_all": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4
     }
   },
   "709": {
@@ -8532,11 +8532,11 @@
   "479": {
     "かす|давать в долг": {
       "difficulty": "hard",
-      "wrong": 3,
-      "right": 0,
-      "wrong_all": 3,
-      "right_all": 0,
-      "last_right": null,
+      "wrong": 0,
+      "right": 1,
+      "wrong_all": 7,
+      "right_all": 2,
+      "last_right": "21.02.2026",
       "interval_days": 1
     }
   },
@@ -8544,11 +8544,11 @@
     "もらう|получать, давать (1-му лицу)": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 0,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 2
+      "right_all": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4
     }
   },
   "568": {
@@ -8577,11 +8577,11 @@
     "とうる|проехать, пройти": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 1,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 3
+      "right_all": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 5
     }
   },
   "865": {
@@ -8610,11 +8610,11 @@
     "おす|нажимать": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
+      "right": 2,
       "wrong_all": 1,
-      "right_all": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 3
+      "right_all": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 5
     }
   },
   "531": {
@@ -8654,10 +8654,10 @@
     "ざんねん|вызывающий сожаление": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
+      "right": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
       "wrong_all": 0
     }
   },
@@ -8676,10 +8676,10 @@
     "かぜ|простуда": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
+      "right": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
       "wrong_all": 0
     }
   },
@@ -8687,10 +8687,10 @@
     "は|зубы": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
+      "right": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
       "wrong_all": 0
     }
   },
@@ -8698,10 +8698,10 @@
     "きり|туман": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
+      "right": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
       "wrong_all": 0
     }
   },
@@ -8720,10 +8720,10 @@
     "ひま|свободное время": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
+      "right": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
       "wrong_all": 0
     }
   },
@@ -8764,22 +8764,22 @@
     "かぜをひく|простудиться": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 3,
+      "right": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 5,
       "wrong_all": 1,
-      "right_all": 1
+      "right_all": 2
     }
   },
   "569": {
     "とおり|улица": {
       "difficulty": "hard",
       "wrong": 0,
-      "right": 1,
-      "last_right": "18.02.2026",
+      "right": 2,
+      "last_right": "21.02.2026",
       "interval_days": 1,
       "wrong_all": 2,
-      "right_all": 1
+      "right_all": 2
     }
   },
   "538": {
@@ -8787,10 +8787,10 @@
       "difficulty": "normal",
       "wrong": 0,
       "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
-      "wrong_all": 0
+      "last_right": "21.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
+      "wrong_all": 1
     }
   },
   "247": {
@@ -8863,10 +8863,10 @@
     "まず|прежде всего, вначале, сначала, сперва": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
+      "right": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
       "wrong_all": 0
     }
   },
@@ -8917,12 +8917,12 @@
   "563": {
     "くわしい|подробный": {
       "difficulty": "hard",
-      "wrong": 3,
-      "right": 0,
-      "last_right": null,
+      "wrong": 0,
+      "right": 2,
+      "last_right": "21.02.2026",
       "interval_days": 1,
-      "wrong_all": 3,
-      "right_all": 0
+      "wrong_all": 4,
+      "right_all": 2
     }
   },
   "751": {
@@ -9094,10 +9094,10 @@
     "さくらんぼう|вишня": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
+      "right": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
       "wrong_all": 0
     }
   },
@@ -9169,13 +9169,13 @@
   },
   "304": {
     "しょうかい|представление, знакомство": {
-      "difficulty": "hard",
+      "difficulty": "normal",
       "wrong": 0,
-      "right": 2,
+      "right": 0,
       "last_right": "20.02.2026",
-      "interval_days": 1,
+      "interval_days": 2,
       "wrong_all": 4,
-      "right_all": 2
+      "right_all": 3
     }
   },
   "698": {
@@ -9248,10 +9248,10 @@
     "しりあい|знакомый": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
+      "right": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
       "wrong_all": 0
     }
   },
@@ -9270,10 +9270,10 @@
     "れいぞうこ|холодильник": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
+      "right": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
       "wrong_all": 0
     }
   },
@@ -9303,10 +9303,10 @@
     "にく|мясо": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
+      "right": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
       "wrong_all": 0
     }
   },
@@ -9369,10 +9369,10 @@
     "くも|облако": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
+      "right": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
       "wrong_all": 0
     }
   },
@@ -9422,13 +9422,13 @@
   },
   "466": {
     "せき|кашель": {
-      "difficulty": "hard",
+      "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 1,
+      "right": 0,
+      "last_right": "21.02.2026",
+      "interval_days": 2,
       "wrong_all": 2,
-      "right_all": 1
+      "right_all": 3
     }
   },
   "246": {
@@ -9457,10 +9457,10 @@
     "かんたん(な)|простой, легкий (задание легкое)": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
+      "right": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
       "wrong_all": 0
     }
   },
@@ -9488,13 +9488,13 @@
   },
   "426": {
     "きびしい|строгий": {
-      "difficulty": "hard",
-      "wrong": 3,
+      "difficulty": "normal",
+      "wrong": 0,
       "right": 0,
-      "last_right": null,
-      "interval_days": 1,
+      "last_right": "21.02.2026",
+      "interval_days": 2,
       "wrong_all": 3,
-      "right_all": 0
+      "right_all": 3
     }
   },
   "57": {
@@ -9534,10 +9534,10 @@
     "のど|горло": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
+      "right": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
       "wrong_all": 0
     }
   },
@@ -9579,21 +9579,21 @@
       "difficulty": "normal",
       "wrong": 0,
       "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
-      "wrong_all": 0
+      "last_right": "20.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
+      "wrong_all": 1
     }
   },
   "428": {
     "げんかん|прихожая": {
       "difficulty": "hard",
-      "wrong": 3,
-      "right": 0,
-      "last_right": null,
+      "wrong": 0,
+      "right": 1,
+      "last_right": "21.02.2026",
       "interval_days": 1,
-      "wrong_all": 3,
-      "right_all": 0
+      "wrong_all": 6,
+      "right_all": 2
     }
   },
   "3": {
@@ -9666,10 +9666,10 @@
     "しけん|экзамен": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
+      "right": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
       "wrong_all": 0
     }
   },
@@ -9688,10 +9688,10 @@
     "やっきょく|аптека": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
+      "right": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
       "wrong_all": 0
     }
   },
@@ -9699,10 +9699,10 @@
     "はれた|ясный": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
+      "right": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
       "wrong_all": 0
     }
   },
@@ -9721,10 +9721,10 @@
     "ただしい|правильный": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
+      "right": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
       "wrong_all": 0
     }
   },
@@ -9753,12 +9753,12 @@
   "573": {
     "おそい|тяжелый": {
       "difficulty": "hard",
-      "wrong": 3,
-      "right": 0,
-      "last_right": null,
+      "wrong": 0,
+      "right": 2,
+      "last_right": "21.02.2026",
       "interval_days": 1,
       "wrong_all": 3,
-      "right_all": 0
+      "right_all": 2
     }
   },
   "689": {
@@ -9865,10 +9865,10 @@
       "difficulty": "normal",
       "wrong": 0,
       "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
-      "wrong_all": 0
+      "last_right": "21.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
+      "wrong_all": 1
     }
   },
   "215": {
@@ -9897,10 +9897,10 @@
     "ふるさと|родные места, родина": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
+      "right": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
       "wrong_all": 0
     }
   },
@@ -9961,13 +9961,13 @@
   },
   "296": {
     "あつまり|собрание, вечер, вечеринка": {
-      "difficulty": "hard",
+      "difficulty": "normal",
       "wrong": 0,
-      "right": 2,
+      "right": 0,
       "last_right": "20.02.2026",
-      "interval_days": 1,
+      "interval_days": 2,
       "wrong_all": 2,
-      "right_all": 2
+      "right_all": 3
     }
   },
   "697": {
@@ -10073,10 +10073,10 @@
     "はやし|лес": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
+      "right": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
       "wrong_all": 0
     }
   },
@@ -10093,13 +10093,13 @@
   },
   "481": {
     "せっけん|мыло": {
-      "difficulty": "normal",
-      "wrong": 2,
-      "right": 0,
-      "last_right": null,
+      "difficulty": "hard",
+      "wrong": 0,
+      "right": 2,
+      "last_right": "21.02.2026",
       "interval_days": 1,
-      "wrong_all": 2,
-      "right_all": 0
+      "wrong_all": 3,
+      "right_all": 2
     }
   },
   "295": {
@@ -10172,21 +10172,21 @@
     "すずしい|прохладный": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "18.02.2026",
-      "interval_days": 3,
+      "right": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 5,
       "wrong_all": 1,
-      "right_all": 1
+      "right_all": 2
     }
   },
   "486": {
     "つめたい|холодный, прохладный": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
+      "right": 2,
+      "last_right": "20.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
       "wrong_all": 0
     }
   },
@@ -10194,10 +10194,10 @@
     "あじ|вкус": {
       "difficulty": "normal",
       "wrong": 0,
-      "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
+      "right": 2,
+      "last_right": "21.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
       "wrong_all": 0
     }
   },
@@ -10236,13 +10236,13 @@
   },
   "427": {
     "あいさつ|приветствие": {
-      "difficulty": "normal",
-      "wrong": 2,
-      "right": 0,
-      "last_right": null,
+      "difficulty": "hard",
+      "wrong": 0,
+      "right": 2,
+      "last_right": "21.02.2026",
       "interval_days": 1,
-      "wrong_all": 2,
-      "right_all": 0
+      "wrong_all": 5,
+      "right_all": 2
     }
   },
   "259": {
@@ -10283,10 +10283,10 @@
       "difficulty": "normal",
       "wrong": 0,
       "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
-      "wrong_all": 0
+      "last_right": "21.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
+      "wrong_all": 2
     }
   },
   "776": {
@@ -10371,10 +10371,10 @@
       "difficulty": "normal",
       "wrong": 0,
       "right": 1,
-      "last_right": "17.02.2026",
-      "interval_days": 2,
-      "right_all": 1,
-      "wrong_all": 0
+      "last_right": "21.02.2026",
+      "interval_days": 4,
+      "right_all": 2,
+      "wrong_all": 2
     }
   },
   "171": {
@@ -10390,13 +10390,13 @@
   },
   "546": {
     "こおり|лёд": {
-      "difficulty": "normal",
-      "wrong": 2,
-      "right": 0,
-      "last_right": null,
+      "difficulty": "hard",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "21.02.2026",
       "interval_days": 1,
-      "wrong_all": 2,
-      "right_all": 0
+      "wrong_all": 3,
+      "right_all": 1
     }
   },
   "864": {
