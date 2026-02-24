@@ -85,6 +85,15 @@
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0
+    },
+    "открытая галерея с двух или трех сторон японского дома|えんがわ": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
     }
   },
   "51": {
@@ -126,6 +135,15 @@
       "wrong": 0,
       "right": 1,
       "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "район|ちほう": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0
@@ -514,6 +532,15 @@
       "interval_days": 0,
       "wrong_all": 1,
       "right_all": 0
+    },
+    "алые осенние листья|もみじ": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
     }
   },
   "308": {
@@ -599,6 +626,24 @@
       "wrong": 0,
       "right": 1,
       "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "машина|自動車": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    },
+    "машина|じどうしゃ": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0
@@ -712,6 +757,15 @@
       "interval_days": 0,
       "wrong_all": 1,
       "right_all": 0
+    },
+    "багряный цвет (листвы)|こうよう": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
     }
   },
   "290": {
@@ -808,6 +862,15 @@
       "wrong": 0,
       "right": 1,
       "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "любование луной|つきみ": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0
@@ -1086,6 +1149,15 @@
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0
+    },
+    "4 сезона|しき": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
     }
   },
   "128": {
@@ -1123,6 +1195,15 @@
   },
   "203": {
     "行事|обряд, торжество": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    },
+    "обряд, торжество|ぎょうじ": {
       "difficulty": "normal",
       "wrong": 1,
       "right": 0,
@@ -1218,6 +1299,15 @@
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0
+    },
+    "ливень|たいう": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
     }
   },
   "113": {
@@ -1438,6 +1528,15 @@
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0
+    },
+    "достопримечательности|めいしょ": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
     }
   },
   "272": {
@@ -1485,7 +1584,7 @@
     }
   },
   "181": {
-    "うつり変わり|смена": {
+    "うつり変わり|смена (поэтично, постепенно)": {
       "difficulty": "normal",
       "wrong": 0,
       "right": 1,
@@ -1493,6 +1592,15 @@
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0
+    },
+    "смена (поэтично, постепенно)|うつりかわり": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
     }
   },
   "68": {
@@ -1603,6 +1711,15 @@
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0
+    },
+    "ярко красный|まっか(な)": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
     }
   },
   "168": {
@@ -1651,6 +1768,15 @@
   },
   "214": {
     "各自|каждый (человек)": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    },
+    "каждый (человек)|かくじ": {
       "difficulty": "normal",
       "wrong": 1,
       "right": 0,
@@ -1867,6 +1993,15 @@
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0
+    },
+    "обьяснять|せつめいする": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
     }
   },
   "195": {
@@ -1878,6 +2013,15 @@
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0
+    },
+    "континент|たいりく": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
     }
   },
   "18": {
@@ -1914,7 +2058,7 @@
     }
   },
   "202": {
-    "変化|изменение": {
+    "変化|изменение (нейтрально, научно, может резко)": {
       "difficulty": "normal",
       "wrong": 0,
       "right": 1,
@@ -1922,6 +2066,15 @@
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0
+    },
+    "изменение (нейтрально, научно, может резко)|へんか": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
     }
   },
   "336": {
@@ -1952,6 +2105,15 @@
       "wrong": 0,
       "right": 1,
       "last_right": "19.02.2026",
+      "interval_days": 4,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "тайфун|たいふう": {
+      "difficulty": "easy",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
       "interval_days": 4,
       "right_all": 1,
       "wrong_all": 0
@@ -2010,6 +2172,15 @@
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0
+    },
+    "юго восточный|なんとう": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
     }
   },
   "124": {
@@ -2051,6 +2222,15 @@
       "wrong": 0,
       "right": 1,
       "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "душный, знойный|むしあつい": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0
@@ -2123,7 +2303,7 @@
     }
   },
   "199": {
-    "市内|городской": {
+    "市内|городской (не прилагательное)": {
       "difficulty": "normal",
       "wrong": 0,
       "right": 1,
@@ -2131,6 +2311,15 @@
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0
+    },
+    "городской (не прилагательное)|しない": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
     }
   },
   "318": {
@@ -2263,6 +2452,15 @@
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0
+    },
+    "осеннее равноденствие|しゅうぶん": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
     }
   },
   "163": {
@@ -2329,6 +2527,15 @@
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0
+    },
+    "пейзаж|けしき": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
     }
   },
   "140": {
@@ -2560,6 +2767,15 @@
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0
+    },
+    "быть внимательным|きをつける": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
     }
   },
   "25": {
@@ -2593,6 +2809,15 @@
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0
+    },
+    "климат|きこう": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
     }
   },
   "150": {
@@ -2747,6 +2972,15 @@
       "interval_days": 0,
       "wrong_all": 1,
       "right_all": 0
+    },
+    "самый|いちばん": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
     }
   },
   "115": {
@@ -2766,6 +3000,15 @@
       "wrong": 0,
       "right": 1,
       "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "западная часть|せいぶ": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0
@@ -2901,6 +3144,15 @@
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0
+    },
+    "северо западный|ほくせい": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
     }
   },
   "182": {
@@ -2912,6 +3164,15 @@
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0
+    },
+    "весенне равноденствие|しゅんぶん": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
     }
   },
   "351": {
@@ -3011,6 +3272,15 @@
       "interval_days": 0,
       "wrong_all": 1,
       "right_all": 0
+    },
+    "природа (само собой, естественно)|しぜん": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
     }
   },
   "191": {
@@ -3019,6 +3289,15 @@
       "wrong": 0,
       "right": 1,
       "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "полная луна|まんげつ": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0
@@ -3052,6 +3331,146 @@
       "wrong": 0,
       "right": 1,
       "last_right": "19.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "213": {
+    "Тихий океан|太平洋": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    },
+    "Тихий океан|たいへいよう": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "太平洋|Тихий океан": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "197": {
+    "снежная баба|ゆきだるま": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    }
+  },
+  "205": {
+    "настроение|きもち": {
+      "difficulty": "normal",
+      "wrong": 1,
+      "right": 0,
+      "last_right": null,
+      "interval_days": 0,
+      "wrong_all": 1,
+      "right_all": 0
+    },
+    "気持ち|чувства, ощущение": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "212": {
+    "постепенно|だんだん": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "段々|постепенно": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "178": {
+    "сезон|きせつ": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "季節|сезон": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "185": {
+    "любование цветами|はなみ": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "花見|любование цветами": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    }
+  },
+  "200": {
+    "животное|どうぶつ": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
+      "interval_days": 2,
+      "right_all": 1,
+      "wrong_all": 0
+    },
+    "どう物|животное": {
+      "difficulty": "normal",
+      "wrong": 0,
+      "right": 1,
+      "last_right": "24.02.2026",
       "interval_days": 2,
       "right_all": 1,
       "wrong_all": 0

@@ -18,9 +18,10 @@ DEFAULT_ROWS = 1000
 EXCEL_PATH = 'Jp.xlsx'
 # Размер шрифта для столбцов: имя столбца -> размер (остальные — системный по умолчанию)
 COLUMN_FONT_SIZES = {'Kanji': 14,
-                    'On': 12, 
+                    'On': 12,
                     'Kun': 12,
-                    'Read': 12 }
+                    'Read': 12,
+                    }
 
 
 def _ensure_num_column(df):
@@ -689,7 +690,10 @@ class SheetTableWidget(QWidget):
         Проверки перед сохранением. Возвращает (True, None) если всё ок, иначе (False, str) — сообщение об ошибке.
         Для всех листов кроме Dictio: если в строке хоть одна ячейка заполнена, вся строка должна быть заполнена.
         Для Dictio: особые правила (Lesson — целое число; Trans — обязателен; Kanji/On/Kun — хотя бы один).
+        Столбец Mnem не обязателен для заполнения (для Dictio и Words) — при проверке пропускаем.
         """
+        # Столбцы, которые не обязательны при проверке «вся строка заполнена»
+        optional_columns = {'Mnem'}
         for r, row_dict in enumerate(data):
             # Во всех листах: если столбец Lesson заполнен — только целое число
             if self._has_lesson:
@@ -700,8 +704,9 @@ class SheetTableWidget(QWidget):
                         '(без знаков препинания и дробной части).'
                     )
             if self.sheet_name != 'Dictio':
-                # Для не-Dictio: любая частично заполненная строка — ошибка
-                vals = [str(row_dict.get(col, '')).strip() for col in self._display_columns]
+                # Для не-Dictio (в т.ч. Words): любая частично заполненная строка — ошибка; Mnem не обязателен
+                cols_to_check = [c for c in self._display_columns if c not in optional_columns]
+                vals = [str(row_dict.get(col, '')).strip() for col in cols_to_check]
                 any_filled = any(vals)
                 all_filled = all(vals)
                 if any_filled and not all_filled:
@@ -775,6 +780,7 @@ class Table_window(QTabWidget):
 
         for sheet_name in self.sheet_names:
             df = self.xl.parse(sheet_name)
+            df.columns = df.columns.astype(str).str.strip()
             df = _ensure_num_column(df.copy())
             w = SheetTableWidget(sheet_name, df, self)
             w._connect_filter_signals()

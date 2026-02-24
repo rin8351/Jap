@@ -17,9 +17,16 @@ class Jap_app(QtWidgets.QMainWindow):
         
         xl = ExcelFile('Jp.xlsx')
         words = xl.parse('Words')
+        words.columns = words.columns.astype(str).str.strip()
         if 'Lesson' in words.columns:
             words = words[words['Lesson'].notna()]
         dictionar = xl.parse('Dictio')
+        dictionar.columns = dictionar.columns.astype(str).str.strip()
+        if 'Kanji' not in dictionar.columns:
+            raise KeyError(
+                f"В листе 'Dictio' не найден столбец 'Kanji'. "
+                f"Столбцы в файле: {list(dictionar.columns)}"
+            )
         alls_w = words.reset_index().to_dict('records')
         alls_d = dictionar.reset_index().to_dict('records')
         self.alur=alls_d
@@ -32,20 +39,23 @@ class Jap_app(QtWidgets.QMainWindow):
                     'ご', 'を', 'ろ', 'よ', 'も', 'ほ', 'の', 'と', 'そ', 'こ', 'お']
         
         for i in alls_d:
-            st_full = str(i['Kanji'])
+            st_full = str(i.get('Kanji', ''))
+            if not st_full:
+                continue
             st = st_full[0]
             if st != 0 and st != '0' and st not in alls_d2 and st not in hiragana:
                 alls_d2.append(st)
         alls_d3 = []
         for i in alls_d:
             st2 = 5
-            st = str(i['Kanji'])
+            st = str(i.get('Kanji', ''))
+            sush = i.get('Sush', '')
             for j in range(len(st)):
-                if st[j] in hiragana and (i['Sush'] == 'Глаг' and i['Sush'] == 'Прил'):
+                if st[j] in hiragana and (sush == 'Глаг' and sush == 'Прил'):
                     st2 = 0
                     break
             if st == 0 or st == '0' or st2 == 0:
-                alls_d3.append(i['Trans'])
+                alls_d3.append(i.get('Trans', ''))
 
         # Устанавливаем прозрачный фон
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)

@@ -40,6 +40,7 @@ class Rand_window(QMainWindow):
         self.xl = ExcelFile('Jp.xlsx')
         self.sheet_names = self.xl.sheet_names
         self.df_w = self.xl.parse('Words')
+        self.df_w.columns = self.df_w.columns.astype(str).str.strip()
         # Очистка self.df_w от элементов, у которых 'Lesson' == nan
         if 'Lesson' in self.df_w.columns:
             self.df_w = self.df_w[self.df_w['Lesson'].notna()]
@@ -67,6 +68,7 @@ class Rand_window(QMainWindow):
     def load_sheet_data(self, sheet_name):
         """Загружает данные выбранного листа и обновляет поля уроков."""
         self.df = self.xl.parse(sheet_name)
+        self.df.columns = self.df.columns.astype(str).str.strip()
         self.alls_dict = self.df.reset_index().to_dict('records')
         # Только числовые уроки, без nan; отображаем как целые (40, не 40.0)
         valid = []
@@ -106,7 +108,8 @@ class Rand_window(QMainWindow):
         self.menu_button.setMenu(self.context_menu)
         for sheet_name in self.sheet_names:
             df = self.xl.parse(sheet_name)
-            columns = [col for col in df.columns if col not in ['Lesson', 'Num','Sush']]
+            df.columns = df.columns.astype(str).str.strip()
+            columns = [col for col in df.columns if col not in ['Lesson', 'Num','Sush', 'Mnem']]
             self.sheets_dict[sheet_name] = columns
             action = QAction(sheet_name, self)
             action.triggered.connect(lambda checked, sheet_name=sheet_name: self.on_sheet_selected(sheet_name))
@@ -273,6 +276,7 @@ class Rand_window(QMainWindow):
 
     def get_filtered_columns(self,xl, sheet_name):
         sheet = xl.parse(sheet_name)
+        sheet.columns = sheet.columns.astype(str).str.strip()
         columns = list(sheet.columns)
         excluded_columns = ['Lesson', 'Num','Sush', 'Mnem']
         return [col for col in columns if col not in excluded_columns]
@@ -373,6 +377,7 @@ class Rand_window(QMainWindow):
             else:
                 self.lb_err.setText('')
                 self.df2 = self.xl.parse(self.current_sheet)
+                self.df2.columns = self.df2.columns.astype(str).str.strip()
                 if 'Lesson' in self.df2.columns:
                     self.df2 = self.df2[self.df2['Lesson'].notna()]
                 self.alls  = self.df2.reset_index().to_dict('records')
@@ -793,16 +798,15 @@ class Rand_window(QMainWindow):
             self.name_of_difficulty.setText(f'Сложность: {difficulty}')
             if len(self.property_choose) > 1 and not getattr(self, 'all_answers_variant', False):
                 self.part_of_speech.setText(f'Часть речи: {self.current_word.get("Sush", "")}')
-            if self.current_sheet=='Dictio' and self.current_column=='Trans':
-                for i in self.alls:
-                    if cell_has_value(i.get('Mnem')):
-                        if i.get('Trans') == self.current_word['Trans']:
-                            self.mnemonic_text.setText('есть мнемоника')
-                            self.mnemonic_text.setToolTip(str(i['Mnem']))
-                            break
-                    else:
-                        self.mnemonic_text.setText('нет мнемоники')
-                        self.mnemonic_text.setToolTip('')
+            for i in self.alls:
+                if cell_has_value(i.get('Mnem')):
+                    if i.get('Trans') == self.current_word['Trans']:
+                        self.mnemonic_text.setText('есть мнемоника')
+                        self.mnemonic_text.setToolTip(str(i['Mnem']))
+                        break
+                else:
+                    self.mnemonic_text.setText('')
+                    self.mnemonic_text.setToolTip('')
             self.past_word = self.current_word
             t = f'Количество слов= {len(self.alls)}'
             self.label_total.setText(t)
