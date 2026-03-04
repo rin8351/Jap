@@ -3,7 +3,7 @@ from Grammar.dop_functions import *
 from Grammar.fill_dates import *
 from Grammar.fill_numbers import *
 
-print( trying_type())
+print(service_particle_toiu())
 
 #glag_im_doing
 
