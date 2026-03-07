@@ -29,7 +29,29 @@ def cell_has_value(val):
         return False
     return True
 
+KEY_MAP = {'kanji': 'Kanji', 'on': 'On', 'kun': 'Kun', 'trans': 'Trans'}
 
+def merge_by_column(raw_alls, column, test):
+    """
+    Объединяет словари в raw_alls по уникальным значениям column.
+    Значения test из повторяющихся строк склеиваются через запятую.
+    column и test: 'kanji', 'on', 'kun', 'trans'.
+    """
+    col_key = KEY_MAP.get(column.lower(), column)
+    test_key = KEY_MAP.get(test.lower(), test)
+    seen = {}
+    for d in raw_alls:
+        col_val = d.get(col_key)
+        if col_val not in seen:
+            seen[col_val] = {**d, test_key: [d.get(test_key, '') or '']}
+        else:
+            seen[col_val][test_key].append(d.get(test_key, '') or '')
+    result = []
+    for merged in seen.values():
+        merged = merged.copy()
+        merged[test_key] = ', '.join(v for v in merged[test_key] if v)
+        result.append(merged)
+    return result
 
 class BackgroundScrollArea(QScrollArea):
     def __init__(self, background_image_path, *args, **kwargs):

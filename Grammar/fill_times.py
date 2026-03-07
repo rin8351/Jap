@@ -10,6 +10,7 @@ def lists_words_times():
     sp.append(two())
     sp.append(took_time_to_finish())
     sp.append(finished_reading_time_ago())
+    sp.append(long_ago_recently())
     sp.append(already_reading_for_duration())
     sp.append(started_years_ago_and_still())
     sp.append(will_start_reading_soon())
@@ -203,6 +204,19 @@ toki_habit_adverb = {
     'いつも': {'hir': 'いつも', 'ru': 'всегда'},
 }
 
+# "давно" / "недавно" и похожие формулировки (относительная удалённость во времени)
+# 昔 — обычная речь ("давно, раньше"); 昔々 — сказочное "давным-давно"
+time_ago_recently = {
+    '昔': {'hir': 'むかし', 'ru': 'давно', 'ru_verb': 'читала'},
+    'ずっと前に': {'hir': 'ずっとまえに', 'ru': 'давно', 'ru_verb': 'прочитала'},
+    '大昔': {'hir': 'おおむかし', 'ru': 'очень давно', 'ru_verb': 'читала'},
+    '最近': {'hir': 'さいきん', 'ru': 'недавно', 'ru_verb': 'прочитала'},
+    'この間': {'hir': 'このあいだ', 'ru': 'на днях', 'ru_verb': 'прочитала'},
+    '先日': {'hir': 'せんじつ', 'ru': 'на днях', 'ru_verb': 'прочитала'},
+    'つい最近': {'hir': 'ついさいきん', 'ru': 'совсем недавно', 'ru_verb': 'прочитала'},
+    'この前': {'hir': 'このまえ', 'ru': 'недавно', 'ru_verb': 'прочитала'},
+}
+
 
 def one():
     # Регулярность: "по понедельникам" / "каждый понедельник"
@@ -282,6 +296,17 @@ def finished_reading_time_ago():
     hir = ''.join([dur_hir, gurai_hir, mae_hir, 'わたし', 'は', 'ほん', 'を', 'よみあえました', '。'])
     rus = ' '.join([dur_ru, 'назад', 'я', 'закончила', 'читать', 'книгу', '(завершение в прошлом)'])
     return jap, hir, rus, finished_reading_time_ago.__name__
+
+
+def long_ago_recently():
+    # "давно / недавно / на днях" и похожие: 昔、最近、この間、先日、つい最近...
+    expr = ran(time_ago_recently)
+    e = time_ago_recently[expr]
+    # 昔/最近 + 本を読みました (прошедшее время)
+    jap = ''.join([expr, '、', '私', 'は', '本', 'を', '読みました', '。'])
+    hir = ''.join([e['hir'], '、', 'わたし', 'は', 'ほん', 'を', 'よみました', '。'])
+    rus = ' '.join([e['ru'], 'я', e['ru_verb'], 'книгу', '(давно/недавно/на днях)'])
+    return jap, hir, rus, long_ago_recently.__name__
 
 
 def already_reading_for_duration():
