@@ -3,7 +3,7 @@
 SRS-статистика для теста японских слов.
 Хранение в SQLite (Jp.db). Функции с суффиксом _db работают с БД.
 """
-
+import sqlite3
 from datetime import datetime, date
 import random
 
