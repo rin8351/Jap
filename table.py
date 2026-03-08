@@ -22,8 +22,8 @@ SUSH_OPTIONS = ['Сущ', 'Прил', 'Глаг', 'Нар']
 DB_PATH = 'Jp.db'
 EXCEL_PATH = 'Jp.xlsx'
 COLUMN_FONT_SIZES = {'Kanji': 14, 'On': 12, 'Kun': 12, 'Read': 12}
-# Порядок вкладок: сначала листы из этого списка, остальные — после (в исходном порядке)
-SHEET_DISPLAY_ORDER = ['Dictio', 'Words']
+# Порядок вкладок и список таблиц для отображения (только эти таблицы показываются)
+SHEET_DISPLAY_ORDER = ['Dictio', 'Words', 'Frazes', 'Name', 'Vurd_kanji', 'Vurd_words']
 
 
 def _ensure_num_column(df):
@@ -41,6 +41,82 @@ def _sanitize_table_name(sheet_name):
 def _quote_ident(name):
     """Экранирование имени столбца для SQL."""
     return '"' + str(name).replace('"', '""') + '"'
+
+
+# --- Синхронизация Trans, Kanji, Kun в таблицы статистики (dictio_*, words_*) ---
+
+# Столбцы, которые синхронизируем; в именах таблиц статистики — в нижнем регистре (trans, kanji, kun).
+_SYNC_COLUMNS = ('Trans', 'Kanji', 'Kun')
+
+
+def _get_stats_tables_for_column(db, column_in_name):
+    """
+    Возвращает список (table_name, 'value'|'answer') для таблиц статистики,
+    в названии которых есть column_in_name (trans, kanji, kun).
+    Если имя таблицы prefix_COLUMN_* — столбец в value, иначе prefix_*_COLUMN — в answer.
+    """
+    q = QSqlQuery(db)
+    # column_in_name только 'trans'/'kanji'/'kun' из _SYNC_COLUMNS — безопасно подставлять
+    pattern = f'%{column_in_name}%'
+    sql = (
+        "SELECT name FROM sqlite_master WHERE type='table' AND "
+        f"((name LIKE 'dictio_%' AND name LIKE '{pattern}') OR (name LIKE 'words_%' AND name LIKE '{pattern}'))"
+    )
+    if not q.exec_(sql):
+        return []
+    result = []
+    while q.next():
+        name = q.value(0)
+        if name is None:
+            continue
+        name_lower = str(name).lower()
+        col_lower = column_in_name.lower()
+        if name_lower.startswith('dictio_' + col_lower + '_') or name_lower.startswith('words_' + col_lower + '_'):
+            result.append((name, 'value'))
+        else:
+            result.append((name, 'answer'))
+    return result
+
+
+def _create_sync_triggers_for_column(db, source_table, column_name, stats_list, q):
+    """Создаёт один триггер: при UPDATE столбца column_name в source_table обновляет stats_list по Num."""
+    if not stats_list:
+        return
+    col_lower = column_name.lower()
+    trigger_name = f'{source_table.lower()}_after_update_{col_lower}'
+    q.exec_(f'DROP TRIGGER IF EXISTS {_quote_ident(trigger_name)}')
+    updates = []
+    for stat_table, stat_col in stats_list:
+        qcol = _quote_ident(stat_col)
+        qtable = _quote_ident(stat_table)
+        updates.append(
+            f'UPDATE {qtable} SET {qcol} = NEW.{_quote_ident(column_name)} WHERE num = CAST(NEW.Num AS TEXT)'
+        )
+    body = '; '.join(updates)
+    sql = (
+        f'CREATE TRIGGER {_quote_ident(trigger_name)} '
+        f'AFTER UPDATE OF {_quote_ident(column_name)} ON {_quote_ident(source_table)} '
+        f'FOR EACH ROW BEGIN {body}; END'
+    )
+    if not q.exec_(sql):
+        table_log('SYNC_TRIGGER', error=f'{trigger_name}: {q.lastError().text()}')
+
+
+def _create_sync_trans_triggers(db):
+    """
+    Создаёт триггеры на Dictio и Words: при UPDATE столбцов Trans, Kanji, Kun
+    обновляются соответствующие value/answer в таблицах статистики по Num.
+    """
+    if not db or not db.isOpen():
+        return
+    q = QSqlQuery(db)
+    for column in _SYNC_COLUMNS:
+        col_lower = column.lower()
+        tables = _get_stats_tables_for_column(db, col_lower)
+        dictio_tables = [(t, c) for t, c in tables if str(t).lower().startswith('dictio_')]
+        words_tables = [(t, c) for t, c in tables if str(t).lower().startswith('words_')]
+        for source_table, stats_list in [('Dictio', dictio_tables), ('Words', words_tables)]:
+            _create_sync_triggers_for_column(db, source_table, column, stats_list, q)
 
 
 # --- Инициализация БД ---
@@ -93,6 +169,7 @@ def init_db():
     q.exec_("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")
     has_tables = q.next()
     if has_tables:
+        _create_sync_trans_triggers(db)
         return True
     # Пустая БД: создаём только структуру таблиц (без импорта данных из Excel)
     try:
@@ -118,6 +195,7 @@ def init_db():
         for table_name, columns in _DEFAULT_SCHEMA.items():
             if not _create_empty_table(q, table_name, columns):
                 table_log('DB_INIT', error=f'CREATE TABLE {table_name}: {q.lastError().text()}')
+    _create_sync_trans_triggers(db)
     return True
 
 
@@ -135,13 +213,9 @@ def get_sheet_names():
 
 
 def get_sheet_names_for_display():
-    """Список имён листов в порядке отображения вкладок (см. SHEET_DISPLAY_ORDER)."""
+    """Список имён листов в порядке отображения вкладок. Показываются только таблицы из SHEET_DISPLAY_ORDER."""
     names = get_sheet_names()
-    ordered = [n for n in SHEET_DISPLAY_ORDER if n in names]
-    for n in names:
-        if n not in SHEET_DISPLAY_ORDER:
-            ordered.append(n)
-    return ordered
+    return [n for n in SHEET_DISPLAY_ORDER if n in names]
 
 
 def get_table_columns(table_name):
