@@ -3,7 +3,7 @@ from Grammar.dop_functions import *
 from Grammar.fill_dates import *
 from Grammar.fill_numbers import *
 
-print(service_particle_toiu())
+print(passive_opportunity())
 
 #glag_im_doing
 

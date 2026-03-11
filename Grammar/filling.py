@@ -2699,19 +2699,19 @@ def passive():
 
 def passive_opportunity():
     print('passive_opportunity')
-    g = Glagols('glag_passive_eba', 'choose', ['accusative'])
+    g = Glagols('glag_verb_stem', 'choose', ['accusative'])
     (glag_jap, glag_hir, glag_rus, jap_podl, jap_podl_hir, jap_podl_rus,
         padez, padez_rus, rand_glag) = g.main()
-    podl1, podl1_hir, podl1_rus = who_f('end_family3', 'end_know3', 'suff_no3')
+    podl1, podl1_hir, podl1_rus = who_f('family', 'know', 'suff_no')
     form = a['glag_form'][glag_jap][1]
     if glag_jap in a['glagol_2_conjugation']:
         copula = 'られます'
     else:
         copula = 'れます'
     jap_podl_rus = a['glag_accusative_passive'][glag_jap][jap_podl]
-    jap = [jap_podl, 'は', podl1, 'が', glag_jap, form, copula]
-    hir = ''.join([jap_podl_hir, 'は', podl1_hir, 'が', glag_hir, form, copula])
-    rus = ' '.join([jap_podl_rus, glag_rus, podl1_rus, '(письменная форма. акцент на явлении, а не на человеке)'])
+    jap = [podl1, 'は', jap_podl , 'が', glag_jap, form, copula]
+    hir = ''.join([podl1_hir , 'は', jap_podl_hir, 'が', glag_hir, form, copula])
+    rus = ' '.join([podl1_rus, 'может', glag_rus, jap_podl_rus, '(пассив)'])
     jap = ''.join(jap)
     return jap, hir, rus, passive_opportunity.__name__
 
