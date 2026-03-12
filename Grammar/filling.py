@@ -2702,7 +2702,7 @@ def passive_opportunity():
     g = Glagols('glag_verb_stem', 'choose', ['accusative'])
     (glag_jap, glag_hir, glag_rus, jap_podl, jap_podl_hir, jap_podl_rus,
         padez, padez_rus, rand_glag) = g.main()
-    podl1, podl1_hir, podl1_rus = who_f('family', 'know', 'suff_no')
+    podl1, podl1_hir, podl1_rus = who_f('family', 'know_people', 'suff_no')
     form = a['glag_form'][glag_jap][1]
     if glag_jap in a['glagol_2_conjugation']:
         copula = 'られます'
