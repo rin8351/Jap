@@ -169,6 +169,60 @@ def filter_items_for_test(items, stats=None, question=None, answer_column=None, 
     return result
 
 
+def filter_items_for_repeat(items, stats=None, question=None, answer_column=None, answer_columns=None):
+    """
+    Режим повтора: включаем только элементы со статистикой, у которых difficulty ∈ {normal, easy},
+    и которые проходят SRS-проверку (wrong > 0 или наступила дата по интервалу).
+
+    Важно:
+    - Новые элементы (без записи в stats) исключаются.
+    - hard исключаются полностью.
+    - При нескольких колонках ответа: элемент включается, если хотя бы по одной выбранной колонке
+      есть запись в stats (normal/easy) и она qualifies по _stat_qualifies_for_test.
+    - Дубликаты по Num отбрасываются (остаётся первое вхождение).
+    """
+    today = date.today()
+    if stats is None:
+        stats = {}
+    columns = answer_columns if answer_columns is not None else ([answer_column] if answer_column is not None else [])
+    if not columns:
+        return []
+
+    # Убираем дубликаты по Num — оставляем первое вхождение каждой карточки
+    seen_num = set()
+    items_unique = []
+    for item in items:
+        num = item.get("Num")
+        if num not in seen_num:
+            seen_num.add(num)
+            items_unique.append(item)
+    items = items_unique
+
+    result = []
+    for item in items:
+        include = False
+        for col in columns:
+            val = item.get(col, "")
+            if not str(val).strip() or str(val) == "0":
+                continue
+            num_key, item_key = get_item_key(item, question, col)
+            by_num = stats.get(num_key, {})
+            stat = by_num.get(item_key)
+            if not stat:
+                continue  # новые исключаем
+            difficulty = stat.get("difficulty", "normal")
+            if difficulty == "hard":
+                continue
+            qual, _ext = _stat_qualifies_for_test(stat, today)
+            if qual:
+                include = True
+                break
+        if include:
+            result.append(item)
+
+    return result
+
+
 def record_correct(stats, item, question=None, answer_column=None):
     """
     Учитывает правильный ответ: сбрасывает wrong, обновляет last_right, right_all, right и interval_days.

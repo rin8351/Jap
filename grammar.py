@@ -340,7 +340,6 @@ class GrammarWindow(QMainWindow):
                 self.current_question = choose_question_by_least_used(self.spisok_all, self.test_style)
                 if self.current_question is None:
                     self.current_question = random.choice(self.spisok_all)
-                increment_function_stats(get_function_key(self.current_question, self.test_style))
                 if self.type_test == 'japanesse':
                     self.label_question.setText(self.current_question[0])
                     self.current_answer = self.current_question[2]
@@ -367,6 +366,7 @@ class GrammarWindow(QMainWindow):
                 self.label_hiragana.setText(self.current_question[1])
             else:
                 self.label_hiragana.setText('')
+            increment_function_stats(get_function_key(self.current_question, self.test_style))
             self.showing_answer= True
             self.label_hiragana.setText(self.current_question[1])
             self.label_answer.setText(self.current_answer)

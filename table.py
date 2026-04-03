@@ -129,6 +129,9 @@ def get_connection():
         db.setDatabaseName(DB_PATH)
         if not db.open():
             return None
+        # Ожидание блокировки до 10 с при одновременной работе с jap_wind_test (sqlite3)
+        q = QSqlQuery(db)
+        q.exec_('PRAGMA busy_timeout=10000')
     db = QSqlDatabase.database(name)
     return db if db.isOpen() else None
 
@@ -166,6 +169,8 @@ def init_db():
     if not db or not db.isOpen():
         return False
     q = QSqlQuery(db)
+    # WAL: меньше блокировок при одновременной работе table.py и jap_wind_test
+    q.exec_('PRAGMA journal_mode=WAL')
     q.exec_("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")
     has_tables = q.next()
     if has_tables:

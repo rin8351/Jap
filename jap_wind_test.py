@@ -54,6 +54,19 @@ class Rand_window(QMainWindow):
         """При использовании БД статистика сохраняется сразу в record_*_db; сюда не попадаем."""
         pass
 
+    def _normalize_lesson_column(self, df):
+        """
+        Приводит Lesson к числу для любого листа.
+        Все нечисловые/пустые значения удаляются, чтобы фильтры по диапазону не падали.
+        """
+        if 'Lesson' not in df.columns:
+            return df
+        df = df.copy()
+        df['Lesson'] = pd.to_numeric(df['Lesson'], errors='coerce')
+        df = df[df['Lesson'].notna()]
+        df['Lesson'] = df['Lesson'].astype(int)
+        return df
+
     def data_from_xls(self):
         """Загрузка данных из SQLite (Jp.db). Каждый лист Excel соответствует таблице."""
         self.db_path = os.path.join(os.path.dirname(__file__), 'Jp.db')
@@ -69,13 +82,12 @@ class Rand_window(QMainWindow):
                 f'SELECT * FROM "{self.sheet_names[0]}"', self.conn
             )
         self.df_w.columns = self.df_w.columns.astype(str).str.strip()
-        # Очистка self.df_w от элементов, у которых 'Lesson' == nan
-        if 'Lesson' in self.df_w.columns:
-            self.df_w = self.df_w[self.df_w['Lesson'].notna()]
+        self.df_w = self._normalize_lesson_column(self.df_w)
         self.alls_words = self.df_w.reset_index().to_dict('records')
 
 
     def options_for_zero(self):
+        self.value_of_test = 0
         self.shet_know = 0 # счетчик знаю или не знаю слово
         self.known_clicked = False
         self.per_element_clicked = False  # нажата кнопка по одному варианту (таблица)
@@ -97,6 +109,7 @@ class Rand_window(QMainWindow):
         """Загружает данные выбранного листа (таблицы БД) и обновляет поля уроков."""
         self.df = pd.read_sql(f'SELECT * FROM "{sheet_name}"', self.conn)
         self.df.columns = self.df.columns.astype(str).str.strip()
+        self.df = self._normalize_lesson_column(self.df)
         self.alls_dict = self.df.reset_index().to_dict('records')
         # Только числовые уроки, без nan; отображаем как целые (40, не 40.0)
         valid = []
@@ -149,10 +162,13 @@ class Rand_window(QMainWindow):
         self.frame_up = QFrame()
         nbur = self.len_of_words
         self.label_type_of_test = QLabel('Выберите тип теста')
+        self.chec_repeat_mode = QCheckBox('Режим повтора (только normal + easy)')
+        self.chec_repeat_mode.setStyleSheet(st.checkbox)
         self.chec_type_of_test = QCheckBox ('Тестовый режим с 4-мя вар. ответов,\n без статистики')
         self.chec_all_answers = QCheckBox('Вариант со всеми ответами')
         self.chec_all_answers.setStyleSheet(st.checkbox)
         self.chec_type_of_test.stateChanged.connect(self._on_type_of_test_changed)
+        self.chec_repeat_mode.stateChanged.connect(self._on_repeat_mode_changed)
         self.lb_start = QLabel('Первый урок')
         self.ent_less = QLineEdit(text='1')
         self.ent_less.setStyleSheet(st.but_line_check)
@@ -187,6 +203,7 @@ class Rand_window(QMainWindow):
         self.choose_lang.setVisible(False)
         layout_frame_up = QVBoxLayout()
         layout_frame_up.addWidget(self.label_type_of_test)
+        layout_frame_up.addWidget(self.chec_repeat_mode)
         layout_frame_up.addWidget(self.chec_type_of_test)
         layout_frame_up.addWidget(self.chec_all_answers)
         layout_frame_up.addWidget(self.lb_start)
@@ -361,6 +378,14 @@ class Rand_window(QMainWindow):
         else:
             self.chec_all_answers.setEnabled(True)
 
+    def _on_repeat_mode_changed(self):
+        """При включении режима повтора отключаем тестовый режим (4 варианта, без статистики)."""
+        if self.chec_repeat_mode.isChecked():
+            self.chec_type_of_test.setChecked(False)
+            self.chec_type_of_test.setEnabled(False)
+        else:
+            self.chec_type_of_test.setEnabled(True)
+
     def checks(self):
         if self.chec_type_of_test.isChecked():
             self.value_of_test = 1 # Тестовый режим с 4-мя вариантами ответов
@@ -389,8 +414,7 @@ class Rand_window(QMainWindow):
                 self.lb_err.setText('')
                 self.df2 = pd.read_sql(f'SELECT * FROM "{self.current_sheet}"', self.conn)
                 self.df2.columns = self.df2.columns.astype(str).str.strip()
-                if 'Lesson' in self.df2.columns:
-                    self.df2 = self.df2[self.df2['Lesson'].notna()]
+                self.df2 = self._normalize_lesson_column(self.df2)
                 self.alls  = self.df2.reset_index().to_dict('records')
                 self.lb_err.setText('')
                 if self.choose_one_lesson.currentText() =='Выбрать один урок':
@@ -451,7 +475,12 @@ class Rand_window(QMainWindow):
         self.stats_tables = self._get_stats_tables()
         self.stats_tables_dict = dict(self.stats_tables)  # col -> table_name
         self.stats = stat.load_stats_from_db(self.conn, self.stats_tables)
-        if not self.all_test_without_filter.isChecked():
+        if getattr(self, "chec_repeat_mode", None) is not None and self.chec_repeat_mode.isChecked():
+            self.alls = stat.filter_items_for_repeat(
+                self.alls, self.stats, self.current_column,
+                answer_columns=list(self.test_for_answer) if self.test_for_answer else None
+            )
+        elif not self.all_test_without_filter.isChecked():
             self.alls = stat.filter_items_for_test(
                 self.alls, self.stats, self.current_column,
                 answer_columns=list(self.test_for_answer) if self.test_for_answer else None

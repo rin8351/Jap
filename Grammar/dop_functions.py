@@ -192,3 +192,10 @@ def rus_end_num(rand_num,rand_obj): # функция для выбора око�
     else:
         end_num = a['end_small_5'][rand_obj]
     return end_num
+
+# while True:
+#     g2 = Glagols('glag_im_doing', 'choose', ['not_trans_slow'])
+#     (glag_jap2, glag_hir2, glag_rus2, jap_podl2, jap_podl_hir2,
+#         jap_podl_rus2, padez2, padez_rus2, rand_glag2) = g2.main()
+#     if glag_jap2 != glag_jap1:
+#         break
