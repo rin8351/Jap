@@ -403,6 +403,7 @@ class SheetTableWidget(QWidget):
         self._model.setTable(self._table_name)
         self._model.setEditStrategy(QSqlTableModel.OnManualSubmit)
         self._model.select()
+        self._model.dataChanged.connect(self._on_model_data_changed)
         self._fetch_all()
         self._proxy = HighlightProxyModel(self)
         self._proxy.setSourceModel(self._model)
@@ -507,7 +508,7 @@ class SheetTableWidget(QWidget):
         return ' AND '.join(conditions)
 
     def _apply_filters(self):
-        self._model.submitAll()
+        self._submit_all_with_validation(show_message=False)
         where = self._build_where()
         self._model.setFilter(where)
         self._do_select()
@@ -523,7 +524,7 @@ class SheetTableWidget(QWidget):
             self._sort_column = col
             self._sort_ascending = True
         order = Qt.AscendingOrder if self._sort_ascending else Qt.DescendingOrder
-        self._model.submitAll()
+        self._submit_all_with_validation(show_message=False)
         self._model.setSort(logical_index, order)
         self._do_select()
         table_log('SORT', sheet=self.sheet_name, column=col, ascending=self._sort_ascending)
@@ -571,28 +572,137 @@ class SheetTableWidget(QWidget):
         if state is not None:
             self._restore_view_state(state)
 
-    def _save_to_db(self):
+    @staticmethod
+    def _is_empty_value(value):
+        if value is None:
+            return True
+        return str(value).strip() == ''
+
+    def _row_has_meaningful_data(self, row):
+        """Есть ли в строке содержимое (кроме Num/Lesson; Sush='Сущ' считаем дефолтом)."""
+        for col_idx, col_name in enumerate(self._columns):
+            if col_name in ('Num', 'Lesson'):
+                continue
+            idx = self._model.index(row, col_idx)
+            value = self._model.data(idx, Qt.EditRole)
+            text = '' if value is None else str(value).strip()
+            if col_name == 'Sush' and text == 'Сущ':
+                continue
+            if text != '':
+                return True
+        return False
+
+    def _validate_required_lesson(self, show_message=True):
+        """
+        Проверка: если строка содержит данные, Lesson обязателен.
+        Возвращает (ok: bool, invalid_rows: list[(model_row, row_num)]).
+        """
+        if 'Lesson' not in self._columns:
+            return True, []
+        lesson_idx = self._columns.index('Lesson')
+        num_idx = self._columns.index('Num') if 'Num' in self._columns else -1
+        invalid_rows = []
+        for row in range(self._model.rowCount()):
+            if not self._row_has_meaningful_data(row):
+                continue
+            lesson_value = self._model.data(self._model.index(row, lesson_idx), Qt.EditRole)
+            if self._is_empty_value(lesson_value):
+                row_num = None
+                if num_idx >= 0:
+                    row_num = self._model.data(self._model.index(row, num_idx), Qt.DisplayRole)
+                invalid_rows.append((row, row_num))
+        if invalid_rows and show_message:
+            shown = [str(rn) for _, rn in invalid_rows[:5] if rn not in (None, '')]
+            if shown:
+                details = ', '.join(shown)
+                suffix = ' ...' if len(invalid_rows) > 5 else ''
+                msg = f'Заполните Lesson для строк Num: {details}{suffix}'
+            else:
+                details = ', '.join(str(r + 1) for r, _ in invalid_rows[:5])
+                suffix = ' ...' if len(invalid_rows) > 5 else ''
+                msg = f'Заполните Lesson для строк: {details}{suffix}'
+            QMessageBox.warning(self, 'Проверка данных', msg)
+        return len(invalid_rows) == 0, invalid_rows
+
+    def _submit_all_with_validation(self, show_message=True):
+        """submitAll() с проверкой обязательного Lesson."""
+        ok, invalid_rows = self._validate_required_lesson(show_message=show_message)
+        if not ok:
+            table_log('VALIDATE_LESSON', sheet=self.sheet_name, success=False, invalid_rows=invalid_rows)
+            return False
         if self._model.submitAll():
+            return True
+        err = self._model.lastError().text()
+        table_log('SAVE', sheet=self.sheet_name, success=False, error=err)
+        if show_message:
+            QMessageBox.critical(self, 'Ошибка', f'Не удалось сохранить: {err}')
+        return False
+
+    def _save_to_db(self):
+        if self._submit_all_with_validation(show_message=True):
             table_log('SAVE', sheet=self.sheet_name, success=True)
             self._do_select(keep_position=True)
             QMessageBox.information(self, 'Сохранение', f'Данные листа "{self.sheet_name}" сохранены в БД.')
-        else:
-            err = self._model.lastError().text()
-            table_log('SAVE', sheet=self.sheet_name, success=False, error=err)
-            QMessageBox.critical(self, 'Ошибка', f'Не удалось сохранить: {err}')
+
+    def _get_numeric_max_num(self):
+        """Возвращает максимальный корректный Num (только неотрицательные целые)."""
+        db = get_connection()
+        if not db or not db.isOpen():
+            return 0
+        q = QSqlQuery(db)
+        num_col = _quote_ident('Num')
+        table = _quote_ident(self._table_name)
+        num_text = f'TRIM(CAST({num_col} AS TEXT))'
+        sql = (
+            f'SELECT COALESCE(MAX(CASE WHEN {num_text} <> \'\' '
+            f'AND {num_text} NOT GLOB \'*[^0-9]*\' '
+            f'THEN CAST({num_col} AS INTEGER) END), 0) '
+            f'FROM {table}'
+        )
+        if not q.exec_(sql):
+            table_log('ADD_ROWS', sheet=self.sheet_name, error=f'MAX Num query failed: {q.lastError().text()}')
+            return 0
+        if not q.next():
+            return 0
+        try:
+            return int(q.value(0) or 0)
+        except (TypeError, ValueError):
+            return 0
+
+    def _on_model_data_changed(self, top_left, bottom_right, roles=None):
+        """Логирует правки ячеек в модели (в т.ч. до нажатия Сохранить)."""
+        if roles and Qt.EditRole not in roles and Qt.DisplayRole not in roles:
+            return
+        num_col_idx = self._columns.index('Num') if 'Num' in self._columns else -1
+        for row in range(top_left.row(), bottom_right.row() + 1):
+            for col in range(top_left.column(), bottom_right.column() + 1):
+                if col < 0 or col >= len(self._columns):
+                    continue
+                col_name = self._columns[col]
+                idx = self._model.index(row, col)
+                value = self._model.data(idx, Qt.EditRole)
+                row_num = None
+                if num_col_idx >= 0:
+                    nidx = self._model.index(row, num_col_idx)
+                    row_num = self._model.data(nidx, Qt.DisplayRole)
+                table_log(
+                    'CELL_EDIT',
+                    sheet=self.sheet_name,
+                    row=row,
+                    row_num=row_num,
+                    column=col_name,
+                    value=value
+                )
 
     def _add_10_rows(self):
         db = get_connection()
         if not db or not db.isOpen():
             QMessageBox.warning(self, 'Добавление', 'Нет подключения к БД.')
             return
-        q = QSqlQuery(db)
-        # Текущий максимум Num
-        q.exec_(f'SELECT COALESCE(MAX({_quote_ident("Num")}), 0) FROM {_quote_ident(self._table_name)}')
-        max_num = 0
-        if q.next():
-            max_num = int(q.value(0)) if q.value(0) is not None else 0
-        self._model.submitAll()
+        max_num = self._get_numeric_max_num()
+        if not self._submit_all_with_validation(show_message=False):
+            QMessageBox.warning(self, 'Добавление', 'Сначала заполните обязательный Lesson в уже изменённых строках.')
+            return
         for i in range(10):
             max_num += 1
             rec = self._model.record()
@@ -608,7 +718,7 @@ class SheetTableWidget(QWidget):
             if not self._model.insertRecord(self._model.rowCount(), rec):
                 table_log('ADD_ROWS', sheet=self.sheet_name, error=self._model.lastError().text())
                 break
-        self._model.submitAll()
+        self._submit_all_with_validation(show_message=False)
         self._do_select()
         table_log('ADD_ROWS', sheet=self.sheet_name, count=10)
 
@@ -731,7 +841,7 @@ class SheetTableWidget(QWidget):
             rows = sorted(set(i.row() for i in sel), reverse=True)
             for r in rows:
                 self._model.removeRow(r)
-        self._model.submitAll()
+        self._submit_all_with_validation(show_message=False)
         self._do_select(keep_position=True)
         table_log('DELETE_ROWS', sheet=self.sheet_name)
 
@@ -779,7 +889,9 @@ class Table_window(QTabWidget):
 
     def closeEvent(self, event):
         for w in self._tabs.values():
-            if hasattr(w, '_model'):
+            if hasattr(w, '_submit_all_with_validation'):
+                w._submit_all_with_validation(show_message=False)
+            elif hasattr(w, '_model'):
                 w._model.submitAll()
         clear_table_log()
         event.accept()

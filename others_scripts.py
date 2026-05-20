@@ -29,6 +29,12 @@ def cell_has_value(val):
         return False
     return True
 
+def i_get_read(i, current_word, sheet):
+    if sheet == 'Words':
+        if current_word.get('Read') == i.get('Read'):
+            return True
+    return None
+
 KEY_MAP = {'kanji': 'Kanji', 'on': 'On', 'kun': 'Kun', 'trans': 'Trans'}
 
 def merge_by_column(raw_alls, column, test):

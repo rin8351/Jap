@@ -34,9 +34,9 @@ def get_item_key(item, question, answer_column=None):
     иначе только значение вопроса (для обратной совместимости).
     """
     num = item.get("Num")
-    q = item.get(question, "")
+    q = str(item.get(question, "")).strip()
     if answer_column is not None:
-        a = item.get(answer_column, "")
+        a = str(item.get(answer_column, "")).strip()
         return str(num), f"{q}|{a}"
     return str(num), f"{q}"
 

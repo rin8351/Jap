@@ -3,14 +3,38 @@ from Grammar.dop_functions import *
 from Grammar.fill_dates import *
 from Grammar.fill_numbers import *
 
-print(passive_opportunity())
+print(permission_perform_action())
 
-#glag_im_doing
 
 #Скрипт для тестирования функции lists_words с записью ошибок
 # import json
+# import linecache
 # import traceback
 # from datetime import datetime
+
+
+# def _exception_origin(exc: BaseException) -> dict:
+#     """
+#     Место, где исключение возникло (самый глубокий фрейм стека).
+#     Возвращает имя функции, файл, номер строки и текст строки исходника.
+#     """
+#     tb = exc.__traceback__
+#     if tb is None:
+#         return {}
+#     while tb.tb_next:
+#         tb = tb.tb_next
+#     frame = tb.tb_frame
+#     co = frame.f_code
+#     path = co.co_filename
+#     lineno = tb.tb_lineno
+#     line_text = linecache.getline(path, lineno).strip()
+#     return {
+#         "origin_function": co.co_name,
+#         "origin_file": path,
+#         "origin_line": lineno,
+#         "origin_code": line_text,
+#     }
+
 
 # def test_lists_words(iterations):
 #     """
@@ -27,13 +51,17 @@ print(passive_opportunity())
 #                     'iteration': i + 1,
 #                     'error_type': 'NoneResult',
 #                     'error_message': 'Функция вернула None',
+#                     'tested_function': 'lists_words',
 #                     'timestamp': datetime.now().isoformat()
 #                 })
 #         except Exception as e:
+#             origin = _exception_origin(e)
 #             error_info = {
 #                 'iteration': i + 1,
 #                 'error_type': type(e).__name__,
 #                 'error_message': str(e),
+#                 'tested_function': 'lists_words',
+#                 **origin,
 #                 'traceback': traceback.format_exc(),
 #                 'timestamp': datetime.now().isoformat()
 #             }
@@ -53,6 +81,6 @@ print(passive_opportunity())
 # # Запуск тестирования
 # if __name__ == "__main__":
 #     print(f"Начинаю тестирование функции lists_words")
-#     error_count = test_lists_words(100)
+#     error_count = test_lists_words(1000)
 #     print(f"Тестирование завершено. Всего ошибок: {error_count}")
 

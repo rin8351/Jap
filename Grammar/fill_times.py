@@ -10,10 +10,11 @@ def lists_words_times():
     sp.append(two())
     sp.append(took_time_to_finish())
     sp.append(finished_reading_time_ago())
+    sp.append(last_time_reading_ago())
     sp.append(long_ago_recently())
     sp.append(long_ago_recently_2())
     sp.append(already_reading_for_duration())
-    sp.append(started_years_ago_and_still())
+    sp.append(started_years_ago())
     sp.append(will_start_reading_soon())
     sp.append(will_start_reading_at_time())
     sp.append(reading_since_time())
@@ -29,17 +30,25 @@ def lists_words_times():
     sp.append(no_longer_reading())
     sp.append(usually_reading())
     sp.append(reading_time_of_day_habit())
-    sp.append(always_never_reading())
+    sp.append(always_reading())
     sp.append(as_soon_as_reading())
-    sp.append(since_reading())
     sp.append(until_reading())
-    sp.append(immediately_after_reading())
     sp.append(will_have_time_to_read())
     sp.append(toki_movement_dict_main_dict())
     sp.append(toki_movement_dict_main_dict_habit())
     sp.append(toki_movement_past_main_past())
     sp.append(toki_movement_dict_main_past())
     sp.append(toki_movement_past_main_dict())
+    sp.append(question_when_reading())
+    sp.append(question_how_long_reading())
+    sp.append(question_since_when_reading())
+    sp.append(someday_will_read())
+    sp.append(one_day_read())
+    sp.append(rarely_read())
+    sp.append(in_any_situation_read())
+    sp.append(anytime_can_read())
+    sp.append(came_home_early_late())
+    sp.append(came_home_earlier_later_than_family())
     return sp
 
 # словарь для дней недели
@@ -125,6 +134,16 @@ years_ago = {
     '１０年前': {'hir': 'じゅうねんまえ', 'ru': '10 лет назад'},
 }
 
+# "в последний раз читала ... назад" (для конструкции 最後に)
+last_reading_ago_periods = {
+    '一ヶ月前': {'hir': 'いっかげつまえ', 'ru': 'месяц назад'},
+    '一週間前': {'hir': 'いっしゅうかんまえ', 'ru': 'неделю назад'},
+    '５日前': {'hir': 'いつかまえ', 'ru': '5 дней назад'},
+    '３日前': {'hir': 'みっかまえ', 'ru': '3 дня назад'},
+    '２日前': {'hir': 'ふつかまえ', 'ru': '2 дня назад'},
+    '１０日前': {'hir': 'とおかまえ', 'ru': '10 дней назад'},
+}
+
 # словарь для частоты (сколько раз)
 frequency_times = {
     '１回': {'hir': 'いっかい', 'ru': '1 раз'},
@@ -173,6 +192,23 @@ time_of_day_habit_ru = {
     '昼': 'днем',
 }
 
+# наречия "рано/поздно" для возвращения домой
+early_late_adverbs = {
+    '早く': {'hir': 'はやく', 'ru': 'рано'},
+    '遅く': {'hir': 'おそく', 'ru': 'поздно'},
+}
+
+# сравнение "раньше/позже [кого]"
+earlier_later_than_adverbs = {
+    'より先に': {'hir': 'よりさきに', 'ru': 'раньше'},
+    'より後に': {'hir': 'よりあとに', 'ru': 'позже'},
+}
+
+family_members_for_compare = {
+    '母': {'hir': 'はは', 'ru': 'мамы'},
+    '兄': {'hir': 'あに', 'ru': 'брата'},
+}
+
 # словарь для длительности (долго/мало)
 duration_long_short = {
     '長い間': {'hir': 'ながいあいだ', 'ru': 'долго'},
@@ -198,7 +234,7 @@ toki_future_marker = {
     '今度': {'hir': 'こんど', 'ru': 'в следующий раз'},
     '次': {'hir': 'つぎ', 'ru': 'в следующий раз'},
 }
-# Наречия для привычки (обычно, часто, иногда, редко)
+# Наречия для привычки (обычно, часто, иногда)
 toki_habit_adverb = {
     'よく': {'hir': 'よく', 'ru': 'часто'},
     '時々': {'hir': 'ときどき', 'ru': 'иногда'},
@@ -297,9 +333,20 @@ def finished_reading_time_ago():
         gurai_jap, gurai_hir = '', ''
 
     jap = ''.join([dur, gurai_jap, mae, '私', 'は', '本', 'を', '読み終えました', '。'])
-    hir = ''.join([dur_hir, gurai_hir, mae_hir, 'わたし', 'は', 'ほん', 'を', 'よみあえました', '。'])
+    hir = ''.join([dur_hir, gurai_hir, mae_hir, 'わたし', 'は', 'ほん', 'を', 'よみおえました', '。'])
     rus = ' '.join([dur_ru, 'назад', 'я', 'закончила', 'читать', 'книгу', '(завершение в прошлом)'])
     return jap, hir, rus, finished_reading_time_ago.__name__
+
+
+def last_time_reading_ago():
+    # "Я в последний раз читала книгу месяц назад"
+    p = ran(last_reading_ago_periods)
+    p_hir = last_reading_ago_periods[p]['hir']
+    p_ru = last_reading_ago_periods[p]['ru']
+    jap = ''.join(['私', 'が', '最後', 'に', '本', 'を', '読んだ', 'の', 'は', p, 'です', '。'])
+    hir = ''.join(['わたし', 'が', 'さいご', 'に', 'ほん', 'を', 'よんだ', 'の', 'は', p_hir, 'です', '。'])
+    rus = ' '.join(['я', 'в последний раз', 'читала', 'книгу', p_ru])
+    return jap, hir, rus, last_time_reading_ago.__name__
 
 
 def long_ago_recently():
@@ -321,7 +368,7 @@ def long_ago_recently_2():
     jap = ''.join([expr, '、', '私', 'は', '本', 'を', '読みました', '。'])
     hir = ''.join([e['hir'], '、', 'わたし', 'は', 'ほん', 'を', 'よみました', '。'])
     rus = ' '.join([e['ru'], 'я', e['ru_verb'], 'книгу'])
-    return jap, hir, rus, long_ago_recently.__name__
+    return jap, hir, rus, long_ago_recently_2.__name__
 
 def already_reading_for_duration():
     # Сколько уже длится процесс: "3 часа читаю"
@@ -340,7 +387,7 @@ def already_reading_for_duration():
     return jap, hir, rus, already_reading_for_duration.__name__
 
 
-def started_years_ago_and_still():
+def started_years_ago():
     # "3 года назад начала читать" (факт начала в прошлом; без "до сих пор")
     # Шаблон: X年前に V始めました
     y = ran(years_ago)
@@ -349,7 +396,7 @@ def started_years_ago_and_still():
     jap = ''.join([y, 'に', '本', 'を', '読み始めました', '。'])
     hir = ''.join([y_hir, 'に', 'ほん', 'を', 'よみはじめました', '。'])
     rus = ' '.join([y_ru, 'я', 'начала', 'читать', 'книгу', '(начало в прошлом)'])
-    return jap, hir, rus, started_years_ago_and_still.__name__
+    return jap, hir, rus, started_years_ago.__name__
 
 def will_start_reading_soon():
     # "В ближайшее время/скоро начну читать"
@@ -400,8 +447,8 @@ def reading_since_time():
 
 def used_to_read_often():
     # Раньше я читала часто: "以前はよく本を読みました"
-    jap = ['前は', 'よく', '私', 'は', '本', 'を', '読みました', '。']
-    hir = ''.join(['まえは', 'よく', 'わたし', 'は', 'ほん', 'を', 'よみました', '。'])
+    jap = ['私', 'は','以前', 'よく',  '本', 'を', '読みました', '。']
+    hir = ''.join(['わたし', 'は', 'いぜん', 'よく', 'ほん', 'を', 'よみました', '。'])
     rus = ' '.join(['раньше', 'я', 'часто', 'читала', 'книгу', '(прошлое + частота)'])
     jap = ''.join(jap)
     return jap, hir, rus, used_to_read_often.__name__
@@ -494,7 +541,7 @@ def time_of_day_duration():
     hir = ''.join([time_hir, '、', dur_hir, 'ほん', 'を', 'よみました', '。'])
     rus = ' '.join([time_ru, 'я', 'читала', dur_ru, 'книгу', '(время суток + длительность)'])
     jap = ''.join(jap)
-    return jap, hir, rus, still_reading.__name__
+    return jap, hir, rus, time_of_day_duration.__name__
 
 def still_reading():
     # Все еще читаю: "まだ本を読んでいます"
@@ -502,7 +549,7 @@ def still_reading():
     hir = ''.join(['まだ', 'わたし', 'は', 'ほん', 'を', 'よんでいます', '。'])
     rus = ' '.join(['я', 'все еще', 'читаю', 'книгу'])
     jap = ''.join(jap)
-    return jap, hir, rus, time_of_day_duration.__name__
+    return jap, hir, rus, still_reading.__name__
 
 def no_longer_reading():
     # Уже не читаю: "もう本を読みません"
@@ -530,19 +577,19 @@ def reading_time_of_day_habit():
     time_hir = time_of_day[time]['hir']
     time_ru = time_of_day_habit_ru.get(time, time_of_day[time]['ru'])
 
-    jap = ''.join([time, 'は', '私', 'は', '本', 'を', '読みます', '。'])
-    hir = ''.join([time_hir, 'は', 'わたし', 'は', 'ほん', 'を', 'よみます', '。'])
+    jap = ''.join([time, 'は',  '本', 'を', '読みます', '。'])
+    hir = ''.join([time_hir, 'は',  'ほん', 'を', 'よみます', '。'])
     rus = ' '.join([time_ru, 'я', 'читаю', 'книгу', '(привычка/регулярно)'])
     return jap, hir, rus, reading_time_of_day_habit.__name__
 
 
-def always_never_reading():
+def always_reading():
     # Всегда/никогда читаю: "いつも本を読みます" / "決して本を読みません"
     jap = ['いつも', '私', 'は', '本', 'を', '読みます', '。']
     hir = ''.join(['いつも', 'わたし', 'は', 'ほん', 'を', 'よみます', '。'])
     rus = ' '.join(['я', 'всегда', 'читаю', 'книгу'])
     jap = ''.join(jap)
-    return jap, hir, rus, always_never_reading.__name__
+    return jap, hir, rus, always_reading.__name__
 
 def will_have_time_to_read():
     # У меня будет время почитать книгу утром: "朝、本を読む時間があります"
@@ -553,45 +600,25 @@ def will_have_time_to_read():
     hir = ''.join([time_hir, '、', 'ほん', 'を', 'よむじかん', 'が', 'あります', '。'])
     rus = ' '.join([time_ru, 'у меня будет время', 'почитать книгу'])
     jap = ''.join(jap)
-    return jap, hir, rus
+    return jap, hir, rus, will_have_time_to_read.__name__
 
 def as_soon_as_reading():
-    # Как только прочитаю: "本を読むとすぐ、音楽を聞きます"
-    jap = ['本', 'を', '読んだから、', '私', 'は', 'すぐ音楽', 'を', '聞きます', '。']
-    hir = ''.join(['ほん', 'を', 'よんだから、', 'わたし', 'は', 'すぐおんがく', 'を', 'ききます', '。'])
-    rus = ' '.join(['как только прочитаю', 'я', 'слушаю', 'музыку (после окончания первого процесса начну новый)'])
+    # Сразу после того как заканчиваю читать: "本を読み終えた後で、すぐ音楽を聞きます"
+    # Чисто временная связка через ～後で (без условного значения)
+    jap = ['本', 'を', '読み終えた後で、', '私', 'は', 'すぐ音楽', 'を', '聞きます', '。']
+    hir = ''.join(['ほん', 'を', 'よみおえたあとで、', 'わたし', 'は', 'すぐおんがく', 'を', 'ききます', '。'])
+    rus = ' '.join(['сразу после того как я заканчиваю читать книгу,', 'я', 'слушаю', 'музыку', '(чисто время: после завершения первого действия)'])
     jap = ''.join(jap)
     return jap, hir, rus, as_soon_as_reading.__name__
 
-def since_reading():
-    # С тех пор как начала читать: "本を読み始めてからずっと、音楽を聞いています"
-    jap = ['本', 'を', '読み始めてからずっと、', '私', 'は', '音楽', 'を', '聞いています', '。']
-    hir = ''.join(['ほん', 'を', 'よみはじめてからずっと、', 'わたし', 'は', 'おんがく', 'を', 'きいています', '。'])
-    rus = ' '.join(['с тех пор как начала читать', 'я', 'слушаю', 'музыку (все это время)'])
-    jap = ''.join(jap)
-    return jap, hir, rus, since_reading.__name__
 
 def until_reading():
     # До тех пор пока не прочитаю: "本を読むまで、音楽を聞きません"
-    jap = ['本', 'を', '読むまで、', '私', 'は', '音楽', 'を', '聞きません', '。']
-    hir = ''.join(['ほん', 'を', 'よむまで、', 'わたし', 'は', 'おんがく', 'を', 'ききません', '。'])
+    jap = ['本', 'を', '読み終わるまで、', '私', 'は', '音楽', 'を', '聞きません', '。']
+    hir = ''.join(['ほん', 'を', 'よみおわるまで、', 'わたし', 'は', 'おんがく', 'を', 'ききません', '。'])
     rus = ' '.join(['до тех пор пока не прочитаю', 'я', 'не слушаю', 'музыку'])
     jap = ''.join(jap)
     return jap, hir, rus, until_reading.__name__
-
-def immediately_after_reading():
-    # Сразу после чтения: "本を読んだ後すぐ、音楽を聞きます"
-    jap = ['本', 'を', '読んだ後、', 'すぐ音楽', 'を', '聞きます', '。']
-    hir = ''.join(['ほん', 'を', 'よんだあと、', 'すぐおんがく', 'を', 'ききます', '。'])
-    rus = ' '.join(['сразу после чтения', 'я', 'слушаю', 'музыку'])
-    jap = ''.join(jap)
-    return jap, hir, rus
-
-
-
-
-
-
 
 
 # 時 с глаголами движения: разное время в придаточном и главном предложении
@@ -645,4 +672,95 @@ def toki_movement_past_main_dict():
     hir = movement_toki[mov]['hir_past'] + 'とき、' + main_action_toki[act]['hir_dict'] + '。'
     rus = ' '.join(['когда', 'приезжаю', movement_toki[mov]['ru'], ',', main_action_toki[act]['ru_pres'], '(сначала первое действие, потом второе в качестве привычки)'])
     return jap, hir, rus, toki_movement_past_main_dict.__name__
+
+
+def question_when_reading():
+    # "Когда ты читаешь книгу?" — общий вопрос про время (いつ + 〜ますか)
+    jap = ''.join(['いつ', '本', 'を', '読みますか', '。'])
+    hir = ''.join(['いつ', 'ほん', 'を', 'よみますか', '。'])
+    rus = ' '.join(['когда', 'ты', 'читаешь', 'книгу', '?', '(вопрос о времени)'])
+    return jap, hir, rus, question_when_reading.__name__
+
+
+def question_how_long_reading():
+    # "Как долго / сколько примерно ты читаешь?" — どのぐらい (про длительность)
+    jap = ''.join(['どのぐらい', '本', 'を', '読みますか', '。'])
+    hir = ''.join(['どのぐらい', 'ほん', 'を', 'よみますか', '。'])
+    rus = ' '.join(['как долго', 'ты', 'читаешь', 'книгу', '?', '(вопрос о длительности)'])
+    return jap, hir, rus, question_how_long_reading.__name__
+
+
+def question_since_when_reading():
+    # "С какого момента / с каких пор ты читаешь?" — いつから + 〜ています (длящееся действие)
+    jap = ''.join(['いつから', '本', 'を', '読んでいますか', '。'])
+    hir = ''.join(['いつから', 'ほん', 'を', 'よんでいますか', '。'])
+    rus = ' '.join(['с какого момента', 'ты', 'читаешь', 'книгу', '?'])
+    return jap, hir, rus, question_since_when_reading.__name__
+
+
+# ── Неопределённые / обобщающие маркеры времени ─────────────────────────────
+
+def someday_will_read():
+    # "Когда-нибудь почитаю книгу" — いつか + будущее (неопределённое будущее)
+    jap = ''.join(['いつか', '私', 'は', '本', 'を', '読みます', '。'])
+    hir = ''.join(['いつか', 'わたし', 'は', 'ほん', 'を', 'よみます', '。'])
+    rus = ' '.join(['когда-нибудь', 'я', 'почитаю', 'книгу', '(неопределённое будущее)'])
+    return jap, hir, rus, someday_will_read.__name__
+
+
+def one_day_read():
+    # "Однажды (в один день) я читала книгу" — ある日 + прошедшее (один из дней в прошлом)
+    jap = ''.join(['ある日、', '私', 'は', '本', 'を', '読みました', '。'])
+    hir = ''.join(['あるひ、', 'わたし', 'は', 'ほん', 'を', 'よみました', '。'])
+    rus = ' '.join(['однажды', 'я', 'читала', 'книгу', '(в один из дней в прошлом)'])
+    return jap, hir, rus, one_day_read.__name__
+
+
+def rarely_read():
+    # "Редко читаю книгу" — めったに требует обязательного отрицания глагола (〜ません)
+    jap = ''.join(['私', 'は', 'めったに', '本', 'を', '読みません', '。'])
+    hir = ''.join(['わたし', 'は', 'めったに', 'ほん', 'を', 'よみません', '。'])
+    rus = ' '.join(['я', 'редко', 'читаю', 'книгу'])
+    return jap, hir, rus, rarely_read.__name__
+
+
+def in_any_situation_read():
+    # "В любых обстоятельствах я читаю книгу" — どんな時でも (обобщающее: при любых условиях)
+    jap = ''.join(['どんな時でも', '私', 'は', '本', 'を', '読みます', '。'])
+    hir = ''.join(['どんなときでも', 'わたし', 'は', 'ほん', 'を', 'よみます', '。'])
+    rus = ' '.join(['в любых обстоятельствах', 'я', 'читаю', 'книгу', '(в каком бы ни было состоянии)'])
+    return jap, hir, rus, in_any_situation_read.__name__
+
+
+def anytime_can_read():
+    # "В любое время я могу читать книгу" — いつでも + потенциальная форма (読む → 読める)
+    jap = ''.join(['いつでも', '私', 'は', '本', 'を', '読めます', '。'])
+    hir = ''.join(['いつでも', 'わたし', 'は', 'ほん', 'を', 'よめます', '。'])
+    rus = ' '.join(['в любое время', 'я', 'могу читать', 'книгу'])
+    return jap, hir, rus, anytime_can_read.__name__
+
+
+def came_home_early_late():
+    # "Я вернулся(лась) домой рано/поздно"
+    adv = ran(early_late_adverbs)
+    adv_hir = early_late_adverbs[adv]['hir']
+    adv_ru = early_late_adverbs[adv]['ru']
+    jap = ''.join(['私', 'は', adv, '家', 'に', '帰りました', '。'])
+    hir = ''.join(['わたし', 'は', adv_hir, 'いえ', 'に', 'かえりました', '。'])
+    rus = ' '.join(['я', adv_ru, 'вернулась домой'])
+    return jap, hir, rus, came_home_early_late.__name__
+
+
+def came_home_earlier_later_than_family():
+    # "Я вернулся(лась) домой раньше/позже мамы/брата"
+    adv = ran(earlier_later_than_adverbs)
+    who = ran(family_members_for_compare)
+    adv_hir = earlier_later_than_adverbs[adv]['hir']
+    adv_ru = earlier_later_than_adverbs[adv]['ru']
+    who_hir = family_members_for_compare[who]['hir']
+    who_ru = family_members_for_compare[who]['ru']
+    jap = ''.join(['私', 'は', who, adv, '家', 'に', '帰りました', '。'])
+    hir = ''.join(['わたし', 'は', who_hir, adv_hir, 'いえ', 'に', 'かえりました', '。'])
+    rus = ' '.join(['я', 'вернулась домой', adv_ru, who_ru])
+    return jap, hir, rus, came_home_earlier_later_than_family.__name__
 
