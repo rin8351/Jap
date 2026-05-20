@@ -117,6 +117,7 @@ list_lessons_names = ['Именные','Субстантиваторы','Про�
                 'что-то_ничто_всё','эмоциональное','Два_действия','Намерения','Виды глаголов','Особые слова','Залоги',
                 'Хотя_Если','Можно_лучше','Учтивые формы']
 
+
 def lists_words():
     return lists_words_by_numbers()
 
@@ -910,7 +911,6 @@ def hairu_desu_nanika():
     return jap, hir, rus, hairu_desu_nanika.__name__
 
 
-
 def people_walk_there():
     print('people_walk_there')
     who = ran(a['people'])
@@ -1260,6 +1260,7 @@ def begining_action():
     jap = ''.join(jap)
     return jap, hir, rus, begining_action.__name__, rand_glag, rand_action, rand_action_hir, rand_action_rus
 
+
 def reason_kara():
     print('reason_kara')
     eve = ran(a['events'])
@@ -1383,6 +1384,7 @@ def all_demo():
     rus = ' '.join([rus_podl_who, jap_podl_rus, glag_rus])
     jap = ''.join(jap)
     return jap, hir, rus, all_demo.__name__
+
 
 def all_demo_janai():
     print('all_demo_janai')
@@ -2141,6 +2143,7 @@ def reason_node():
     jap = ''.join(jap)
     return jap, hir, rus, reason_node.__name__
 
+
 def can_do_it():
     print('can_do_it')
     g = Glagols('glag_verb_stem_2', 'all')
@@ -2163,6 +2166,7 @@ def can_do_it():
         jap_podl_rus, glag_rus, '  (у него (нее) есть такая возможность)'])
     jap = ''.join(jap)
     return jap, hir, rus, can_do_it.__name__
+
 
 def two_actions_formal():
     print('two_actions_formal')
@@ -2187,7 +2191,6 @@ def two_actions_formal():
         '(перечисление через частицу, формальная речь)'])
     jap = ''.join(jap)
     return jap, hir, rus, two_actions_formal.__name__
-
 
 
 def qualifying_clause():
@@ -2249,6 +2252,7 @@ def stable_ko_to_ga_aru():
     jap = ''.join(jap)
     return jap, hir, rus, stable_ko_to_ga_aru.__name__
 
+
 def stable_its_sounds_good():
     print('13')
     g = Glagols('glag_verb_stem_2', 'choose', ['move'])
@@ -2276,6 +2280,7 @@ def stable_its_sounds_good():
     rus = ' '.join(['Стоит', glag_rus, padez_rus, dop_rus, jap_podl_rus, dopde_padez_rus, dopde_rus, dopde_text])
     jap = ''.join(jap)
     return jap, hir, rus, stable_its_sounds_good.__name__
+
 
 def stable_i_decited_to():
     print('14')
@@ -2308,6 +2313,7 @@ def stable_i_decited_to():
     rus = ' '.join(['Я', cop_rus, glag_rus, padez_rus, jap_podl_rus, dop_rus])
     jap = ''.join(jap)
     return jap, hir, rus, stable_i_decited_to.__name__
+
 
 def negative_verb_gerund():
     print('15')
@@ -2388,6 +2394,7 @@ def stable_actions_from_condition():
     jap = ''.join(jap)
     return jap, hir, rus, stable_actions_from_condition.__name__
 
+
 def going_to_in_time():
     print('18')
     g = Glagols('glag_verb_stem_2', 'choose', ['move', 'accusative', 'not_trans_slow'])
@@ -2462,6 +2469,7 @@ def tameni():
             jap_podl_rus2, ', я', glag_rus, padez_rus, jap_podl_rus])
     jap = ''.join(jap)
     return jap, hir, rus, tameni.__name__
+
 
 def saying_that():
     print('20')
@@ -2567,6 +2575,7 @@ def action_in_time_after_time():
     jap = ''.join(jap)
     return jap, hir, rus, action_in_time_after_time.__name__
 
+
 def takunaritai():
     print('takunaritai')
     jap_podl = ran(a['buildings'])
@@ -2582,7 +2591,6 @@ def takunaritai():
     rus = ' '.join(['я захотел', glag_rus, 'в', jap_podl_rus])
     jap = ''.join(jap)
     return jap, hir, rus, takunaritai.__name__
-
 
 
 def dake():
@@ -2633,6 +2641,7 @@ def niyotte():
         cond_rus])
     jap = ''.join(jap)
     return jap, hir, rus, niyotte.__name__
+
 
 def passive():
     print('passive')
@@ -2694,6 +2703,7 @@ def passive_opportunity():
     jap = ''.join(jap)
     return jap, hir, rus, passive_opportunity.__name__
 
+
 def result_oku():
     print('result_oku')
     glag_jap = random.choice(('買', 'ちゅうもん', '読'))
@@ -2711,6 +2721,7 @@ def result_oku():
     jap = ''.join(jap)
     return jap, hir, rus, result_oku.__name__
 
+
 def result_simau():
     print('result_simau')
     glag_jap = random.choice(('買', 'ちゅうもん', '読'))
@@ -2727,6 +2738,7 @@ def result_simau():
         ' (результативный вид. Результат необратим, последствия скорее всего плохие)'])
     jap = ''.join(jap)
     return jap, hir, rus, result_simau.__name__
+
 
 def repetitive_aspect():
     print('repetitive_aspect')
@@ -2774,6 +2786,7 @@ def repetitive_aspect():
         rus = ' '.join(['То', glag_rus1, ', то', glag_rus2, '- хорошо провожу время ( неоднократное чередование действий + обобщение)'])
     jap = ''.join(jap)
     return jap, hir, rus, repetitive_aspect.__name__
+
 
 def repetitive_aspect_adjectives():
     print('repetitive_aspect_adjectives')
@@ -3047,6 +3060,7 @@ def passive_opportunity_intransitive():
     jap = ''.join(jap)
     return jap, hir, rus, passive_opportunity_intransitive.__name__
 
+
 def passive_omou():
     print(passive_omou)
     dicts_words = {'言われています': ['いわれています', 'Говорят, что'], '見られています': ['みられています',
@@ -3068,6 +3082,7 @@ def passive_omou():
     jap = ''.join(jap)
     return jap, hir, rus, passive_omou.__name__
 
+
 def concessive_subordinate_demo():
     print('concessive_subordinate_demo')
     eve = ran(a['events'])
@@ -3082,6 +3097,7 @@ def concessive_subordinate_demo():
         '( противопоставляются и реальные и вероятные события)'])
     jap = ''.join(jap)
     return jap, hir, rus, concessive_subordinate_demo.__name__
+
 
 def concessive_subordinate_demo_general():
     print('concessive_subordinate_demo_general')
@@ -3122,6 +3138,7 @@ def concessive_subordinate_demo_request():
     jap = ''.join(jap)
     return jap, hir, rus, concessive_subordinate_demo_request.__name__
 
+
 def intention_tsumori():
     print('intention_tsumori')
     g = Glagols('glag_verb_stem_2', 'all')
@@ -3136,6 +3153,7 @@ def intention_tsumori():
         '(давнее намерение, а не в моменте)'])
     jap = ''.join(jap)
     return jap, hir, rus, intention_tsumori.__name__
+
 
 def intention_tokoro():
     print('intention_tokoro')
@@ -3168,6 +3186,7 @@ def intention_tokoro():
     jap = ''.join(jap)
     return jap, hir, rus, intention_tokoro.__name__
 
+
 def intention_tokoro_2():
     print('intention_tokoro_2')
     rand = random.randint(0, 1)
@@ -3191,6 +3210,7 @@ def intention_tokoro_2():
     rus = ' '.join([mou_rus, moment_rus, glag_rus, padez_rus, jap_podl_rus])
     jap = ''.join(jap)
     return jap, hir, rus, intention_tokoro_2.__name__
+
 
 def subordinate_clause_mae_siro():
     print('subordinate_clause_mae_siro')
@@ -3222,6 +3242,7 @@ def subordinate_clause_mae_siro():
         podl1_rus, glag_rus2, padez_rus2, jap_podl_rus2])
     jap = ''.join(jap)
     return jap, hir, rus, subordinate_clause_mae_siro.__name__
+
 
 def target_noni():
     print('target_noni')
@@ -3255,6 +3276,7 @@ def target_noni():
     jap = ''.join(jap)
     return jap, hir, rus, target_noni.__name__
 
+
 def service_particle_toiu():
     print('service_particle_toiu')
     g = Glagols('glag_past_one_moment', 'choose', ['move'])
@@ -3274,6 +3296,7 @@ def service_particle_toiu():
     jap = ''.join(jap)
     return jap, hir, rus, service_particle_toiu.__name__
 
+
 def need_must_be():
     print('need_must_be')
     g = Glagols('glag_verb_stem_2', 'all')
@@ -3285,6 +3308,7 @@ def need_must_be():
     rus = ' '.join([glag_rus, padez_rus, jap_podl_rus, 'необходимо', '(обычно ответ на вопрос)'])
     jap = ''.join(jap)
     return jap, hir, rus, need_must_be.__name__
+
 
 def this_thing_need():
     print('this_thing_need_not_be')
@@ -3307,6 +3331,7 @@ def this_thing_need():
     jap = ''.join(jap)
     return jap, hir, rus, this_thing_need.__name__
 
+
 def incentive_voice():
     print('incentive_voice')
     g = Glagols('glag_verb_stem_2', 'choose',['not_trans_slow','move'])
@@ -3326,6 +3351,7 @@ def incentive_voice():
     '(побуждает к действию (заставляет/позволяет, зависит от контекста))'])
     jap = ''.join(jap)
     return jap, hir, rus, incentive_voice.__name__
+
 
 def incentive_voice_2():
     print('incentive_voice_2')
@@ -3370,6 +3396,7 @@ def incentive_voice_morau():
     jap = ''.join(jap)
     return jap, hir, rus, incentive_voice_morau.__name__
 
+
 def incentive_voice_kudasai():
     print('incentive_voice_kudasai')
     g = Glagols('glag_verb_stem_2', 'all')
@@ -3387,6 +3414,7 @@ def incentive_voice_kudasai():
         jap_podl_rus])
     jap = ''.join(jap)
     return jap, hir, rus, incentive_voice_kudasai.__name__
+
 
 def permission_perform_action():
     print('permission_perform_action')
@@ -3422,6 +3450,7 @@ def permission_perform_action():
     jap = ''.join(jap)
     return jap, hir, rus, permission_perform_action.__name__
 
+
 def permission_perform_prop():
     print('permission_perform_action')
     ran_sush = ran(a['small object'])
@@ -3441,6 +3470,7 @@ def permission_perform_prop():
     rus = ' '.join([ran_sush_rus, dop_rus, rus1])
     jap = ''.join(jap)
     return jap, hir, rus, permission_perform_prop.__name__
+
 
 def expression_prohibition():
     print('expression_prohibition')
@@ -3482,6 +3512,7 @@ def expression_prohibition():
         rus = ' '.join([event_rus, '- нельзя', rus_copula])
     jap = ''.join(jap)
     return jap, hir, rus, expression_prohibition.__name__
+
 
 def expression_obligation():
     print('expression_obligation')
@@ -3541,6 +3572,7 @@ def expression_obligation():
     jap = ''.join(jap)
     return jap, hir, rus, expression_obligation.__name__
 
+
 def reason_happening():
     print('reason_happening')
     eve = ran(a['events'])
@@ -3551,11 +3583,12 @@ def reason_happening():
     reas_rus = a['reason_simple'][reas]
     jap = [reas, '場合、', eve, 'に行きます']
     hir = ''.join([reas_hir, 'ばあい、', eve_hir, 'に', 'いきます'])
-    rus = ' '.join(['Если ', reas_rus, ', идите на(в)', eve_rus,
+    rus = ' '.join(['Если (в случае такой ситуации)', reas_rus, ', идите на(в)', eve_rus,
         '(в более формальных или официальных ситуациях, а также для описания правил, инструкций или условий.)'
         ])
     jap = ''.join(jap)
     return jap, hir, rus, reason_happening.__name__
+
 
 def subordinate_clause_made():
     print('subordinate_clause_made')
@@ -3577,6 +3610,7 @@ def subordinate_clause_made():
     jap = ''.join(jap)
     return jap, hir, rus, subordinate_clause_made.__name__
 
+
 def service_word_sou():
     print('service_word_sou')
     g = Glagols('glag_past_one_moment2', 'all')
@@ -3592,6 +3626,7 @@ def service_word_sou():
         jap_podl_rus])
     jap = ''.join(jap)
     return jap, hir, rus, service_word_sou.__name__
+
 
 def imperative_passive_voice():
     print('imperative_passive_voice')
@@ -3616,6 +3651,7 @@ def imperative_passive_voice():
         jap_podl_rus])
     jap = ''.join(jap)
     return jap, hir, rus, imperative_passive_voice.__name__
+
 
 def time_form_in_tara_dara():
     print('time_form_in_tara_dara')
@@ -3655,6 +3691,7 @@ def time_form_in_tara_dara():
             padez_rus1, jap_podl_rus1, '(Разговорная форма)', rus_expl])
     jap = ''.join(jap)
     return jap, hir, rus, time_form_in_tara_dara.__name__
+
 
 def time_form_in_tara_dara_2():
     print('time_form_in_tara_dara_2')
@@ -3711,6 +3748,7 @@ def time_form_in_tara_dara_2():
     jap = ''.join(jap)
     return jap, hir, rus, time_form_in_tara_dara_2.__name__
 
+
 def similary_youna():
     print('similary_youna')
     g = Glagols('glag_now', 'all')
@@ -3745,6 +3783,7 @@ def similary_youna():
     jap = ''.join(jap)
     return jap, hir, rus, similary_youna.__name__
 
+
 def similary_youna_target():
     print('similary_youna_target')
     g = Glagols('glag_past_one_moment', 'all')
@@ -3765,6 +3804,7 @@ def similary_youna_target():
         podl2_rus, glag_rus2, padez_rus2, jap_podl_rus2])
     jap = ''.join(jap)
     return jap, hir, rus, similary_youna_target.__name__
+
 
 def strive_to_do():
     print('strive_to_do')
@@ -3791,6 +3831,7 @@ def strive_to_do():
     jap = ''.join(jap)
     return jap, hir, rus, strive_to_do.__name__
 
+
 def became_capable_youni():
     print('became_capable_youni')
     g = Glagols('glag_verb_stem', 'all')
@@ -3805,6 +3846,7 @@ def became_capable_youni():
         '(начало совершения действия в силу естественного развития событий)'])
     jap = ''.join(jap)
     return jap, hir, rus, became_capable_youni.__name__
+
 
 def prop_ha_sou():
     print('prop_ha_sou')
@@ -3845,6 +3887,7 @@ def prop_ha_sou():
     jap = ''.join(jap)
     return jap, hir, rus, prop_ha_sou.__name__
 
+
 def bakari():
     print('bakari')
     g = Glagols('glag_past_one_moment', 'choose', ['accusative'])
@@ -3859,6 +3902,7 @@ def bakari():
         ])
     jap = ''.join(jap)
     return jap, hir, rus, bakari.__name__
+
 
 def subordinate_clause_uti():
     print('subordinate_clause_uti')
@@ -3876,6 +3920,7 @@ def subordinate_clause_uti():
         jap_podl_rus2])
     jap = ''.join(jap)
     return jap, hir, rus, subordinate_clause_uti.__name__
+
 
 def auxiliary_kuru():
     print('auxiliary_kuru')
@@ -3911,6 +3956,7 @@ def auxiliary_kuru():
             jap_podl_rus, '(указание на начало действия)'])
     jap = ''.join(jap)
     return jap, hir, rus, auxiliary_kuru.__name__
+
 
 def auxiliary_iku():
     print('auxiliary_iku')
@@ -3950,6 +3996,7 @@ def auxiliary_iku():
     jap = ''.join(jap)
     return jap, hir, rus, auxiliary_iku.__name__
 
+
 def distancing_in_time():
     print('distancing_in_time')
     sentence_type = random.choice(['forgetting', 'not_seeing'])
@@ -3975,6 +4022,7 @@ def distancing_in_time():
     jap = ''.join(jap)
     return jap, hir, rus, distancing_in_time.__name__
 
+
 def connection_with_ba():
     print('connection_with_ba')
     rand = random.choice(('move', 'accusative', 'address', 'withs'))
@@ -3996,6 +4044,7 @@ def connection_with_ba():
         '(контрастные действия, параллельные, может быть неожиданность)'])
     jap = ''.join(jap)
     return jap, hir, rus, connection_with_ba.__name__
+
 
 def condition_with_nara():
     print('condition_with_nara')
@@ -4038,6 +4087,7 @@ def condition_with_nara():
     jap = ''.join(jap)
     return jap, hir, rus, condition_with_nara.__name__
 
+
 def probability_you():
     print('probability_you')
     g = Glagols('glag_nast_post', 'all')
@@ -4061,6 +4111,7 @@ def probability_you():
     jap = ''.join(jap)
     return jap, hir, rus, probability_you.__name__
 
+
 def probability_sou():
     print('probability_sou')
     g = Glagols('glag_nast_post', 'all')
@@ -4078,6 +4129,7 @@ def probability_sou():
     jap = ''.join(jap)
     return jap, hir, rus, probability_sou.__name__
 
+
 def probability_rasii():
     print('probability_rasii')
     g = Glagols('glag_nast_post', 'all')
@@ -4094,6 +4146,7 @@ def probability_rasii():
         '(субъективное предположение, слухи, инфа из вторых рук)'])
     jap = ''.join(jap)
     return jap, hir, rus, probability_rasii.__name__
+
 
 def measure_degree_hodo_kurai():
     print('measure_degree_hodo_kurai')
@@ -4119,6 +4172,7 @@ def measure_degree_hodo_kurai():
     jap = ''.join(jap)
     return jap, hir, rus, measure_degree_hodo_kurai.__name__
 
+
 def meaning_wake():
     print('meaning_wake')
     podl1 = ran(a['adj_non_predicative_endings'])
@@ -4139,6 +4193,7 @@ def meaning_wake():
     jap = ''.join(jap)
     return jap, hir, rus, meaning_wake.__name__
 
+
 def have_to_wazu():
     print('have_to_wazu')
     g = Glagols('glag_budush', 'all')
@@ -4156,6 +4211,7 @@ def have_to_wazu():
         padez_rus, jap_podl_rus])
     jap = ''.join(jap)
     return jap, hir, rus, have_to_wazu.__name__
+
 
 def time_jyouzu():
     print('time_jyouzu')
@@ -4177,6 +4233,7 @@ def time_jyouzu():
         jap_podl_rus, ', он/а ', glag_rus2, padez_rus2, jap_podl_rus2])
     jap = ''.join(jap)
     return jap, hir, rus, time_jyouzu.__name__
+
 
 def i_want_hosii():
     print('i_want_hosii')
@@ -4222,6 +4279,7 @@ def state_mama():
     jap = ''.join(jap)
     return jap, hir, rus, state_mama.__name__
 
+
 def reason_tame():
     print('reason_tame')
     reas = ran(a['reasons'])
@@ -4241,6 +4299,7 @@ def reason_tame():
     jap = ''.join(jap)
     return jap, hir, rus, reason_tame.__name__
 
+
 def compulsion_yorihoka():
     print('compulsion_yorihoka')
     g = Glagols('glag_verb_stem_2', 'all')
@@ -4253,6 +4312,7 @@ def compulsion_yorihoka():
         jap_podl_rus])
     jap = ''.join(jap)
     return jap, hir, rus, compulsion_yorihoka.__name__
+
 
 def he_doing_onky_that():
     print('he_doing_onky_that')
@@ -4270,6 +4330,7 @@ def he_doing_onky_that():
     jap = ''.join(jap)
     return jap, hir, rus, he_doing_onky_that.__name__
 
+
 def politeness_imenn_skaz():
     print('politeness_1')
     jap_who = ran(a['names'])
@@ -4284,6 +4345,7 @@ def politeness_imenn_skaz():
     rus = ' '.join([rus_who, '-', proff_rus, '(учтивая форма)'])
     jap = ''.join(jap)
     return jap, hir, rus, politeness_imenn_skaz.__name__
+
 
 def politeness_imenn_skaz_me():
     print('politeness_1')
@@ -4313,6 +4375,7 @@ def politeness_imenn_skaz_me():
     jap = ''.join(jap)
     return jap, hir, rus, politeness_imenn_skaz_me.__name__
 
+
 def politeness_2_3_action_special_verb():
     print('politeness_2_3_action')
     g = Glagols('glag_now', 'all')
@@ -4332,6 +4395,7 @@ def politeness_2_3_action_special_verb():
         '(учтивая форма)'])
     jap = ''.join(jap)
     return jap, hir, rus, politeness_2_3_action_special_verb.__name__
+
 
 def politeness_2_3_action_special_form():
     print('politeness_2_3_action_special_form')
@@ -4376,6 +4440,7 @@ def politeness_2_3_action_special_form():
     jap = ''.join(jap)
     return jap, hir, rus, politeness_2_3_action_special_form.__name__
 
+
 def politeness_me_action_special_verb():
     print('politeness_me_action_special_verb')
     g = Glagols('glag_im_doing', 'all')
@@ -4391,6 +4456,7 @@ def politeness_me_action_special_verb():
         '(учтивая форма, о самом себе)'])
     jap = ''.join(jap)
     return jap, hir, rus, politeness_me_action_special_verb.__name__
+
 
 def politeness_me_action_special_form():
     print('politeness_me_action_special_form')
@@ -4431,6 +4497,7 @@ def politeness_me_action_special_form():
     jap = ''.join(jap)
     return jap, hir, rus, politeness_me_action_special_form.__name__
 
+
 def politeness_there_build():
     print('politeness_there_build')
     jap_w = ran(a['buildings'])
@@ -4443,6 +4510,7 @@ def politeness_there_build():
     jap = ''.join(jap)
     return jap, jap_hir, rus_iru, politeness_there_build.__name__
 
+
 def politeness_there_i():
     print('politeness_there_i')
     jap_w = ran(a['buildings'])
@@ -4453,6 +4521,7 @@ def politeness_there_i():
     rus_iru = ''.join(['Я нахожусь в', rus_w, '(учтивая форма)'])
     jap = ''.join(jap)
     return jap, jap_hir, rus_iru, politeness_there_i.__name__
+
 
 def totomoni():
     print('totomoni')
@@ -4466,6 +4535,7 @@ def totomoni():
     rus = ' '.join(['С приходом', rus_podl_who, ' стало ', prop_rus])
     jap = ''.join(jap)
     return jap, hir, rus, totomoni.__name__
+
 
 def simultaneity_kan():
     print('simultaneity_kan')
@@ -4487,6 +4557,7 @@ def simultaneity_kan():
     jap = ''.join(jap)
     return jap, hir, rus, simultaneity_kan.__name__
 
+
 def expression_of_impossibility():
     print('expression_of_impossibility')
     g = Glagols('glag_verb_stem', 'all')
@@ -4503,6 +4574,7 @@ def expression_of_impossibility():
         '(по независящим от него причинам, например социальные нормы и т.д.)'])
     jap = ''.join(jap)
     return jap, hir, rus, expression_of_impossibility.__name__
+
 
 def there_no_other_things():
     print('there_no_other_things')
@@ -4524,6 +4596,7 @@ def there_no_other_things():
     jap = ''.join(jap)
     return jap, hir, rus, there_no_other_things.__name__
 
+
 def consists_the_fact():
     print('consists_the_fact')
     g = Glagols('glag_verb_stem', 'all')
@@ -4538,6 +4611,7 @@ def consists_the_fact():
         padez_rus, jap_podl_rus])
     jap = ''.join(jap)
     return jap, hir, rus, consists_the_fact.__name__
+
 
 def ga_ski_doing():
     print('ga_ski_doing')
@@ -4561,6 +4635,7 @@ def ga_ski_doing():
     jap = ''.join(jap)
     return jap, hir, rus, ga_ski_doing.__name__
 
+
 def permission_perform_action_simple():
     print('permission_perform_action_simple')
     g = Glagols('glag_verb_stem', 'all')
@@ -4573,6 +4648,7 @@ def permission_perform_action_simple():
         '(простая форма запрета)'])
     jap = ''.join(jap)
     return jap, hir, rus, permission_perform_action_simple.__name__
+
 
 def expression_obligation_myself():
     print('expression_obligation_myself')
@@ -4588,6 +4664,7 @@ def expression_obligation_myself():
     jap = ''.join(jap)
     return jap, hir, rus, expression_obligation_myself.__name__
 
+
 def i_have_no_time():
     print('i_have_no_time')
     g = Glagols('glag_verb_stem_2', 'all')
@@ -4601,6 +4678,7 @@ def i_have_no_time():
         jap_podl_rus])
     jap = ''.join(jap)
     return jap, hir, rus, i_have_no_time.__name__
+
 
 def i_agreed_with_someone():
     print('i_have_no_time')
@@ -4618,6 +4696,7 @@ def i_agreed_with_someone():
     jap = ''.join(jap)
     return jap, hir, rus, i_agreed_with_someone.__name__
 
+
 def i_have_deal_for_it():
     print('i_have_deal_for_it')
     g = Glagols('glag_im_doing', 'all')
@@ -4633,6 +4712,7 @@ def i_have_deal_for_it():
         ])
     jap = ''.join(jap)
     return jap, hir, rus, i_have_deal_for_it.__name__
+
 
 def plan_youtei():
     print('plan_youtei')
@@ -4659,6 +4739,7 @@ def this_means_that():
     jap = ''.join(jap)
     return jap, hir, rus, this_means_that.__name__
 
+
 def similary_toorini():
     print('similary_youna_tochno')
     g = Glagols('glag_now', 'all')
@@ -4675,6 +4756,7 @@ def similary_toorini():
     jap = ''.join(jap)
     return jap, hir, rus, similary_toorini.__name__
 
+
 def do_you_know_that():
     print('do_you_know_that')
     g = Glagols('glag_past_post', 'all')
@@ -4689,6 +4771,7 @@ def do_you_know_that():
         jap_podl_rus, '?'])
     jap = ''.join(jap)
     return jap, hir, rus, do_you_know_that.__name__
+
 
 def during_that_event():
     print('during_that_event')
@@ -4705,6 +4788,7 @@ def during_that_event():
     jap = ''.join(jap)
     return jap, hir, rus, during_that_event.__name__
 
+
 def invented_by_someone():
     print('invented_by_someone')
     jap1 = ran(a['small object'])
@@ -4720,6 +4804,7 @@ def invented_by_someone():
     jap = ''.join(jap)
     return jap, hir, rus, invented_by_someone.__name__
 
+
 def going_to_build():
     print('going_to_build')
     build = ran(a['buildings'])
@@ -4730,6 +4815,7 @@ def going_to_build():
     rus = ' '.join(['Я сходил в', build_rus, '(пошел и вернулся, не сообщая о причине похода)'])
     jap = ''.join(jap)
     return jap, hir, rus, going_to_build.__name__
+
 
 def doing_too_much():
     print('doing_too_much')
@@ -4742,6 +4828,7 @@ def doing_too_much():
     rus = ' '.join([glag_rus, 'слишком много', padez_rus, jap_podl_rus, '(чересчур, в плохом смысле)'])
     jap = ''.join(jap)
     return jap, hir, rus, doing_too_much.__name__
+
 
 def just_recently_did_something():
     print('just_recently_did_something')
@@ -4756,6 +4843,7 @@ def just_recently_did_something():
     jap = ''.join(jap)
     return jap, hir, rus, just_recently_did_something.__name__
 
+
 def made_conclusion():
     print('made_conclusion')
     g = Glagols('glag_past_post', 'all')
@@ -4768,6 +4856,7 @@ def made_conclusion():
     rus = ' '.join([podl1_rus, ', должно быть,', glag_rus, padez_rus, jap_podl_rus, '( делаю заключение на основе моей иноформации)'])
     jap = ''.join(jap)
     return jap, hir, rus, made_conclusion.__name__
+
 
 def i_dont_know_how_to_do():
     print('i_dont_know_how_to_do')

@@ -14,7 +14,7 @@ from Grammar.filling import lists_words_by_numbers, lists_words_by_names, list_l
 from Grammar.fill_count_suff import lists_words_num
 from Grammar.fill_suff import lists_words_suff
 from Grammar.fill_desu import lists_words_desu
-from Grammar.te_form import lists_teform
+from Grammar.fill_forms import lists_teform
 from Grammar.fill_numbers import lists_words_numbers
 from Grammar.fill_names import lists_words_names
 from Grammar.fill_times import lists_words_times
