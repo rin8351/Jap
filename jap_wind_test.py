@@ -27,6 +27,10 @@ except ImportError:
 class Rand_window(QMainWindow):
     # Столбцы, по которым ведётся SRS-статистика (Words: чтение в колонке Read, не Kun)
     _STAT_COLUMNS = ('Kanji', 'Trans', 'Kun', 'Read')
+    # Только основные листы теста (без таблиц статистики dictio_* / words_* и пр.)
+    _TEST_SHEET_ORDER = (
+        'Dictio', 'Words', 'Frazes', 'Name', 'Vurd_kanji', 'Vurd_words',
+    )
 
     def __init__(self):
         super().__init__()
@@ -86,7 +90,11 @@ class Rand_window(QMainWindow):
         cur = self.conn.execute(
             "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name"
         )
-        self.sheet_names = [row[0] for row in cur.fetchall()]
+        all_table_names = [row[0] for row in cur.fetchall()]
+        self.sheet_names = [n for n in self._TEST_SHEET_ORDER if n in all_table_names]
+        if not self.sheet_names:
+            # Ни одной из ожидаемых таблиц нет — показываем все, чтобы окно не падало
+            self.sheet_names = all_table_names
         if 'Words' in self.sheet_names:
             self.df_w = pd.read_sql('SELECT * FROM "Words"', self.conn)
         else:
@@ -401,9 +409,9 @@ class Rand_window(QMainWindow):
 
     def checks(self):
         if self.chec_type_of_test.isChecked():
-            self.value_of_test = 1 # стандартный тест 
+            self.value_of_test = 1  # Тестовый режим с 4-мя вариантами ответов
         else:
-            self.value_of_test = 0 # Тестовый режим с 4-мя вариантами ответов
+            self.value_of_test = 0 # стандартный тест
         self.all_answers_variant = self.chec_all_answers.isChecked() if hasattr(self, 'chec_all_answers') else False
         self.test_for_answer=[]
         self.property_choose = []
@@ -630,9 +638,9 @@ class Rand_window(QMainWindow):
         self.frame_all_answer_buttons.setVisible(False)
         self.answer_row_buttons = []  # кнопки ответов по строкам (для all_answers_variant)
         layout_frame_know.addWidget(self.frame_all_answer_buttons)
-        if self.value_of_test==0: # Тестовый режим с 4-мя вариантами ответов
+        if self.value_of_test==0: # стандартный тест
             layout_frame_know.addWidget(self.label_answer)
-        else: # стандартный тест 
+        else: # Тестовый режим с 4-мя вариантами ответов
             self.checkBoxes_in_test = []
             for _ in range(4):
                 checkBox = QCheckBox(self)
