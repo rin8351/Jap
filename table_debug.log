@@ -1,21 +1,39 @@
-{"time": "2026-05-20 18:34:07.843", "action": "FILTER", "sheet": "Dictio"}
-{"time": "2026-05-20 18:34:07.858", "action": "FILTER", "sheet": "Words"}
-{"time": "2026-05-20 18:34:07.861", "action": "FILTER", "sheet": "Frazes"}
-{"time": "2026-05-20 18:34:07.866", "action": "FILTER", "sheet": "Name"}
-{"time": "2026-05-20 18:34:07.873", "action": "FILTER", "sheet": "Vurd_kanji"}
-{"time": "2026-05-20 18:34:07.889", "action": "FILTER", "sheet": "Vurd_words"}
-{"time": "2026-05-20 18:34:07.890", "action": "TABLE_OPEN", "sheets": ["Dictio", "Words", "Frazes", "Name", "Vurd_kanji", "Vurd_words"]}
-{"time": "2026-05-20 19:38:09.110", "action": "FILTER", "sheet": "Dictio"}
-{"time": "2026-05-20 19:38:09.134", "action": "FILTER", "sheet": "Words"}
-{"time": "2026-05-20 19:38:09.139", "action": "FILTER", "sheet": "Frazes"}
-{"time": "2026-05-20 19:38:09.143", "action": "FILTER", "sheet": "Name"}
-{"time": "2026-05-20 19:38:09.154", "action": "FILTER", "sheet": "Vurd_kanji"}
-{"time": "2026-05-20 19:38:09.172", "action": "FILTER", "sheet": "Vurd_words"}
-{"time": "2026-05-20 19:38:09.174", "action": "TABLE_OPEN", "sheets": ["Dictio", "Words", "Frazes", "Name", "Vurd_kanji", "Vurd_words"]}
-{"time": "2026-05-20 19:38:14.120", "action": "SEARCH_OPEN", "sheet": "Words"}
-{"time": "2026-05-20 19:38:15.021", "action": "SEARCH", "sheet": "Words", "pattern": "面接", "found": null}
-{"time": "2026-05-20 19:38:36.060", "action": "CELL_EDIT", "sheet": "Words", "row": 619, "row_num": 680, "column": "Lesson", "value": "73"}
-{"time": "2026-05-20 19:38:37.403", "action": "CELL_EDIT", "sheet": "Words", "row": 619, "row_num": 680, "column": "Kanji", "value": "面接"}
-{"time": "2026-05-20 19:38:51.014", "action": "CELL_EDIT", "sheet": "Words", "row": 619, "row_num": 680, "column": "Read", "value": "めんせつ"}
-{"time": "2026-05-20 19:38:59.611", "action": "CELL_EDIT", "sheet": "Words", "row": 619, "row_num": 680, "column": "Trans", "value": "собеседование"}
-{"time": "2026-05-20 19:39:03.479", "action": "SAVE", "sheet": "Words", "success": true}
+{"time": "2026-06-02 19:25:40.441", "action": "FILTER", "sheet": "Dictio"}
+{"time": "2026-06-02 19:25:40.457", "action": "FILTER", "sheet": "Words"}
+{"time": "2026-06-02 19:25:40.462", "action": "FILTER", "sheet": "Frazes"}
+{"time": "2026-06-02 19:25:40.466", "action": "FILTER", "sheet": "Name"}
+{"time": "2026-06-02 19:25:40.473", "action": "FILTER", "sheet": "Vurd_kanji"}
+{"time": "2026-06-02 19:25:40.491", "action": "FILTER", "sheet": "Vurd_words"}
+{"time": "2026-06-02 19:25:40.492", "action": "TABLE_OPEN", "sheets": ["Dictio", "Words", "Frazes", "Name", "Vurd_kanji", "Vurd_words"]}
+{"time": "2026-06-02 19:25:44.351", "action": "SEARCH_OPEN", "sheet": "Words"}
+{"time": "2026-06-02 19:25:45.231", "action": "SEARCH", "sheet": "Words", "pattern": "しんらい", "found": [642, 3]}
+{"time": "2026-06-02 19:25:46.512", "action": "SEARCH", "sheet": "Words", "pattern": "しんらい", "found": [642, 3]}
+{"time": "2026-06-02 19:25:49.911", "action": "SORT", "sheet": "Words", "column": "Lesson", "ascending": true}
+{"time": "2026-06-02 19:25:57.333", "action": "SEARCH", "sheet": "Words", "pattern": "будущее", "found": [636, 4]}
+{"time": "2026-06-02 19:47:23.344", "action": "SEARCH", "sheet": "Words", "pattern": "ためる", "found": null}
+{"time": "2026-06-02 19:47:27.956", "action": "SEARCH_OPEN", "sheet": "Dictio"}
+{"time": "2026-06-02 19:47:28.837", "action": "SEARCH", "sheet": "Dictio", "pattern": "ためる", "found": [451, 4]}
+{"time": "2026-06-02 19:47:31.100", "action": "SEARCH", "sheet": "Dictio", "pattern": "ためる", "found": [799, 4]}
+{"time": "2026-06-02 19:47:33.734", "action": "SEARCH", "sheet": "Dictio", "pattern": "ためる", "found": [863, 4]}
+{"time": "2026-06-02 19:47:35.201", "action": "SEARCH", "sheet": "Dictio", "pattern": "ためる", "found": [451, 4]}
+{"time": "2026-06-02 20:38:00.865", "action": "SEARCH", "sheet": "Words", "pattern": "стабиль", "found": [607, 4]}
+{"time": "2026-06-02 20:38:50.041", "action": "SEARCH", "sheet": "Words", "pattern": "成長", "found": [612, 2]}
+{"time": "2026-06-02 20:39:00.928", "action": "SEARCH", "sheet": "Words", "pattern": "しんちゃく", "found": null}
+{"time": "2026-06-02 20:41:41.822", "action": "SEARCH_OPEN", "sheet": "Words"}
+{"time": "2026-06-02 20:41:43.956", "action": "SEARCH", "sheet": "Words", "pattern": "準備", "found": [633, 2]}
+{"time": "2026-06-02 20:42:37.109", "action": "SEARCH", "sheet": "Words", "pattern": "派遣", "found": null}
+{"time": "2026-06-02 20:43:34.464", "action": "SEARCH", "sheet": "Words", "pattern": "現実", "found": [641, 2]}
+{"time": "2026-06-02 20:43:56.153", "action": "SEARCH", "sheet": "Words", "pattern": "経験", "found": [518, 5]}
+{"time": "2026-06-02 20:44:02.986", "action": "SEARCH", "sheet": "Words", "pattern": "経験", "found": [581, 2]}
+{"time": "2026-06-02 20:44:23.601", "action": "SEARCH", "sheet": "Dictio", "pattern": "積", "found": [1125, 2]}
+{"time": "2026-06-02 20:45:05.631", "action": "SEARCH", "sheet": "Dictio", "pattern": "方法", "found": null}
+{"time": "2026-06-02 20:45:30.815", "action": "SEARCH", "sheet": "Dictio", "pattern": "しっかり", "found": [562, 4]}
+{"time": "2026-06-02 20:46:24.473", "action": "SEARCH", "sheet": "Dictio", "pattern": "得", "found": [1126, 2]}
+{"time": "2026-06-02 20:47:37.820", "action": "SEARCH", "sheet": "Dictio", "pattern": "誠実", "found": null}
+{"time": "2026-06-02 20:47:51.264", "action": "SEARCH", "sheet": "Words", "pattern": "誠実", "found": null}
+{"time": "2026-06-02 20:48:01.691", "action": "CELL_EDIT", "sheet": "Words", "row": 3, "row_num": 713, "column": "Lesson", "value": "75"}
+{"time": "2026-06-02 20:48:02.451", "action": "CELL_EDIT", "sheet": "Words", "row": 3, "row_num": 713, "column": "Kanji", "value": "誠実"}
+{"time": "2026-06-02 20:48:14.528", "action": "CELL_EDIT", "sheet": "Words", "row": 3, "row_num": 713, "column": "Read", "value": "せいじつ"}
+{"time": "2026-06-02 20:48:55.934", "action": "CELL_EDIT", "sheet": "Words", "row": 3, "row_num": 713, "column": "Trans", "value": "искренность; верность, преданность; {～な} искренний; верный, преданный"}
+{"time": "2026-06-02 20:49:02.690", "action": "CELL_EDIT", "sheet": "Words", "row": 3, "row_num": 713, "column": "Trans", "value": "искренность; верность, преданность; {～な}"}
+{"time": "2026-06-02 20:49:04.937", "action": "SAVE", "sheet": "Words", "success": true}

@@ -814,7 +814,7 @@ class Rand_window(QMainWindow):
                 {"role": "system", "content": "Ты помощник по японскому языку."},
                 {"role": "user", "content": f"{prompt}\n\nДанные слова: {json.dumps(fields, ensure_ascii=False)}"}
             ],
-            "temperature": 0.5
+            "temperature": 0.7
         }
         data = json.dumps(payload).encode("utf-8")
         request = urllib.request.Request(
@@ -1177,17 +1177,35 @@ class Rand_window(QMainWindow):
         else:
             self.label_question.setText(self.current_word_test)
 
-        correct_answer = self.current_word[self.test_for_answer[0]]
+        answer_col = self.test_for_answer[0]
+        correct_answer = self.current_word[answer_col]
         correct_kanji = self.current_word['Kanji']
+        question_val = self.current_word[self.current_column]
 
-        # Исключаем слова с тем же кандзи
-        if not cell_has_value(correct_kanji):
-            filtered_words = [word for word in self.all_variations]
-        else:
-            filtered_words = [word for word in self.all_variations if word['Kanji'] != correct_kanji]
+        # Кандидаты: не текущее слово; при наличии кандзи — другой кандзи
+        filtered_words = [
+            word for word in self.all_variations
+            if word[self.current_column] != question_val
+            and (not cell_has_value(correct_kanji) or word.get('Kanji') != correct_kanji)
+        ]
 
-        # Выбираем три неправильных ответа (все значения в колонке ответа у вас уникальны)
-        wrong_answers = sample([word[self.test_for_answer[0]] for word in filtered_words], 3)
+        # Уникальные неправильные ответы (без повтора правильного и дублей строк)
+        wrong_pool = []
+        seen_answers = set()
+        for word in filtered_words:
+            ans = word[answer_col]
+            if ans == correct_answer or ans in seen_answers:
+                continue
+            seen_answers.add(ans)
+            wrong_pool.append(ans)
+
+        if len(wrong_pool) < 3:
+            if self.current_word in self.alls:
+                self.alls.remove(self.current_word)
+            self.show_next_word2()
+            return
+
+        wrong_answers = sample(wrong_pool, 3)
 
         # Смешиваем правильный ответ с неправильными
         all_answers = wrong_answers + [correct_answer]

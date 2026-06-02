@@ -3,7 +3,7 @@ from Grammar.dop_functions import *
 from Grammar.fill_dates import *
 from Grammar.fill_numbers import *
 
-print(permission_perform_action())
+print(result_simau())
 
 
 #Скрипт для тестирования функции lists_words с записью ошибок
