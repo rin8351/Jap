@@ -43,10 +43,13 @@ def _quote_ident(name):
     return '"' + str(name).replace('"', '""') + '"'
 
 
-# --- Синхронизация Trans, Kanji, Kun в таблицы статистики (dictio_*, words_*) ---
+# --- Синхронизация полей словаря в таблицы статистики (dictio_*, words_*) ---
 
-# Столбцы, которые синхронизируем; в именах таблиц статистики — в нижнем регистре (trans, kanji, kun).
-_SYNC_COLUMNS = ('Trans', 'Kanji', 'Kun')
+# Столбцы с текстом вопроса/ответа в тестах; в именах таблиц статистики — нижний регистр (on, read, …).
+_SYNC_COLUMNS_BY_SOURCE = {
+    'Dictio': ('Trans', 'Kanji', 'Kun', 'On'),
+    'Words': ('Trans', 'Kanji', 'Read'),
+}
 
 
 def _get_stats_tables_for_column(db, column_in_name):
@@ -56,7 +59,7 @@ def _get_stats_tables_for_column(db, column_in_name):
     Если имя таблицы prefix_COLUMN_* — столбец в value, иначе prefix_*_COLUMN — в answer.
     """
     q = QSqlQuery(db)
-    # column_in_name только 'trans'/'kanji'/'kun' из _SYNC_COLUMNS — безопасно подставлять
+    # column_in_name только из _SYNC_COLUMNS_BY_SOURCE — безопасно подставлять
     pattern = f'%{column_in_name}%'
     sql = (
         "SELECT name FROM sqlite_master WHERE type='table' AND "
@@ -104,18 +107,18 @@ def _create_sync_triggers_for_column(db, source_table, column_name, stats_list, 
 
 def _create_sync_trans_triggers(db):
     """
-    Создаёт триггеры на Dictio и Words: при UPDATE столбцов Trans, Kanji, Kun
-    обновляются соответствующие value/answer в таблицах статистики по Num.
+    Создаёт триггеры на Dictio и Words: при UPDATE синхронизируемых столбцов
+    обновляются value/answer в таблицах статистики по Num.
     """
     if not db or not db.isOpen():
         return
     q = QSqlQuery(db)
-    for column in _SYNC_COLUMNS:
-        col_lower = column.lower()
-        tables = _get_stats_tables_for_column(db, col_lower)
-        dictio_tables = [(t, c) for t, c in tables if str(t).lower().startswith('dictio_')]
-        words_tables = [(t, c) for t, c in tables if str(t).lower().startswith('words_')]
-        for source_table, stats_list in [('Dictio', dictio_tables), ('Words', words_tables)]:
+    for source_table, columns in _SYNC_COLUMNS_BY_SOURCE.items():
+        for column in columns:
+            col_lower = column.lower()
+            tables = _get_stats_tables_for_column(db, col_lower)
+            prefix = source_table.lower() + '_'
+            stats_list = [(t, c) for t, c in tables if str(t).lower().startswith(prefix)]
             _create_sync_triggers_for_column(db, source_table, column, stats_list, q)
 
 
