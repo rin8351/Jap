@@ -5,7 +5,6 @@ from others_scripts import resource_path
 import styles
 from jap_wind_test import Rand_window
 from table import Table_window
-from grammar import GrammarWindow
 from file_stats import StatsWindow
 
     
@@ -53,11 +52,6 @@ class Jap_app(QtWidgets.QMainWindow):
         self.btn2.setStyleSheet(self.button_style)
         self.frame_UP_main_layout.addWidget(self.btn2)
 
-        self.btn3 = QtWidgets.QPushButton('Grammar',clicked = self.grammar_test)
-        #self.btn3.setDisabled(True)
-        self.btn3.setStyleSheet(self.button_style)
-        self.frame_UP_main_layout.addWidget(self.btn3)
-
         self.btn4 = QtWidgets.QPushButton('Stats',clicked = self.stats_window)
         self.btn4.setStyleSheet(self.button_style)
         self.frame_UP_main_layout.addWidget(self.btn4)
@@ -66,10 +60,6 @@ class Jap_app(QtWidgets.QMainWindow):
         self.container_layout.addWidget(self.frame_UP_main)
     
         self.resize(450, 450)
-
-    def grammar_test(self):
-        self.new_window3 = GrammarWindow()
-        self.new_window3.show()
 
     def to_table_excel(self):
         self.new_window2 = Table_window()

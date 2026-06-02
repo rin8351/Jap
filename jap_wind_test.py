@@ -28,9 +28,7 @@ class Rand_window(QMainWindow):
     # Столбцы, по которым ведётся SRS-статистика (Words: чтение в колонке Read, не Kun)
     _STAT_COLUMNS = ('Kanji', 'Trans', 'Kun', 'Read')
     # Только основные листы теста (без таблиц статистики dictio_* / words_* и пр.)
-    _TEST_SHEET_ORDER = (
-        'Dictio', 'Words', 'Frazes', 'Name', 'Vurd_kanji', 'Vurd_words',
-    )
+    _TEST_SHEET_ORDER = ('Dictio', 'Words', 'Frazes', 'Name')
 
     def __init__(self):
         super().__init__()
