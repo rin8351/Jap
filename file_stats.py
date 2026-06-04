@@ -13,7 +13,8 @@ def get_unique_kanji_count(db_path):
     conn = sqlite3.connect(db_path)
     cur = conn.execute(
         'SELECT DISTINCT "Kanji" FROM Dictio '
-        'WHERE "Kanji" IS NOT NULL AND TRIM("Kanji") != \'\''
+        'WHERE "Kanji" IS NOT NULL AND TRIM("Kanji") != \'\' '
+        'AND "Kanji" != 0 AND TRIM(CAST("Kanji" AS TEXT)) NOT IN (\'0\', \'0.0\')'
     )
     unique_kanji = [row[0] for row in cur.fetchall()]
     conn.close()
@@ -25,7 +26,8 @@ def get_all_kanji_chars_from_db(db_path):
     conn = sqlite3.connect(db_path)
     cur = conn.execute(
         'SELECT "Kanji" FROM Dictio '
-        'WHERE "Kanji" IS NOT NULL AND TRIM("Kanji") != \'\''
+        'WHERE "Kanji" IS NOT NULL AND TRIM("Kanji") != \'\' '
+        'AND "Kanji" != 0 AND TRIM(CAST("Kanji" AS TEXT)) NOT IN (\'0\', \'0.0\')'
     )
     chars = set()
     for (cell,) in cur.fetchall():
@@ -38,15 +40,13 @@ def get_all_kanji_chars_from_db(db_path):
 
 def get_words_without_kanji_count(db_path):
     """
-    Количество слов в Dictio, у которых в столбце Kanji стоит 0 или "0"
-    (слова только на хирагане/катакане без кандзи).
+    Количество слов в таблице Kana (хирагана/катакана без кандзи).
     """
     conn = sqlite3.connect(db_path)
-    cur = conn.execute(
-        'SELECT COUNT(*) FROM Dictio '
-        'WHERE "Kanji" = 0 OR TRIM(COALESCE(CAST("Kanji" AS TEXT), \'\')) = \'0\''
-    )
-    count = cur.fetchone()[0]
+    try:
+        count = conn.execute('SELECT COUNT(*) FROM Kana').fetchone()[0]
+    except sqlite3.OperationalError:
+        count = 0
     conn.close()
     return count
 
@@ -64,7 +64,7 @@ class StatsWindow(QWidget):
 
         words_without_kanji = get_words_without_kanji_count(db_path)
         self.words_no_kanji_label = QLabel(
-            f'Слов без кандзи (только хирагана/катакана): {words_without_kanji}'
+            f'Слов в таблице Kana (хирагана/катакана): {words_without_kanji}'
         )
         layout.addWidget(self.words_no_kanji_label)
 

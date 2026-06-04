@@ -6,6 +6,7 @@ import styles
 from jap_wind_test import Rand_window
 from table import Table_window
 from file_stats import StatsWindow
+from ai_settings import AISettingsWindow
 
     
 class Jap_app(QtWidgets.QMainWindow):
@@ -56,6 +57,10 @@ class Jap_app(QtWidgets.QMainWindow):
         self.btn4.setStyleSheet(self.button_style)
         self.frame_UP_main_layout.addWidget(self.btn4)
 
+        self.btn_ai = QtWidgets.QPushButton("АИ настройки", clicked=self.ai_settings_window)
+        self.btn_ai.setStyleSheet(self.button_style)
+        self.frame_UP_main_layout.addWidget(self.btn_ai)
+
         self.container_layout = QtWidgets.QVBoxLayout(self.container)
         self.container_layout.addWidget(self.frame_UP_main)
     
@@ -72,6 +77,10 @@ class Jap_app(QtWidgets.QMainWindow):
     def stats_window(self):
         self.new_window4 = StatsWindow()
         self.new_window4.show()
+
+    def ai_settings_window(self):
+        dialog = AISettingsWindow(self)
+        dialog.exec_()
           
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])

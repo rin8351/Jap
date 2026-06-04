@@ -23,7 +23,7 @@ DB_PATH = 'Jp.db'
 EXCEL_PATH = 'Jp.xlsx'
 COLUMN_FONT_SIZES = {'Kanji': 14, 'On': 12, 'Kun': 12, 'Read': 12}
 # Порядок вкладок и список таблиц для отображения (только эти таблицы показываются)
-SHEET_DISPLAY_ORDER = ['Dictio', 'Words', 'Frazes', 'Name', 'Vurd_kanji', 'Vurd_words']
+SHEET_DISPLAY_ORDER = ['Dictio', 'Words', 'Frazes', 'Name', 'Kana']
 
 
 def _ensure_num_column(df):
@@ -49,6 +49,7 @@ def _quote_ident(name):
 _SYNC_COLUMNS_BY_SOURCE = {
     'Dictio': ('Trans', 'Kanji', 'Kun', 'On'),
     'Words': ('Trans', 'Kanji', 'Read'),
+    'Kana': ('Trans', 'Kun'),
 }
 
 
@@ -63,7 +64,9 @@ def _get_stats_tables_for_column(db, column_in_name):
     pattern = f'%{column_in_name}%'
     sql = (
         "SELECT name FROM sqlite_master WHERE type='table' AND "
-        f"((name LIKE 'dictio_%' AND name LIKE '{pattern}') OR (name LIKE 'words_%' AND name LIKE '{pattern}'))"
+        f"((name LIKE 'dictio_%' AND name LIKE '{pattern}') OR "
+        f"(name LIKE 'words_%' AND name LIKE '{pattern}') OR "
+        f"(name LIKE 'kana_%' AND name LIKE '{pattern}'))"
     )
     if not q.exec_(sql):
         return []
@@ -143,6 +146,7 @@ def get_connection():
 _DEFAULT_SCHEMA = {
     'Dictio': ['Num', 'Lesson', 'Kanji', 'On', 'Kun', 'Trans', 'Sush', 'Mnem'],
     'Words': ['Num', 'Lesson', 'Kanji', 'On', 'Kun', 'Trans', 'Sush', 'Mnem'],
+    'Kana': ['Num', 'Lesson', 'Kun', 'Trans', 'Sush', 'Mnem'],
 }
 
 
