@@ -2,7 +2,7 @@
 """
 Окно таблиц: источник данных — SQLite (Jp.db).
 Виджет использует QTableView + QSqlTableModel (виртуализация: в памяти только видимые строки).
-При первом запуске, если БД пуста, данные импортируются из Jp.xlsx.
+При первом запуске, если БД пуста, создаётся структура таблиц по умолчанию.
 """
 from PyQt5.QtWidgets import (
     QTabWidget, QWidget, QVBoxLayout, QHBoxLayout, QTableView, QHeaderView,
@@ -13,29 +13,21 @@ from PyQt5.QtCore import Qt, QEvent, QIdentityProxyModel
 from PyQt5.QtGui import QIcon, QBrush, QColor, QFont
 from PyQt5.QtSql import QSqlDatabase, QSqlTableModel, QSqlQuery
 import re
-import pandas as pd
 from others_scripts import resource_path
 import styles as st
 from table_logger import table_log, clear_table_log
+from stats_script import SYNC_COLUMNS_BY_SOURCE, STATS_PREFIXES, ensure_all_stats_tables, stats_column_role
 
 SUSH_OPTIONS = ['Сущ', 'Прил', 'Глаг', 'Нар']
 DB_PATH = 'Jp.db'
-EXCEL_PATH = 'Jp.xlsx'
 COLUMN_FONT_SIZES = {'Kanji': 14, 'On': 12, 'Kun': 12, 'Read': 12}
 # Порядок вкладок и список таблиц для отображения (только эти таблицы показываются)
-SHEET_DISPLAY_ORDER = ['Dictio', 'Words', 'Frazes', 'Name', 'Kana']
+TABLE_TAB_ORDER = ['Dictio', 'Words', 'Frazes', 'Name', 'Kana']
 
 
-def _ensure_num_column(df):
-    """Добавляет столбец Num если его нет (1, 2, 3, ...)."""
-    if 'Num' not in df.columns:
-        df.insert(0, 'Num', range(1, len(df) + 1))
-    return df
-
-
-def _sanitize_table_name(sheet_name):
-    """Имя листа -> имя таблицы SQLite (без пробелов и спецсимволов)."""
-    return re.sub(r'[^\w]', '_', str(sheet_name).strip()) or 'Sheet'
+def _sanitize_table_name(name):
+    """Нормализует имя таблицы SQLite (без пробелов и спецсимволов)."""
+    return re.sub(r'[^\w]', '_', str(name).strip()) or 'Table'
 
 
 def _quote_ident(name):
@@ -43,14 +35,9 @@ def _quote_ident(name):
     return '"' + str(name).replace('"', '""') + '"'
 
 
-# --- Синхронизация полей словаря в таблицы статистики (dictio_*, words_*) ---
+# --- Синхронизация полей словаря в таблицы статистики (dictio_*, words_*, frazes_*, name_*, …) ---
 
-# Столбцы с текстом вопроса/ответа в тестах; в именах таблиц статистики — нижний регистр (on, read, …).
-_SYNC_COLUMNS_BY_SOURCE = {
-    'Dictio': ('Trans', 'Kanji', 'Kun', 'On'),
-    'Words': ('Trans', 'Kanji', 'Read'),
-    'Kana': ('Trans', 'Kun'),
-}
+_SYNC_COLUMNS_BY_SOURCE = SYNC_COLUMNS_BY_SOURCE
 
 
 def _get_stats_tables_for_column(db, column_in_name):
@@ -60,14 +47,12 @@ def _get_stats_tables_for_column(db, column_in_name):
     Если имя таблицы prefix_COLUMN_* — столбец в value, иначе prefix_*_COLUMN — в answer.
     """
     q = QSqlQuery(db)
-    # column_in_name только из _SYNC_COLUMNS_BY_SOURCE — безопасно подставлять
-    pattern = f'%{column_in_name}%'
-    sql = (
-        "SELECT name FROM sqlite_master WHERE type='table' AND "
-        f"((name LIKE 'dictio_%' AND name LIKE '{pattern}') OR "
-        f"(name LIKE 'words_%' AND name LIKE '{pattern}') OR "
-        f"(name LIKE 'kana_%' AND name LIKE '{pattern}'))"
+    col_lower = column_in_name.lower()
+    pattern = f'%{col_lower}%'
+    prefix_conditions = ' OR '.join(
+        f"(name LIKE '{prefix}_%' AND name LIKE '{pattern}')" for prefix in STATS_PREFIXES
     )
+    sql = f"SELECT name FROM sqlite_master WHERE type='table' AND ({prefix_conditions})"
     if not q.exec_(sql):
         return []
     result = []
@@ -75,12 +60,7 @@ def _get_stats_tables_for_column(db, column_in_name):
         name = q.value(0)
         if name is None:
             continue
-        name_lower = str(name).lower()
-        col_lower = column_in_name.lower()
-        if name_lower.startswith('dictio_' + col_lower + '_') or name_lower.startswith('words_' + col_lower + '_'):
-            result.append((name, 'value'))
-        else:
-            result.append((name, 'answer'))
+        result.append((name, stats_column_role(name, col_lower)))
     return result
 
 
@@ -108,9 +88,26 @@ def _create_sync_triggers_for_column(db, source_table, column_name, stats_list, 
         table_log('SYNC_TRIGGER', error=f'{trigger_name}: {q.lastError().text()}')
 
 
+def _ensure_stats_tables():
+    """Создаёт и заполняет таблицы статистики из словарей (без перезаписи существующего прогресса)."""
+    import sqlite3
+    conn = None
+    try:
+        conn = sqlite3.connect(DB_PATH, timeout=10)
+        ensure_all_stats_tables(conn)
+    except Exception as e:
+        table_log('STATS_POPULATE', error=str(e))
+    finally:
+        if conn is not None:
+            try:
+                conn.close()
+            except Exception:
+                pass
+
+
 def _create_sync_trans_triggers(db):
     """
-    Создаёт триггеры на Dictio и Words: при UPDATE синхронизируемых столбцов
+    Создаёт триггеры на таблицах словаря: при UPDATE синхронизируемых столбцов
     обновляются value/answer в таблицах статистики по Num.
     """
     if not db or not db.isOpen():
@@ -142,10 +139,12 @@ def get_connection():
     return db if db.isOpen() else None
 
 
-# Схема по умолчанию, если при пустой БД нет Excel (имя_таблицы -> список столбцов)
+# Схема пустой БД: имя таблицы -> список столбцов
 _DEFAULT_SCHEMA = {
     'Dictio': ['Num', 'Lesson', 'Kanji', 'On', 'Kun', 'Trans', 'Sush', 'Mnem'],
     'Words': ['Num', 'Lesson', 'Kanji', 'On', 'Kun', 'Trans', 'Sush', 'Mnem'],
+    'Frazes': ['Num', 'Lesson', 'Kanji', 'Read', 'Trans'],
+    'Name': ['Num', 'Lesson', 'Kanji', 'Read'],
     'Kana': ['Num', 'Lesson', 'Kun', 'Trans', 'Sush', 'Mnem'],
 }
 
@@ -168,8 +167,7 @@ def _create_empty_table(q, table_name, columns):
 
 def init_db():
     """
-    Открывает Jp.db. Если БД пуста (нет таблиц), создаёт только структуру таблиц (без данных).
-    Данные из Excel не подгружаются — база остаётся пустой для заполнения пользователем.
+    Открывает Jp.db. Если БД пуста (нет таблиц), создаёт структуру таблиц по _DEFAULT_SCHEMA (без строк).
     Возвращает True при успехе.
     """
     db = get_connection()
@@ -181,38 +179,19 @@ def init_db():
     q.exec_("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")
     has_tables = q.next()
     if has_tables:
+        _ensure_stats_tables()
         _create_sync_trans_triggers(db)
         return True
-    # Пустая БД: создаём только структуру таблиц (без импорта данных из Excel)
-    try:
-        xl = pd.ExcelFile(EXCEL_PATH, engine='openpyxl')
-    except Exception:
-        try:
-            xl = pd.ExcelFile(EXCEL_PATH)
-        except Exception:
-            xl = None
-    if xl is not None and xl.sheet_names:
-        for sheet_name in xl.sheet_names:
-            try:
-                df = xl.parse(sheet_name)
-                df.columns = df.columns.astype(str).str.strip()
-                df = _ensure_num_column(df.copy())
-                table_name = _sanitize_table_name(sheet_name)
-                if not _create_empty_table(q, table_name, list(df.columns)):
-                    table_log('DB_INIT', error=f'CREATE TABLE {table_name}: {q.lastError().text()}')
-            except Exception as e:
-                table_log('DB_INIT', error=f'Sheet {sheet_name}: {e}')
-    else:
-        # Нет Excel или не удалось прочитать — создаём таблицы по умолчанию
-        for table_name, columns in _DEFAULT_SCHEMA.items():
-            if not _create_empty_table(q, table_name, columns):
-                table_log('DB_INIT', error=f'CREATE TABLE {table_name}: {q.lastError().text()}')
+    for table_name, columns in _DEFAULT_SCHEMA.items():
+        if not _create_empty_table(q, table_name, columns):
+            table_log('DB_INIT', error=f'CREATE TABLE {table_name}: {q.lastError().text()}')
+    _ensure_stats_tables()
     _create_sync_trans_triggers(db)
     return True
 
 
-def get_sheet_names():
-    """Список имён листов (таблиц в БД). Имена таблиц возвращаем как есть (для отображения вкладок — маппинг table_name -> sheet_name не делаем, имена совпадают если в Excel без пробелов)."""
+def get_table_names():
+    """Список имён пользовательских таблиц в БД (без sqlite_*)."""
     db = get_connection()
     if not db or not db.isOpen():
         return []
@@ -224,10 +203,10 @@ def get_sheet_names():
     return names
 
 
-def get_sheet_names_for_display():
-    """Список имён листов в порядке отображения вкладок. Показываются только таблицы из SHEET_DISPLAY_ORDER."""
-    names = get_sheet_names()
-    return [n for n in SHEET_DISPLAY_ORDER if n in names]
+def get_table_names_for_display():
+    """Имена таблиц в порядке вкладок. Показываются только таблицы из TABLE_TAB_ORDER."""
+    names = get_table_names()
+    return [n for n in TABLE_TAB_ORDER if n in names]
 
 
 def get_table_columns(table_name):
@@ -649,7 +628,7 @@ class SheetTableWidget(QWidget):
         if self._submit_all_with_validation(show_message=True):
             table_log('SAVE', sheet=self.sheet_name, success=True)
             self._do_select(keep_position=True)
-            QMessageBox.information(self, 'Сохранение', f'Данные листа "{self.sheet_name}" сохранены в БД.')
+            QMessageBox.information(self, 'Сохранение', f'Данные таблицы "{self.sheet_name}" сохранены в БД.')
 
     def _get_numeric_max_num(self):
         """Возвращает максимальный корректный Num (только неотрицательные целые)."""
@@ -876,14 +855,14 @@ class SheetTableWidget(QWidget):
 
 
 class Table_window(QTabWidget):
-    """Окно таблиц: вкладки по листам из SQLite."""
+    """Окно таблиц: вкладки по таблицам SQLite."""
 
     def __init__(self):
         super().__init__()
         if not init_db():
             QMessageBox.critical(self, 'Ошибка', 'Не удалось открыть или инициализировать БД ' + DB_PATH)
             return
-        self.sheet_names = get_sheet_names_for_display()
+        self.sheet_names = get_table_names_for_display()
         self._tabs = {}
         for sheet_name in self.sheet_names:
             w = SheetTableWidget(sheet_name, self)

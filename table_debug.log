@@ -1,0 +1,143 @@
+{"time": "2026-06-08 11:46:51.754", "action": "FILTER", "sheet": "Dictio"}
+{"time": "2026-06-08 11:46:51.779", "action": "FILTER", "sheet": "Words"}
+{"time": "2026-06-08 11:46:51.783", "action": "FILTER", "sheet": "Frazes"}
+{"time": "2026-06-08 11:46:51.788", "action": "FILTER", "sheet": "Name"}
+{"time": "2026-06-08 11:46:51.801", "action": "FILTER", "sheet": "Kana"}
+{"time": "2026-06-08 11:46:51.801", "action": "TABLE_OPEN", "sheets": ["Dictio", "Words", "Frazes", "Name", "Kana"]}
+{"time": "2026-06-08 11:46:56.416", "action": "SEARCH_OPEN", "sheet": "Dictio"}
+{"time": "2026-06-08 11:46:58.640", "action": "SEARCH", "sheet": "Dictio", "pattern": "сразу", "found": [94, 7]}
+{"time": "2026-06-08 11:46:59.877", "action": "SEARCH", "sheet": "Dictio", "pattern": "сразу", "found": [94, 7]}
+{"time": "2026-06-08 11:47:02.045", "action": "SEARCH", "sheet": "Dictio", "pattern": "сразу", "found": [94, 7]}
+{"time": "2026-06-08 11:47:05.794", "action": "SEARCH_OPEN", "sheet": "Kana"}
+{"time": "2026-06-08 11:47:06.644", "action": "SEARCH", "sheet": "Kana", "pattern": "сразу", "found": [44, 3]}
+{"time": "2026-06-08 11:54:20.841", "action": "SEARCH_OPEN", "sheet": "Words"}
+{"time": "2026-06-08 11:54:21.643", "action": "SEARCH", "sheet": "Words", "pattern": "自信", "found": null}
+{"time": "2026-06-08 11:54:28.917", "action": "CELL_EDIT", "sheet": "Words", "row": 653, "row_num": 728, "column": "Lesson", "value": ""}
+{"time": "2026-06-08 11:54:32.044", "action": "SORT", "sheet": "Words", "column": "Lesson", "ascending": true}
+{"time": "2026-06-08 11:54:40.722", "action": "CELL_EDIT", "sheet": "Words", "row": 663, "row_num": 728, "column": "Lesson", "value": "77"}
+{"time": "2026-06-08 11:54:41.555", "action": "CELL_EDIT", "sheet": "Words", "row": 663, "row_num": 728, "column": "Kanji", "value": "自信"}
+{"time": "2026-06-08 11:54:57.892", "action": "CELL_EDIT", "sheet": "Words", "row": 663, "row_num": 728, "column": "Read", "value": "じしん"}
+{"time": "2026-06-08 12:21:32.746", "action": "SEARCH", "sheet": "Words", "pattern": "стар", "found": [82, 4]}
+{"time": "2026-06-08 12:21:35.396", "action": "SEARCH", "sheet": "Words", "pattern": "старат", "found": null}
+{"time": "2026-06-08 12:21:36.982", "action": "SEARCH", "sheet": "Words", "pattern": "стара", "found": null}
+{"time": "2026-06-08 12:21:39.847", "action": "SEARCH_OPEN", "sheet": "Frazes"}
+{"time": "2026-06-08 12:21:41.528", "action": "SEARCH", "sheet": "Frazes", "pattern": "старать", "found": [38, 4]}
+{"time": "2026-06-08 12:23:17.261", "action": "CELL_EDIT", "sheet": "Frazes", "row": 39, "row_num": 40, "column": "Lesson", "value": "2"}
+{"time": "2026-06-08 12:23:18.078", "action": "CELL_EDIT", "sheet": "Frazes", "row": 39, "row_num": 40, "column": "Kanji", "value": "日本語が上手になるように頑張ります。"}
+{"time": "2026-06-08 12:23:58.410", "action": "CELL_EDIT", "sheet": "Frazes", "row": 39, "row_num": 40, "column": "Read", "value": "にほんごがじょうずになるようにがんばります"}
+{"time": "2026-06-08 12:24:24.650", "action": "CELL_EDIT", "sheet": "Frazes", "row": 40, "row_num": 41, "column": "Lesson", "value": "2"}
+{"time": "2026-06-08 12:24:25.513", "action": "CELL_EDIT", "sheet": "Frazes", "row": 40, "row_num": 41, "column": "Kanji", "value": "毎日勉強できるように頑張ります。"}
+{"time": "2026-06-08 12:24:32.038", "action": "CELL_EDIT", "sheet": "Frazes", "row": 39, "row_num": 40, "column": "Trans", "value": "Буду стараться улучшить японский"}
+{"time": "2026-06-08 12:24:37.288", "action": "CELL_EDIT", "sheet": "Frazes", "row": 40, "row_num": 41, "column": "Trans", "value": "Буду стараться заниматься каждый день."}
+{"time": "2026-06-08 12:25:00.795", "action": "CELL_EDIT", "sheet": "Frazes", "row": 40, "row_num": 41, "column": "Read", "value": "まいにちべんきょうできるようにがんばります"}
+{"time": "2026-06-08 12:29:21.269", "action": "SEARCH", "sheet": "Dictio", "pattern": "合", "found": [466, 2]}
+{"time": "2026-06-08 13:10:36.795", "action": "CELL_EDIT", "sheet": "Dictio", "row": 466, "row_num": 725, "column": "Trans", "value": "соединяется, совпадает (само)/ соединять, соответствовать"}
+{"time": "2026-06-08 13:10:38.784", "action": "SAVE", "sheet": "Dictio", "success": true}
+{"time": "2026-06-08 13:17:51.900", "action": "SEARCH", "sheet": "Kana", "pattern": "たがい", "found": null}
+{"time": "2026-06-08 13:18:05.361", "action": "CELL_EDIT", "sheet": "Kana", "row": 485, "row_num": 1226, "column": "Kun", "value": "たがい"}
+{"time": "2026-06-08 13:18:07.733", "action": "CELL_EDIT", "sheet": "Kana", "row": 485, "row_num": 1226, "column": "Sush", "value": "Нар"}
+{"time": "2026-06-08 13:18:10.139", "action": "CELL_EDIT", "sheet": "Kana", "row": 485, "row_num": 1226, "column": "Lesson", "value": "140"}
+{"time": "2026-06-08 13:18:15.623", "action": "CELL_EDIT", "sheet": "Kana", "row": 485, "row_num": 1226, "column": "Trans", "value": "обоюдно, взаимно"}
+{"time": "2026-06-08 13:21:48.120", "action": "SEARCH", "sheet": "Kana", "pattern": "помо", "found": [153, 3]}
+{"time": "2026-06-08 13:21:50.757", "action": "SEARCH", "sheet": "Kana", "pattern": "помо", "found": [163, 3]}
+{"time": "2026-06-08 13:28:24.401", "action": "CELL_EDIT", "sheet": "Frazes", "row": 41, "row_num": 42, "column": "Lesson", "value": "2"}
+{"time": "2026-06-08 13:28:25.308", "action": "CELL_EDIT", "sheet": "Frazes", "row": 41, "row_num": 42, "column": "Kanji", "value": "発音のお手伝いができたら嬉しいです！"}
+{"time": "2026-06-08 13:29:02.061", "action": "CELL_EDIT", "sheet": "Frazes", "row": 41, "row_num": 42, "column": "Read", "value": "はつおんのおてつだいができたらうれしいです"}
+{"time": "2026-06-08 13:29:10.916", "action": "CELL_EDIT", "sheet": "Frazes", "row": 41, "row_num": 42, "column": "Trans", "value": "Буду рада помочь вам с произношением!"}
+{"time": "2026-06-08 13:29:13.586", "action": "SAVE", "sheet": "Frazes", "success": true}
+{"time": "2026-06-08 13:29:16.116", "action": "CELL_EDIT", "sheet": "Frazes", "row": 42, "row_num": 0, "column": "Lesson", "value": null}
+{"time": "2026-06-08 13:29:16.117", "action": "CELL_EDIT", "sheet": "Frazes", "row": 42, "row_num": 43, "column": "Num", "value": 43}
+{"time": "2026-06-08 13:29:16.117", "action": "CELL_EDIT", "sheet": "Frazes", "row": 42, "row_num": 43, "column": "Kanji", "value": ""}
+{"time": "2026-06-08 13:29:16.118", "action": "CELL_EDIT", "sheet": "Frazes", "row": 42, "row_num": 43, "column": "Read", "value": ""}
+{"time": "2026-06-08 13:29:16.118", "action": "CELL_EDIT", "sheet": "Frazes", "row": 42, "row_num": 43, "column": "Trans", "value": ""}
+{"time": "2026-06-08 13:29:16.120", "action": "CELL_EDIT", "sheet": "Frazes", "row": 43, "row_num": 0, "column": "Lesson", "value": null}
+{"time": "2026-06-08 13:29:16.120", "action": "CELL_EDIT", "sheet": "Frazes", "row": 43, "row_num": 44, "column": "Num", "value": 44}
+{"time": "2026-06-08 13:29:16.121", "action": "CELL_EDIT", "sheet": "Frazes", "row": 43, "row_num": 44, "column": "Kanji", "value": ""}
+{"time": "2026-06-08 13:29:16.121", "action": "CELL_EDIT", "sheet": "Frazes", "row": 43, "row_num": 44, "column": "Read", "value": ""}
+{"time": "2026-06-08 13:29:16.121", "action": "CELL_EDIT", "sheet": "Frazes", "row": 43, "row_num": 44, "column": "Trans", "value": ""}
+{"time": "2026-06-08 13:29:16.121", "action": "CELL_EDIT", "sheet": "Frazes", "row": 44, "row_num": 0, "column": "Lesson", "value": null}
+{"time": "2026-06-08 13:29:16.122", "action": "CELL_EDIT", "sheet": "Frazes", "row": 44, "row_num": 45, "column": "Num", "value": 45}
+{"time": "2026-06-08 13:29:16.122", "action": "CELL_EDIT", "sheet": "Frazes", "row": 44, "row_num": 45, "column": "Kanji", "value": ""}
+{"time": "2026-06-08 13:29:16.122", "action": "CELL_EDIT", "sheet": "Frazes", "row": 44, "row_num": 45, "column": "Read", "value": ""}
+{"time": "2026-06-08 13:29:16.123", "action": "CELL_EDIT", "sheet": "Frazes", "row": 44, "row_num": 45, "column": "Trans", "value": ""}
+{"time": "2026-06-08 13:29:16.123", "action": "CELL_EDIT", "sheet": "Frazes", "row": 45, "row_num": 0, "column": "Lesson", "value": null}
+{"time": "2026-06-08 13:29:16.123", "action": "CELL_EDIT", "sheet": "Frazes", "row": 45, "row_num": 46, "column": "Num", "value": 46}
+{"time": "2026-06-08 13:29:16.123", "action": "CELL_EDIT", "sheet": "Frazes", "row": 45, "row_num": 46, "column": "Kanji", "value": ""}
+{"time": "2026-06-08 13:29:16.125", "action": "CELL_EDIT", "sheet": "Frazes", "row": 45, "row_num": 46, "column": "Read", "value": ""}
+{"time": "2026-06-08 13:29:16.125", "action": "CELL_EDIT", "sheet": "Frazes", "row": 45, "row_num": 46, "column": "Trans", "value": ""}
+{"time": "2026-06-08 13:29:16.125", "action": "CELL_EDIT", "sheet": "Frazes", "row": 46, "row_num": 0, "column": "Lesson", "value": null}
+{"time": "2026-06-08 13:29:16.126", "action": "CELL_EDIT", "sheet": "Frazes", "row": 46, "row_num": 47, "column": "Num", "value": 47}
+{"time": "2026-06-08 13:29:16.126", "action": "CELL_EDIT", "sheet": "Frazes", "row": 46, "row_num": 47, "column": "Kanji", "value": ""}
+{"time": "2026-06-08 13:29:16.126", "action": "CELL_EDIT", "sheet": "Frazes", "row": 46, "row_num": 47, "column": "Read", "value": ""}
+{"time": "2026-06-08 13:29:16.126", "action": "CELL_EDIT", "sheet": "Frazes", "row": 46, "row_num": 47, "column": "Trans", "value": ""}
+{"time": "2026-06-08 13:29:16.127", "action": "CELL_EDIT", "sheet": "Frazes", "row": 47, "row_num": 0, "column": "Lesson", "value": null}
+{"time": "2026-06-08 13:29:16.127", "action": "CELL_EDIT", "sheet": "Frazes", "row": 47, "row_num": 48, "column": "Num", "value": 48}
+{"time": "2026-06-08 13:29:16.127", "action": "CELL_EDIT", "sheet": "Frazes", "row": 47, "row_num": 48, "column": "Kanji", "value": ""}
+{"time": "2026-06-08 13:29:16.128", "action": "CELL_EDIT", "sheet": "Frazes", "row": 47, "row_num": 48, "column": "Read", "value": ""}
+{"time": "2026-06-08 13:29:16.128", "action": "CELL_EDIT", "sheet": "Frazes", "row": 47, "row_num": 48, "column": "Trans", "value": ""}
+{"time": "2026-06-08 13:29:16.128", "action": "CELL_EDIT", "sheet": "Frazes", "row": 48, "row_num": 0, "column": "Lesson", "value": null}
+{"time": "2026-06-08 13:29:16.129", "action": "CELL_EDIT", "sheet": "Frazes", "row": 48, "row_num": 49, "column": "Num", "value": 49}
+{"time": "2026-06-08 13:29:16.129", "action": "CELL_EDIT", "sheet": "Frazes", "row": 48, "row_num": 49, "column": "Kanji", "value": ""}
+{"time": "2026-06-08 13:29:16.129", "action": "CELL_EDIT", "sheet": "Frazes", "row": 48, "row_num": 49, "column": "Read", "value": ""}
+{"time": "2026-06-08 13:29:16.130", "action": "CELL_EDIT", "sheet": "Frazes", "row": 48, "row_num": 49, "column": "Trans", "value": ""}
+{"time": "2026-06-08 13:29:16.130", "action": "CELL_EDIT", "sheet": "Frazes", "row": 49, "row_num": 0, "column": "Lesson", "value": null}
+{"time": "2026-06-08 13:29:16.130", "action": "CELL_EDIT", "sheet": "Frazes", "row": 49, "row_num": 50, "column": "Num", "value": 50}
+{"time": "2026-06-08 13:29:16.131", "action": "CELL_EDIT", "sheet": "Frazes", "row": 49, "row_num": 50, "column": "Kanji", "value": ""}
+{"time": "2026-06-08 13:29:16.131", "action": "CELL_EDIT", "sheet": "Frazes", "row": 49, "row_num": 50, "column": "Read", "value": ""}
+{"time": "2026-06-08 13:29:16.131", "action": "CELL_EDIT", "sheet": "Frazes", "row": 49, "row_num": 50, "column": "Trans", "value": ""}
+{"time": "2026-06-08 13:29:16.131", "action": "CELL_EDIT", "sheet": "Frazes", "row": 50, "row_num": 0, "column": "Lesson", "value": null}
+{"time": "2026-06-08 13:29:16.132", "action": "CELL_EDIT", "sheet": "Frazes", "row": 50, "row_num": 51, "column": "Num", "value": 51}
+{"time": "2026-06-08 13:29:16.132", "action": "CELL_EDIT", "sheet": "Frazes", "row": 50, "row_num": 51, "column": "Kanji", "value": ""}
+{"time": "2026-06-08 13:29:16.132", "action": "CELL_EDIT", "sheet": "Frazes", "row": 50, "row_num": 51, "column": "Read", "value": ""}
+{"time": "2026-06-08 13:29:16.133", "action": "CELL_EDIT", "sheet": "Frazes", "row": 50, "row_num": 51, "column": "Trans", "value": ""}
+{"time": "2026-06-08 13:29:16.133", "action": "CELL_EDIT", "sheet": "Frazes", "row": 51, "row_num": 0, "column": "Lesson", "value": null}
+{"time": "2026-06-08 13:29:16.133", "action": "CELL_EDIT", "sheet": "Frazes", "row": 51, "row_num": 52, "column": "Num", "value": 52}
+{"time": "2026-06-08 13:29:16.133", "action": "CELL_EDIT", "sheet": "Frazes", "row": 51, "row_num": 52, "column": "Kanji", "value": ""}
+{"time": "2026-06-08 13:29:16.134", "action": "CELL_EDIT", "sheet": "Frazes", "row": 51, "row_num": 52, "column": "Read", "value": ""}
+{"time": "2026-06-08 13:29:16.134", "action": "CELL_EDIT", "sheet": "Frazes", "row": 51, "row_num": 52, "column": "Trans", "value": ""}
+{"time": "2026-06-08 13:29:16.173", "action": "ADD_ROWS", "sheet": "Frazes", "count": 10}
+{"time": "2026-06-08 13:38:13.657", "action": "CELL_EDIT", "sheet": "Words", "row": 663, "row_num": 728, "column": "Trans", "value": "уверенность"}
+{"time": "2026-06-08 13:38:30.233", "action": "CELL_EDIT", "sheet": "Words", "row": 6, "row_num": 735, "column": "Lesson", "value": "77"}
+{"time": "2026-06-08 13:38:46.320", "action": "CELL_EDIT", "sheet": "Words", "row": 6, "row_num": 735, "column": "Kanji", "value": "返信"}
+{"time": "2026-06-08 13:38:51.091", "action": "CELL_EDIT", "sheet": "Words", "row": 6, "row_num": 735, "column": "Read", "value": "へんしん"}
+{"time": "2026-06-08 13:39:03.338", "action": "CELL_EDIT", "sheet": "Words", "row": 6, "row_num": 735, "column": "Trans", "value": "ответ (на сообщение, а не задачу)"}
+{"time": "2026-06-08 13:39:14.484", "action": "CELL_EDIT", "sheet": "Words", "row": 6, "row_num": 735, "column": "Mnem", "value": "お返事ありがとうございます"}
+{"time": "2026-06-08 13:42:05.174", "action": "SEARCH", "sheet": "Words", "pattern": "оба", "found": [421, 4]}
+{"time": "2026-06-08 13:42:07.841", "action": "SEARCH", "sheet": "Words", "pattern": "оба", "found": [522, 4]}
+{"time": "2026-06-08 13:42:09.508", "action": "SEARCH", "sheet": "Words", "pattern": "оба", "found": [421, 4]}
+{"time": "2026-06-08 13:42:15.327", "action": "SEARCH", "sheet": "Kana", "pattern": "оба", "found": [17, 3]}
+{"time": "2026-06-08 13:42:16.726", "action": "SEARCH", "sheet": "Kana", "pattern": "оба", "found": [357, 3]}
+{"time": "2026-06-08 13:43:21.911", "action": "CELL_EDIT", "sheet": "Kana", "row": 357, "row_num": 897, "column": "Trans", "value": "оба (разговорное)"}
+{"time": "2026-06-08 13:52:11.191", "action": "SEARCH", "sheet": "Dictio", "pattern": "声", "found": null}
+{"time": "2026-06-08 13:55:30.398", "action": "CELL_EDIT", "sheet": "Words", "row": 5, "row_num": 734, "column": "Kanji", "value": "彼から返事が来た。"}
+{"time": "2026-06-08 13:55:34.268", "action": "CELL_EDIT", "sheet": "Words", "row": 6, "row_num": 735, "column": "Mnem", "value": " 彼から返事が来た。"}
+{"time": "2026-06-08 13:55:35.018", "action": "CELL_EDIT", "sheet": "Words", "row": 5, "row_num": 734, "column": "Mnem", "value": "お返事ありがとうございます"}
+{"time": "2026-06-08 13:55:49.486", "action": "CELL_EDIT", "sheet": "Words", "row": 6, "row_num": 735, "column": "Mnem", "value": "彼から返事が来た。"}
+{"time": "2026-06-08 13:55:51.399", "action": "CELL_EDIT", "sheet": "Words", "row": 5, "row_num": 734, "column": "Kanji", "value": "返"}
+{"time": "2026-06-08 13:55:52.973", "action": "CELL_EDIT", "sheet": "Words", "row": 5, "row_num": 734, "column": "Lesson", "value": "77"}
+{"time": "2026-06-08 13:55:59.190", "action": "CELL_EDIT", "sheet": "Words", "row": 5, "row_num": 734, "column": "Read", "value": "へんじん"}
+{"time": "2026-06-08 13:56:14.236", "action": "CELL_EDIT", "sheet": "Words", "row": 6, "row_num": 735, "column": "Trans", "value": "ответ вообще, реакция на чьи-то слова, вопрос, просьбу."}
+{"time": "2026-06-08 13:56:17.303", "action": "CELL_EDIT", "sheet": "Words", "row": 6, "row_num": 735, "column": "Trans", "value": ""}
+{"time": "2026-06-08 13:56:18.632", "action": "CELL_EDIT", "sheet": "Words", "row": 5, "row_num": 734, "column": "Trans", "value": "ответ вообще, реакция на чьи-то слова, вопрос, просьбу."}
+{"time": "2026-06-08 13:56:19.772", "action": "CELL_EDIT", "sheet": "Words", "row": 6, "row_num": 735, "column": "Mnem", "value": ""}
+{"time": "2026-06-08 13:56:22.461", "action": "CELL_EDIT", "sheet": "Words", "row": 5, "row_num": 734, "column": "Mnem", "value": "お返事ありがとうございま, 彼から返事が来た。"}
+{"time": "2026-06-08 13:56:35.260", "action": "CELL_EDIT", "sheet": "Words", "row": 6, "row_num": 735, "column": "Trans", "value": "ответное сообщение, обычно на письмо, SMS, сообщение в мессенджере и т.п."}
+{"time": "2026-06-08 13:56:42.916", "action": "CELL_EDIT", "sheet": "Words", "row": 6, "row_num": 735, "column": "Trans", "value": "ответное сообщение, обычно на письмо, SMS и т.п."}
+{"time": "2026-06-08 13:56:58.240", "action": "CELL_EDIT", "sheet": "Words", "row": 6, "row_num": 735, "column": "Mnem", "value": "メールを送ったけど、まだ返信がない。"}
+{"time": "2026-06-08 13:57:19.121", "action": "SEARCH", "sheet": "Dictio", "pattern": "отправл", "found": [180, 5]}
+{"time": "2026-06-08 13:57:20.469", "action": "SEARCH", "sheet": "Dictio", "pattern": "отправл", "found": [180, 5]}
+{"time": "2026-06-08 13:57:22.873", "action": "SEARCH", "sheet": "Dictio", "pattern": "отправ", "found": [180, 5]}
+{"time": "2026-06-08 13:57:24.120", "action": "SEARCH", "sheet": "Dictio", "pattern": "отправ", "found": [180, 5]}
+{"time": "2026-06-08 13:57:24.525", "action": "SEARCH", "sheet": "Dictio", "pattern": "отправ", "found": [180, 5]}
+{"time": "2026-06-08 13:57:33.275", "action": "SEARCH", "sheet": "Dictio", "pattern": "送", "found": [357, 2]}
+{"time": "2026-06-08 13:57:52.495", "action": "SAVE", "sheet": "Words", "success": true}
+{"time": "2026-06-08 14:26:37.827", "action": "CELL_EDIT", "sheet": "Words", "row": 657, "row_num": 734, "column": "Kanji", "value": ""}
+{"time": "2026-06-08 14:27:22.274", "action": "CELL_EDIT", "sheet": "Words", "row": 657, "row_num": 734, "column": "Kanji", "value": "返じん"}
+{"time": "2026-06-08 14:27:32.287", "action": "CELL_EDIT", "sheet": "Words", "row": 657, "row_num": 734, "column": "Read", "value": "へんじ"}
+{"time": "2026-06-08 14:27:40.126", "action": "CELL_EDIT", "sheet": "Words", "row": 657, "row_num": 734, "column": "Kanji", "value": "返事"}
+{"time": "2026-06-08 14:51:12.359", "action": "CELL_EDIT", "sheet": "Frazes", "row": 42, "row_num": 43, "column": "Lesson", "value": "2"}
+{"time": "2026-06-08 14:51:13.192", "action": "CELL_EDIT", "sheet": "Frazes", "row": 42, "row_num": 43, "column": "Kanji", "value": "返事が遅いことがあります"}
+{"time": "2026-06-08 14:51:27.776", "action": "CELL_EDIT", "sheet": "Frazes", "row": 42, "row_num": 43, "column": "Read", "value": "へんじがおそいことがあります"}
+{"time": "2026-06-08 14:51:39.720", "action": "CELL_EDIT", "sheet": "Frazes", "row": 42, "row_num": 43, "column": "Trans", "value": "Ответы могут быть отправлены с задержкой."}
+{"time": "2026-06-08 15:05:32.677", "action": "SEARCH", "sheet": "Words", "pattern": "正直", "found": null}
+{"time": "2026-06-08 18:01:18.063", "action": "SEARCH", "sheet": "Words", "pattern": "безопасность", "found": [638, 4]}

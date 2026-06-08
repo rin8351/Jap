@@ -15,7 +15,7 @@ def resource_path(relative_path):
 
 
 def cell_has_value(val):
-    """Считает, что в ячейке есть значение: не пусто, не 0, не NaN (пустая ячейка из Excel)."""
+    """Считает, что в ячейке есть значение: не пусто, не 0, не NaN."""
     if val is None:
         return False
     try:
@@ -40,7 +40,8 @@ KEY_MAP = {'kanji': 'Kanji', 'on': 'On', 'kun': 'Kun', 'trans': 'Trans'}
 def merge_by_column(raw_alls, column, test):
     """
     Объединяет словари в raw_alls по уникальным значениям column.
-    Значения test из повторяющихся строк склеиваются через запятую.
+    Значения test из повторяющихся строк склеиваются через запятую
+    (одинаковые значения test не дублируются).
     column и test: 'kanji', 'on', 'kun', 'trans'.
     """
     col_key = KEY_MAP.get(column.lower(), column)
@@ -48,14 +49,15 @@ def merge_by_column(raw_alls, column, test):
     seen = {}
     for d in raw_alls:
         col_val = d.get(col_key)
+        val = d.get(test_key, '') or ''
         if col_val not in seen:
-            seen[col_val] = {**d, test_key: [d.get(test_key, '') or '']}
-        else:
-            seen[col_val][test_key].append(d.get(test_key, '') or '')
+            seen[col_val] = {**d, test_key: [val] if val else []}
+        elif val and val not in seen[col_val][test_key]:
+            seen[col_val][test_key].append(val)
     result = []
     for merged in seen.values():
         merged = merged.copy()
-        merged[test_key] = ', '.join(v for v in merged[test_key] if v)
+        merged[test_key] = ', '.join(merged[test_key])
         result.append(merged)
     return result
 

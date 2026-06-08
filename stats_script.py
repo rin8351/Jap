@@ -315,7 +315,123 @@ def can_press_easy(stats, item, question=None, answer_column=None):
     return stat.get("difficulty") != "hard"
 
 
-# ---------- Работа с SQLite (та же схема, что в migrate_stats_to_db.py) ----------
+# ---------- Работа с SQLite ----------
+
+# Таблица словаря -> (префикс таблиц статистики, столбцы вопроса/ответа в тесте)
+STATS_SOURCES = {
+    'Dictio': ('dictio', ('Trans', 'Kanji', 'Kun', 'On')),
+    'Words': ('words', ('Trans', 'Kanji', 'Read')),
+    'Kana': ('kana', ('Trans', 'Kun')),
+    'Frazes': ('frazes', ('Trans', 'Kanji', 'Read')),
+    'Name': ('name', ('Kanji', 'Read')),
+}
+
+SYNC_COLUMNS_BY_SOURCE = {table: cols for table, (_, cols) in STATS_SOURCES.items()}
+STATS_PREFIXES = tuple({prefix for prefix, _ in STATS_SOURCES.values()})
+
+
+def stats_table_name(prefix, question_col, answer_col):
+    """Имя таблицы статистики: {prefix}_{вопрос}_{ответ} в нижнем регистре."""
+    return f'{prefix}_{question_col.lower()}_{answer_col.lower()}'
+
+
+def iter_stats_table_names(prefix, columns):
+    """Все пары направлений (вопрос, ответ) для столбцов теста."""
+    for question_col in columns:
+        for answer_col in columns:
+            if question_col != answer_col:
+                yield stats_table_name(prefix, question_col, answer_col)
+
+
+def stats_column_role(table_name, column_name):
+    """
+    В таблице prefix_Q_A столбец Q синхронизируется в value, A — в answer.
+    """
+    parts = str(table_name).lower().split('_', 2)
+    if len(parts) >= 2 and parts[1] == str(column_name).lower():
+        return 'value'
+    return 'answer'
+
+
+def _cell_has_value(val):
+    if val is None:
+        return False
+    if val == 0 or val == '0':
+        return False
+    if isinstance(val, str) and val.strip() == '':
+        return False
+    try:
+        import math
+        if isinstance(val, float) and math.isnan(val):
+            return False
+    except (TypeError, ValueError):
+        pass
+    return True
+
+
+def populate_stats_tables_for_source(conn, source_table):
+    """
+    Создаёт таблицы статистики для source_table и заполняет строками из словаря.
+    Существующие записи (num, value, answer) не перезаписываются — сохраняется прогресс SRS.
+    """
+    spec = STATS_SOURCES.get(source_table)
+    if not spec:
+        return 0
+    prefix, columns = spec
+    cur = conn.execute(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name=?",
+        (source_table,),
+    )
+    if not cur.fetchone():
+        return 0
+    cur = conn.execute(f'SELECT * FROM "{source_table}"')
+    col_names = [d[0] for d in cur.description]
+    if 'Num' not in col_names:
+        return 0
+    num_idx = col_names.index('Num')
+    inserted = 0
+    insert_sql = (
+        'INSERT INTO "{table}" (num, value, answer, difficulty, wrong, "right", '
+        'last_right, interval_days, right_all, wrong_all) '
+        'VALUES (?, ?, ?, ?, 0, 0, NULL, 0, 0, 0)'
+    )
+    for row in cur.fetchall():
+        num_key = str(row[num_idx]) if row[num_idx] is not None else ''
+        for question_col, answer_col in (
+            (q, a) for q in columns for a in columns if q != a
+        ):
+            if question_col not in col_names or answer_col not in col_names:
+                continue
+            q_val, a_val = row[col_names.index(question_col)], row[col_names.index(answer_col)]
+            if not _cell_has_value(q_val) or not _cell_has_value(a_val):
+                continue
+            value_part = str(q_val).strip()
+            answer_part = str(a_val).strip()
+            table_name = stats_table_name(prefix, question_col, answer_col)
+            ensure_stats_table_exists(conn, table_name)
+            exists = conn.execute(
+                f'SELECT 1 FROM "{table_name}" WHERE num = ? AND value = ? AND answer = ?',
+                (num_key, value_part, answer_part),
+            ).fetchone()
+            if exists:
+                continue
+            conn.execute(
+                insert_sql.format(table=table_name),
+                (num_key, value_part, answer_part, 'normal'),
+            )
+            inserted += 1
+    conn.commit()
+    return inserted
+
+
+def ensure_all_stats_tables(conn, source_tables=None):
+    """Создаёт и дополняет таблицы статистики для указанных таблиц словаря (по умолчанию — все из STATS_SOURCES)."""
+    tables = source_tables if source_tables is not None else list(STATS_SOURCES.keys())
+    total = 0
+    for source_table in tables:
+        total += populate_stats_tables_for_source(conn, source_table)
+    return total
+
 
 STATS_TABLE_SCHEMA = '''
     CREATE TABLE IF NOT EXISTS "{table}" (
