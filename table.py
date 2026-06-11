@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Окно таблиц: источник данных — SQLite (Jp.db).
-Виджет использует QTableView + QSqlTableModel (виртуализация: в памяти только видимые строки).
-При первом запуске, если БД пуста, создаётся структура таблиц по умолчанию.
+Tables window: data source is SQLite (Jp.db).
+The widget uses QTableView + QSqlTableModel (virtualization: only visible rows in memory).
+On first run, if the DB is empty, the default table structure is created.
 """
 from PyQt5.QtWidgets import (
     QTabWidget, QWidget, QVBoxLayout, QHBoxLayout, QTableView, QHeaderView,
@@ -18,33 +18,34 @@ import styles as st
 from table_logger import table_log, clear_table_log
 from stats_script import SYNC_COLUMNS_BY_SOURCE, STATS_PREFIXES, ensure_all_stats_tables, stats_column_role
 
+# Part-of-speech codes stored in the DB (Noun, Adjective, Verb, Adverb)
 SUSH_OPTIONS = ['Сущ', 'Прил', 'Глаг', 'Нар']
 DB_PATH = 'Jp.db'
 COLUMN_FONT_SIZES = {'Kanji': 14, 'On': 12, 'Kun': 12, 'Read': 12}
-# Порядок вкладок и список таблиц для отображения (только эти таблицы показываются)
+# Tab order and list of tables to display (only these tables are shown)
 TABLE_TAB_ORDER = ['Dictio', 'Words', 'Frazes', 'Name', 'Kana']
 
 
 def _sanitize_table_name(name):
-    """Нормализует имя таблицы SQLite (без пробелов и спецсимволов)."""
+    """Normalizes an SQLite table name (no spaces or special characters)."""
     return re.sub(r'[^\w]', '_', str(name).strip()) or 'Table'
 
 
 def _quote_ident(name):
-    """Экранирование имени столбца для SQL."""
+    """Escapes a column name for SQL."""
     return '"' + str(name).replace('"', '""') + '"'
 
 
-# --- Синхронизация полей словаря в таблицы статистики (dictio_*, words_*, frazes_*, name_*, …) ---
+# --- Sync of dictionary fields into the stats tables (dictio_*, words_*, frazes_*, name_*, ...) ---
 
 _SYNC_COLUMNS_BY_SOURCE = SYNC_COLUMNS_BY_SOURCE
 
 
 def _get_stats_tables_for_column(db, column_in_name):
     """
-    Возвращает список (table_name, 'value'|'answer') для таблиц статистики,
-    в названии которых есть column_in_name (trans, kanji, kun).
-    Если имя таблицы prefix_COLUMN_* — столбец в value, иначе prefix_*_COLUMN — в answer.
+    Returns a list of (table_name, 'value'|'answer') for the stats tables
+    whose name contains column_in_name (trans, kanji, kun).
+    If the table name is prefix_COLUMN_* the column maps to value, otherwise prefix_*_COLUMN to answer.
     """
     q = QSqlQuery(db)
     col_lower = column_in_name.lower()
@@ -65,7 +66,7 @@ def _get_stats_tables_for_column(db, column_in_name):
 
 
 def _create_sync_triggers_for_column(db, source_table, column_name, stats_list, q):
-    """Создаёт один триггер: при UPDATE столбца column_name в source_table обновляет stats_list по Num."""
+    """Creates one trigger: on UPDATE of column_name in source_table, updates stats_list by Num."""
     if not stats_list:
         return
     col_lower = column_name.lower()
@@ -89,7 +90,7 @@ def _create_sync_triggers_for_column(db, source_table, column_name, stats_list, 
 
 
 def _ensure_stats_tables():
-    """Создаёт и заполняет таблицы статистики из словарей (без перезаписи существующего прогресса)."""
+    """Creates and fills stats tables from the dictionaries (without overwriting existing progress)."""
     import sqlite3
     conn = None
     try:
@@ -107,8 +108,8 @@ def _ensure_stats_tables():
 
 def _create_sync_trans_triggers(db):
     """
-    Создаёт триггеры на таблицах словаря: при UPDATE синхронизируемых столбцов
-    обновляются value/answer в таблицах статистики по Num.
+    Creates triggers on the dictionary tables: on UPDATE of synced columns,
+    value/answer in the stats tables are updated by Num.
     """
     if not db or not db.isOpen():
         return
@@ -122,24 +123,24 @@ def _create_sync_trans_triggers(db):
             _create_sync_triggers_for_column(db, source_table, column, stats_list, q)
 
 
-# --- Инициализация БД ---
+# --- DB initialization ---
 
 def get_connection():
-    """Возвращает подключение к SQLite (коннект по имени 'tables')."""
+    """Returns the SQLite connection (named connection 'tables')."""
     name = 'tables'
     if name not in QSqlDatabase.connectionNames():
         db = QSqlDatabase.addDatabase('QSQLITE', name)
         db.setDatabaseName(DB_PATH)
         if not db.open():
             return None
-        # Ожидание блокировки до 10 с при одновременной работе с jap_wind_test (sqlite3)
+        # Wait up to 10 s on a lock when jap_wind_test (sqlite3) works concurrently
         q = QSqlQuery(db)
         q.exec_('PRAGMA busy_timeout=10000')
     db = QSqlDatabase.database(name)
     return db if db.isOpen() else None
 
 
-# Схема пустой БД: имя таблицы -> список столбцов
+# Empty DB schema: table name -> list of columns
 _DEFAULT_SCHEMA = {
     'Dictio': ['Num', 'Lesson', 'Kanji', 'On', 'Kun', 'Trans', 'Sush', 'Mnem'],
     'Words': ['Num', 'Lesson', 'Kanji', 'On', 'Kun', 'Trans', 'Sush', 'Mnem'],
@@ -150,7 +151,7 @@ _DEFAULT_SCHEMA = {
 
 
 def _create_empty_table(q, table_name, columns):
-    """Создаёт одну пустую таблицу с заданными столбцами."""
+    """Creates a single empty table with the given columns."""
     SUSH_CHECK = "CHECK({col} IN ('Сущ', 'Прил', 'Глаг', 'Нар'))"
     parts = []
     for col in columns:
@@ -167,14 +168,14 @@ def _create_empty_table(q, table_name, columns):
 
 def init_db():
     """
-    Открывает Jp.db. Если БД пуста (нет таблиц), создаёт структуру таблиц по _DEFAULT_SCHEMA (без строк).
-    Возвращает True при успехе.
+    Opens Jp.db. If the DB is empty (no tables), creates the table structure from _DEFAULT_SCHEMA (no rows).
+    Returns True on success.
     """
     db = get_connection()
     if not db or not db.isOpen():
         return False
     q = QSqlQuery(db)
-    # WAL: меньше блокировок при одновременной работе table.py и jap_wind_test
+    # WAL: fewer locks when table.py and jap_wind_test work concurrently
     q.exec_('PRAGMA journal_mode=WAL')
     q.exec_("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")
     has_tables = q.next()
@@ -191,7 +192,7 @@ def init_db():
 
 
 def get_table_names():
-    """Список имён пользовательских таблиц в БД (без sqlite_*)."""
+    """List of user table names in the DB (excluding sqlite_*)."""
     db = get_connection()
     if not db or not db.isOpen():
         return []
@@ -204,13 +205,13 @@ def get_table_names():
 
 
 def get_table_names_for_display():
-    """Имена таблиц в порядке вкладок. Показываются только таблицы из TABLE_TAB_ORDER."""
+    """Table names in tab order. Only tables from TABLE_TAB_ORDER are shown."""
     names = get_table_names()
     return [n for n in TABLE_TAB_ORDER if n in names]
 
 
 def get_table_columns(table_name):
-    """Список имён столбцов таблицы в БД."""
+    """List of column names of a table in the DB."""
     db = get_connection()
     if not db or not db.isOpen():
         return []
@@ -222,10 +223,10 @@ def get_table_columns(table_name):
     return cols
 
 
-# --- Делегаты для ячеек ---
+# --- Cell delegates ---
 
 class SushDelegate(QStyledItemDelegate):
-    """Столбец Sush: выбор из списка Сущ/Прил/Глаг/Нар."""
+    """Sush column: choose from the part-of-speech list."""
     def __init__(self, parent=None):
         super().__init__(parent)
         self.options = SUSH_OPTIONS
@@ -246,7 +247,7 @@ class SushDelegate(QStyledItemDelegate):
 
 
 class LessonDelegate(QStyledItemDelegate):
-    """Lesson: отображать целое число без .0."""
+    """Lesson: display an integer without the .0 suffix."""
     def displayText(self, value, locale):
         if value is None or value == '':
             return ''
@@ -260,7 +261,7 @@ class LessonDelegate(QStyledItemDelegate):
 
 
 class ColumnFontDelegate(QStyledItemDelegate):
-    """Делегат: задаёт размер шрифта для столбца по COLUMN_FONT_SIZES."""
+    """Delegate: sets the font size for a column based on COLUMN_FONT_SIZES."""
     def __init__(self, column_name, parent=None):
         super().__init__(parent)
         self._column_name = column_name
@@ -275,7 +276,7 @@ class ColumnFontDelegate(QStyledItemDelegate):
 
 
 class HighlightProxyModel(QIdentityProxyModel):
-    """Прокси-модель: подсвечивает строку поиска синим фоном (BackgroundRole)."""
+    """Proxy model: highlights the search row with a blue background (BackgroundRole)."""
     def __init__(self, parent=None):
         super().__init__(parent)
         self._highlighted_row = -1
@@ -299,14 +300,14 @@ class HighlightProxyModel(QIdentityProxyModel):
 
     def data(self, index, role=Qt.DisplayRole):
         if role == Qt.BackgroundRole and index.isValid() and index.row() == self._highlighted_row:
-            return QBrush(QColor(173, 216, 230))  # светло-синий
+            return QBrush(QColor(173, 216, 230))  # light blue
         return super().data(index, role)
 
 
-# --- Виджет вкладки с таблицей (SQLite + виртуализация) ---
+# --- Table tab widget (SQLite + virtualization) ---
 
 class SheetTableWidget(QWidget):
-    """Одна вкладка: QTableView + QSqlTableModel, фильтры (SQL WHERE), поиск, добавление строк, сохранение в БД."""
+    """One tab: QTableView + QSqlTableModel, filters (SQL WHERE), search, adding rows, saving to the DB."""
 
     def __init__(self, sheet_name, parent=None):
         super().__init__(parent)
@@ -332,7 +333,7 @@ class SheetTableWidget(QWidget):
     def _build_ui(self):
         layout = QVBoxLayout(self)
 
-        # Фильтры
+        # Filters
         filter_frame = QFrame()
         filter_layout = QHBoxLayout(filter_frame)
         self._filter_widgets = {}
@@ -345,10 +346,10 @@ class SheetTableWidget(QWidget):
                 col_layout.addWidget(lab)
                 from_spin = QSpinBox()
                 from_spin.setRange(-999999, 999999)
-                from_spin.setSpecialValueText('от')
+                from_spin.setSpecialValueText('from')
                 to_spin = QSpinBox()
                 to_spin.setRange(-999999, 999999)
-                to_spin.setSpecialValueText('до')
+                to_spin.setSpecialValueText('to')
                 from_spin.setValue(-999999)
                 to_spin.setValue(999999)
                 row = QHBoxLayout()
@@ -361,7 +362,7 @@ class SheetTableWidget(QWidget):
                 lab = QLabel('Sush')
                 col_layout.addWidget(lab)
                 combo = QComboBox()
-                combo.addItem('(все)', None)
+                combo.addItem('(all)', None)
                 for v in SUSH_OPTIONS:
                     combo.addItem(v, v)
                 combo.setCurrentIndex(0)
@@ -372,11 +373,11 @@ class SheetTableWidget(QWidget):
                 lab.setToolTip(col)
                 col_layout.addWidget(lab)
                 combo = QComboBox()
-                combo.addItem('(все)', None)
-                combo.addItem('Пусто', 'empty')
-                combo.addItem('Не пусто', 'not_empty')
+                combo.addItem('(all)', None)
+                combo.addItem('Empty', 'empty')
+                combo.addItem('Not empty', 'not_empty')
                 combo.addItem('0', 'zero')
-                combo.addItem('Не 0', 'not_zero')
+                combo.addItem('Not 0', 'not_zero')
                 combo.setCurrentIndex(0)
                 col_layout.addWidget(combo)
                 self._filter_widgets[col] = ('empty_not', combo)
@@ -384,7 +385,7 @@ class SheetTableWidget(QWidget):
         filter_layout.addStretch()
         layout.addWidget(filter_frame)
 
-        # Модель и представление
+        # Model and view
         self._model = QSqlTableModel(self, get_connection())
         self._model.setTable(self._table_name)
         self._model.setEditStrategy(QSqlTableModel.OnManualSubmit)
@@ -400,7 +401,7 @@ class SheetTableWidget(QWidget):
         self.table.setAlternatingRowColors(True)
         self.table.verticalHeader().setVisible(True)
         self.table.installEventFilter(self)
-        # Делегаты (в т.ч. размер шрифта по COLUMN_FONT_SIZES)
+        # Delegates (including font size from COLUMN_FONT_SIZES)
         for c in range(self._model.columnCount()):
             col_name = self._columns[c] if c < len(self._columns) else ''
             if col_name == 'Sush':
@@ -409,19 +410,19 @@ class SheetTableWidget(QWidget):
                 self.table.setItemDelegateForColumn(c, LessonDelegate(self.table))
             elif col_name in COLUMN_FONT_SIZES:
                 self.table.setItemDelegateForColumn(c, ColumnFontDelegate(col_name, self.table))
-        # Не показывать столбец Num
+        # Do not show the Num column
         if 'Num' in self._columns:
             self.table.setColumnHidden(self._columns.index('Num'), True)
         self.table.horizontalHeader().sectionClicked.connect(self._on_header_clicked)
         layout.addWidget(self.table)
 
-        # Поиск
+        # Search
         self.search_frame = QFrame()
         search_layout = QHBoxLayout(self.search_frame)
-        search_layout.addWidget(QLabel("Поиск:"))
+        search_layout.addWidget(QLabel("Search:"))
         self.search_edit = QLineEdit()
         search_layout.addWidget(self.search_edit)
-        self.search_next_btn = QPushButton("Найти далее")
+        self.search_next_btn = QPushButton("Find next")
         self.search_next_btn.setStyleSheet(st.but_line_check)
         search_layout.addWidget(self.search_next_btn)
         self.search_close_btn = QPushButton("X")
@@ -435,12 +436,12 @@ class SheetTableWidget(QWidget):
         self.search_close_btn.clicked.connect(self._close_search)
         layout.addWidget(self.search_frame)
 
-        # Кнопки
+        # Buttons
         btn_layout = QHBoxLayout()
-        self.btn_save = QPushButton('Сохранить')
+        self.btn_save = QPushButton('Save')
         self.btn_save.setStyleSheet(st.btn_test)
         self.btn_save.clicked.connect(self._save_to_db)
-        self.btn_add = QPushButton('Добавить 10 строк')
+        self.btn_add = QPushButton('Add 10 rows')
         self.btn_add.setStyleSheet(st.but_line_check)
         self.btn_add.clicked.connect(self._add_10_rows)
         self.rows_count_label = QLabel()
@@ -462,7 +463,7 @@ class SheetTableWidget(QWidget):
                 w[1].currentIndexChanged.connect(self._apply_filters)
 
     def _build_where(self):
-        """Собирает WHERE из виджетов фильтров."""
+        """Builds the WHERE clause from the filter widgets."""
         conditions = []
         for col, w in self._filter_widgets.items():
             qcol = _quote_ident(col)
@@ -517,15 +518,15 @@ class SheetTableWidget(QWidget):
 
     def _update_count(self):
         if hasattr(self, 'rows_count_label') and self.rows_count_label is not None:
-            self.rows_count_label.setText(f'Строк: {self._model.rowCount()}')
+            self.rows_count_label.setText(f'Rows: {self._model.rowCount()}')
 
     def _fetch_all(self):
-        """Загружает все строки из БД (убирает ленивую подгрузку при прокрутке)."""
+        """Loads all rows from the DB (disables lazy fetching while scrolling)."""
         while self._model.canFetchMore():
             self._model.fetchMore()
 
     def _save_view_state(self):
-        """Запоминает позицию скролла и текущую ячейку."""
+        """Remembers the scroll position and the current cell."""
         idx = self.table.currentIndex()
         return (
             self.table.verticalScrollBar().value(),
@@ -535,7 +536,7 @@ class SheetTableWidget(QWidget):
         )
 
     def _restore_view_state(self, state):
-        """Восстанавливает позицию скролла и текущую ячейку."""
+        """Restores the scroll position and the current cell."""
         vscroll, hscroll, row, col = state
         self.table.verticalScrollBar().setValue(vscroll)
         self.table.horizontalScrollBar().setValue(hscroll)
@@ -549,8 +550,8 @@ class SheetTableWidget(QWidget):
                     self.table.setCurrentIndex(idx)
 
     def _do_select(self, keep_position=False):
-        """select() + загрузка всех строк + обновление счётчика.
-        keep_position=True сохраняет позицию скролла после перезагрузки."""
+        """select() + load all rows + update the counter.
+        keep_position=True preserves the scroll position after a reload."""
         state = self._save_view_state() if keep_position else None
         self._model.select()
         self._fetch_all()
@@ -565,7 +566,7 @@ class SheetTableWidget(QWidget):
         return str(value).strip() == ''
 
     def _row_has_meaningful_data(self, row):
-        """Есть ли в строке содержимое (кроме Num/Lesson; Sush='Сущ' считаем дефолтом)."""
+        """Whether the row has content (besides Num/Lesson; Sush='Сущ' is treated as the default)."""
         for col_idx, col_name in enumerate(self._columns):
             if col_name in ('Num', 'Lesson'):
                 continue
@@ -580,8 +581,8 @@ class SheetTableWidget(QWidget):
 
     def _validate_required_lesson(self, show_message=True):
         """
-        Проверка: если строка содержит данные, Lesson обязателен.
-        Возвращает (ok: bool, invalid_rows: list[(model_row, row_num)]).
+        Validation: if a row has data, Lesson is required.
+        Returns (ok: bool, invalid_rows: list[(model_row, row_num)]).
         """
         if 'Lesson' not in self._columns:
             return True, []
@@ -602,16 +603,16 @@ class SheetTableWidget(QWidget):
             if shown:
                 details = ', '.join(shown)
                 suffix = ' ...' if len(invalid_rows) > 5 else ''
-                msg = f'Заполните Lesson для строк Num: {details}{suffix}'
+                msg = f'Fill in Lesson for rows Num: {details}{suffix}'
             else:
                 details = ', '.join(str(r + 1) for r, _ in invalid_rows[:5])
                 suffix = ' ...' if len(invalid_rows) > 5 else ''
-                msg = f'Заполните Lesson для строк: {details}{suffix}'
-            QMessageBox.warning(self, 'Проверка данных', msg)
+                msg = f'Fill in Lesson for rows: {details}{suffix}'
+            QMessageBox.warning(self, 'Data validation', msg)
         return len(invalid_rows) == 0, invalid_rows
 
     def _submit_all_with_validation(self, show_message=True):
-        """submitAll() с проверкой обязательного Lesson."""
+        """submitAll() with the required-Lesson check."""
         ok, invalid_rows = self._validate_required_lesson(show_message=show_message)
         if not ok:
             table_log('VALIDATE_LESSON', sheet=self.sheet_name, success=False, invalid_rows=invalid_rows)
@@ -621,17 +622,17 @@ class SheetTableWidget(QWidget):
         err = self._model.lastError().text()
         table_log('SAVE', sheet=self.sheet_name, success=False, error=err)
         if show_message:
-            QMessageBox.critical(self, 'Ошибка', f'Не удалось сохранить: {err}')
+            QMessageBox.critical(self, 'Error', f'Failed to save: {err}')
         return False
 
     def _save_to_db(self):
         if self._submit_all_with_validation(show_message=True):
             table_log('SAVE', sheet=self.sheet_name, success=True)
             self._do_select(keep_position=True)
-            QMessageBox.information(self, 'Сохранение', f'Данные таблицы "{self.sheet_name}" сохранены в БД.')
+            QMessageBox.information(self, 'Save', f'Table "{self.sheet_name}" data saved to the DB.')
 
     def _get_numeric_max_num(self):
-        """Возвращает максимальный корректный Num (только неотрицательные целые)."""
+        """Returns the maximum valid Num (only non-negative integers)."""
         db = get_connection()
         if not db or not db.isOpen():
             return 0
@@ -656,7 +657,7 @@ class SheetTableWidget(QWidget):
             return 0
 
     def _on_model_data_changed(self, top_left, bottom_right, roles=None):
-        """Логирует правки ячеек в модели (в т.ч. до нажатия Сохранить)."""
+        """Logs cell edits in the model (including before Save is pressed)."""
         if roles and Qt.EditRole not in roles and Qt.DisplayRole not in roles:
             return
         num_col_idx = self._columns.index('Num') if 'Num' in self._columns else -1
@@ -683,11 +684,11 @@ class SheetTableWidget(QWidget):
     def _add_10_rows(self):
         db = get_connection()
         if not db or not db.isOpen():
-            QMessageBox.warning(self, 'Добавление', 'Нет подключения к БД.')
+            QMessageBox.warning(self, 'Add rows', 'No DB connection.')
             return
         max_num = self._get_numeric_max_num()
         if not self._submit_all_with_validation(show_message=False):
-            QMessageBox.warning(self, 'Добавление', 'Сначала заполните обязательный Lesson в уже изменённых строках.')
+            QMessageBox.warning(self, 'Add rows', 'First fill in the required Lesson in the already edited rows.')
             return
         for i in range(10):
             max_num += 1
@@ -744,7 +745,7 @@ class SheetTableWidget(QWidget):
         if pos is None:
             table_log('SEARCH', sheet=self.sheet_name, pattern=pattern, found=None)
             self._clear_highlight()
-            QMessageBox.information(self, 'Поиск', 'Ничего не найдено.')
+            QMessageBox.information(self, 'Search', 'Nothing found.')
             return
         r, c = pos
         table_log('SEARCH', sheet=self.sheet_name, pattern=pattern, found=(r, c))
@@ -855,12 +856,12 @@ class SheetTableWidget(QWidget):
 
 
 class Table_window(QTabWidget):
-    """Окно таблиц: вкладки по таблицам SQLite."""
+    """Tables window: one tab per SQLite table."""
 
     def __init__(self):
         super().__init__()
         if not init_db():
-            QMessageBox.critical(self, 'Ошибка', 'Не удалось открыть или инициализировать БД ' + DB_PATH)
+            QMessageBox.critical(self, 'Error', 'Failed to open or initialize the DB ' + DB_PATH)
             return
         self.sheet_names = get_table_names_for_display()
         self._tabs = {}

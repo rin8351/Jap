@@ -15,7 +15,7 @@ def resource_path(relative_path):
 
 
 def cell_has_value(val):
-    """Считает, что в ячейке есть значение: не пусто, не 0, не NaN."""
+    """Treats a cell as having a value: not empty, not 0, not NaN."""
     if val is None:
         return False
     try:
@@ -39,10 +39,10 @@ KEY_MAP = {'kanji': 'Kanji', 'on': 'On', 'kun': 'Kun', 'trans': 'Trans'}
 
 def merge_by_column(raw_alls, column, test):
     """
-    Объединяет словари в raw_alls по уникальным значениям column.
-    Значения test из повторяющихся строк склеиваются через запятую
-    (одинаковые значения test не дублируются).
-    column и test: 'kanji', 'on', 'kun', 'trans'.
+    Merges the dicts in raw_alls by unique values of `column`.
+    `test` values from duplicate rows are joined with commas
+    (identical `test` values are not duplicated).
+    `column` and `test`: 'kanji', 'on', 'kun', 'trans'.
     """
     col_key = KEY_MAP.get(column.lower(), column)
     test_key = KEY_MAP.get(test.lower(), test)

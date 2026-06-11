@@ -13,10 +13,10 @@ class Jap_app(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(Jap_app, self).__init__(parent)
         
-        # Устанавливаем прозрачный фон
+        # Transparent background
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         
-        # Создаем фоновое изображение
+        # Background image
         background_image_path = resource_path('japanese_background.png')
         japanese_logo_path = resource_path('japanese_logo.png')
         self.background_image = QtGui.QPixmap(background_image_path)
@@ -26,21 +26,21 @@ class Jap_app(QtWidgets.QMainWindow):
         self.setWindowIcon(QIcon(japanese_logo_path)) 
         self.setWindowTitle('Menu')
         
-        # Создаем контейнер для всех виджетов
+        # Container for all widgets
         self.container = QtWidgets.QWidget(self)
         self.container.setStyleSheet('background-color: transparent')
         self.setCentralWidget(self.container)
 
-        # Создаем стиль для кнопок
+        # Button style
         self.button_style = styles.button_style
         self.setStyleSheet(self.button_style)
         
-        # Создаем стиль для лейбла с количеством слов
+        # Style for the word-count label
         self.label_style = styles.label_style
         
         self.container.setStyleSheet(self.label_style)
 
-        # Создаем рамку с кнопками и лейблом
+        # Frame with buttons and label
         self.frame_UP_main = QtWidgets.QFrame(self.container)
         self.frame_UP_main.setStyleSheet('background-color: rgba(255, 255, 255, 0.2); border-radius: 5px; padding: 10px')
         self.frame_UP_main_layout = QtWidgets.QVBoxLayout(self.frame_UP_main)
@@ -57,7 +57,7 @@ class Jap_app(QtWidgets.QMainWindow):
         self.btn4.setStyleSheet(self.button_style)
         self.frame_UP_main_layout.addWidget(self.btn4)
 
-        self.btn_ai = QtWidgets.QPushButton("АИ настройки", clicked=self.ai_settings_window)
+        self.btn_ai = QtWidgets.QPushButton("AI Settings", clicked=self.ai_settings_window)
         self.btn_ai.setStyleSheet(self.button_style)
         self.frame_UP_main_layout.addWidget(self.btn_ai)
 

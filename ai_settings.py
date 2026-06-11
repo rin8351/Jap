@@ -42,28 +42,28 @@ def ai_secrets_complete():
 class AISettingsWindow(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setWindowTitle("АИ настройки")
+        self.setWindowTitle("AI Settings")
         self.setStyleSheet(styles.button_style)
         self.resize(520, 240)
 
         layout = QVBoxLayout(self)
         secrets = load_ai_secrets()
 
-        layout.addWidget(QLabel("API ключ (AI_API_KEY)"))
+        layout.addWidget(QLabel("API Key (AI_API_KEY)"))
         self.api_key_input = QLineEdit(secrets["AI_API_KEY"])
         layout.addWidget(self.api_key_input)
 
-        layout.addWidget(QLabel("Модель (AI_MODEL)"))
+        layout.addWidget(QLabel("Model (AI_MODEL)"))
         self.model_input = QLineEdit(secrets["AI_MODEL"])
         layout.addWidget(self.model_input)
 
-        layout.addWidget(QLabel("URL API (AI_API_URL)"))
+        layout.addWidget(QLabel("API URL (AI_API_URL)"))
         self.url_input = QLineEdit(secrets["AI_API_URL"])
         layout.addWidget(self.url_input)
 
         btn_layout = QHBoxLayout()
-        save_btn = QPushButton("Сохранить", clicked=self.save)
-        cancel_btn = QPushButton("Отмена", clicked=self.reject)
+        save_btn = QPushButton("Save", clicked=self.save)
+        cancel_btn = QPushButton("Cancel", clicked=self.reject)
         btn_layout.addWidget(save_btn)
         btn_layout.addWidget(cancel_btn)
         layout.addLayout(btn_layout)

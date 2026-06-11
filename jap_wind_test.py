@@ -20,9 +20,9 @@ from ai_settings import load_ai_secrets, ai_secrets_complete
 
 
 class Rand_window(QMainWindow):
-    # Столбцы, по которым ведётся SRS-статистика (Words: чтение в колонке Read, не Kun)
+    # Columns tracked by SRS stats (Words: reading is in the Read column, not Kun)
     _STAT_COLUMNS = ('Kanji', 'Trans', 'Kun', 'Read')
-    # Только основные таблицы теста (без таблиц статистики dictio_* / words_* и пр.)
+    # Only the main test tables (no stats tables like dictio_* / words_* etc.)
     _TEST_TABLE_ORDER = ('Dictio', 'Words', 'Frazes', 'Name', 'Kana')
     _SHEETS_WITH_SUSH = ('Dictio', 'Kana')
     _SHEETS_WITH_STATS = frozenset(STATS_SOURCES)
@@ -30,17 +30,17 @@ class Rand_window(QMainWindow):
     def __init__(self):
         super().__init__()
         japanese_logo_path = resource_path('japanese_logo.png')
-        self.setWindowIcon(QIcon(japanese_logo_path)) # иконка окна
+        self.setWindowIcon(QIcon(japanese_logo_path)) # window icon
         self.setWindowTitle('Testing')
         QApplication.setFont(QFont("Roboto  ", 10))
         self.load_data_from_db()
-        self.all_of_lessons = ['Выбрать один урок']
+        self.all_of_lessons = ['Select one lesson']
         self.len_of_words = 0
         self.options_for_zero()
         self.main()
 
     def closeEvent(self, event: QCloseEvent):
-        """При закрытии окна сохраняем статистику, если тест был запущен."""
+        """On window close, save stats if the test was started."""
         self._save_all_stats()
         if getattr(self, 'conn', None) is not None:
             try:
@@ -60,24 +60,24 @@ class Rand_window(QMainWindow):
         )
 
     def _get_stats_tables(self):
-        """Список (answer_col, table_name) для текущей таблицы/колонки."""
+        """List of (answer_col, table_name) for the current table/column."""
         prefix = self._stats_table_prefix()
         column_part = (self.current_column or "").lower()
         return [(col, f"{prefix}_{column_part}_{col.lower()}") for col in (self.test_for_answer or [])]
 
     def _update_merged_stat(self, row, col, new_stat):
-        """Обновляет одну запись в self.stats после record_*_db / set_difficulty_only_db."""
+        """Updates one record in self.stats after record_*_db / set_difficulty_only_db."""
         num_key, item_key = stat.get_item_key(row, self.current_column, col)
         self.stats.setdefault(num_key, {})[item_key] = new_stat
 
     def _save_all_stats(self):
-        """При использовании БД статистика сохраняется сразу в record_*_db; сюда не попадаем."""
+        """When using the DB, stats are saved immediately in record_*_db; this path is unused."""
         pass
 
     def _normalize_lesson_column(self, df):
         """
-        Приводит Lesson к числу для любой таблицы словаря.
-        Все нечисловые/пустые значения удаляются, чтобы фильтры по диапазону не падали.
+        Coerces Lesson to a number for any dictionary table.
+        All non-numeric/empty values are dropped so range filters don't fail.
         """
         if 'Lesson' not in df.columns:
             return df
@@ -88,7 +88,7 @@ class Rand_window(QMainWindow):
         return df
 
     def load_data_from_db(self):
-        """Загрузка данных из SQLite (Jp.db)."""
+        """Loads data from SQLite (Jp.db)."""
         self.db_path = os.path.join(os.path.dirname(__file__), 'Jp.db')
         self.conn = sqlite3.connect(self.db_path, timeout=10)
         stat.ensure_all_stats_tables(self.conn)
@@ -98,7 +98,7 @@ class Rand_window(QMainWindow):
         all_table_names = [row[0] for row in cur.fetchall()]
         self.sheet_names = [n for n in self._TEST_TABLE_ORDER if n in all_table_names]
         if not self.sheet_names:
-            # Ни одной из ожидаемых таблиц нет — показываем все, чтобы окно не падало
+            # None of the expected tables exist — show all so the window doesn't crash
             self.sheet_names = all_table_names
         if 'Words' in self.sheet_names:
             self.df_w = pd.read_sql('SELECT * FROM "Words"', self.conn)
@@ -113,31 +113,31 @@ class Rand_window(QMainWindow):
 
     def options_for_zero(self):
         self.value_of_test = 0
-        self.shet_know = 0 # счетчик знаю или не знаю слово
+        self.shet_know = 0 # counter of known/unknown words
         self.known_clicked = False
-        self.per_element_clicked = False  # нажата кнопка по одному варианту (таблица)
+        self.per_element_clicked = False  # a per-option button was pressed (table)
         self.unknown_words = []
-        self.current_word = None # текущее слово
+        self.current_word = None # current word
         self.showing_translation = True 
         self.mnemonic_text=''
         self.len_of_count_for_proc = 0
         self.current_word_test = None
         self.past_word = ''
-        self.current_table_rows = []  # строки таблицы для статистики (режим с несколькими ответами)
-        self.clicked_columns_for_current = set()  # какие колонки (On/Kun/Trans) отмечены для текущего слова
+        self.current_table_rows = []  # table rows for stats (multiple-answers mode)
+        self.clicked_columns_for_current = set()  # which columns (On/Kun/Trans) are marked for the current word
         self.all_variations = {}
-        self.all_answers_variant = False  # вариант теста «со всеми ответами» (группа по кандзи/куну/ону)
-        self.answered_right_nums = set()  # Num строк, по которым нажали кнопку ответа (right)
-        self.answered_right_pairs = set()  # (Num, col) — по каким (строка, колонка) нажали (для кнопок по элементам)
+        self.all_answers_variant = False  # "all answers" test variant (group by kanji/kun/on)
+        self.answered_right_nums = set()  # Num of rows whose answer button was pressed (right)
+        self.answered_right_pairs = set()  # (Num, col) — which (row, column) were pressed (for per-element buttons)
 
 
     def load_sheet_data(self, sheet_name):
-        """Загружает данные выбранной таблицы БД и обновляет поля уроков."""
+        """Loads data of the selected DB table and updates the lesson fields."""
         self.df = pd.read_sql(f'SELECT * FROM "{sheet_name}"', self.conn)
         self.df.columns = self.df.columns.astype(str).str.strip()
         self.df = self._normalize_lesson_column(self.df)
         self.alls_dict = self.df.reset_index().to_dict('records')
-        # Только числовые уроки, без nan; отображаем как целые (40, не 40.0)
+        # Only numeric lessons, no nan; displayed as integers (40, not 40.0)
         valid = []
         for x in self.alls_dict:
             v = x.get('Lesson')
@@ -148,26 +148,26 @@ class Rand_window(QMainWindow):
                 pass
         lessons = sorted(set(valid))
         self.len_of_words = max(lessons) if lessons else 0
-        self.all_of_lessons = ['Выбрать один урок'] + [str(x) for x in lessons]
+        self.all_of_lessons = ['Select one lesson'] + [str(x) for x in lessons]
         if sheet_name in self._SHEETS_WITH_SUSH:
             self.chast_rechi = self.df['Sush'].unique().tolist()
-        # Обновляем виджеты уроков под реальное количество уроков таблицы
+        # Update the lesson widgets to the table's real lesson count
         self.ent_less.setText('1')
         self.ent_less_end.setText(str(self.len_of_words))
-        self.lb_max_ur.setText(f'Всего уроков = {self.len_of_words}')
+        self.lb_max_ur.setText(f'Total lessons = {self.len_of_words}')
         self.lb_err.setText('')
         self.choose_one_lesson.clear()
         self.choose_one_lesson.addItems(self.all_of_lessons)
 
     def main(self):
         self.setGeometry(300, 300, 480, 560)
-        # Таблица по умолчанию — первая; параметры обновляются при смене таблицы в окне
+        # The default table is the first one; parameters update when the table is switched
         self.current_sheet = self.sheet_names[0]
 
         self.frame_main = QFrame()
         self.frame_main.setStyleSheet("background-color: transparent;")
 
-        # Выбор таблицы (в одном окне с параметрами)
+        # Table selection (in the same window as the parameters)
         self.context_menu = QMenu(self)
         self.sheets_dict = {}
         self.menu_button = QPushButton(self.current_sheet, self)
@@ -188,20 +188,20 @@ class Rand_window(QMainWindow):
 
         self.frame_up = QFrame()
         nbur = self.len_of_words
-        self.label_type_of_test = QLabel('Выберите тип теста')
-        self.chec_repeat_mode = QCheckBox('Режим повтора (только normal + easy)')
+        self.label_type_of_test = QLabel('Select test type')
+        self.chec_repeat_mode = QCheckBox('Repeat mode (normal + easy only)')
         self.chec_repeat_mode.setStyleSheet(st.checkbox)
-        self.chec_type_of_test = QCheckBox ('Тестовый режим с 4-мя вар. ответов,\n без статистики')
-        self.chec_all_answers = QCheckBox('Вариант со всеми ответами')
+        self.chec_type_of_test = QCheckBox ('Quiz mode with 4 answer choices,\n no stats')
+        self.chec_all_answers = QCheckBox('All-answers variant')
         self.chec_all_answers.setStyleSheet(st.checkbox)
         self.chec_type_of_test.stateChanged.connect(self._on_type_of_test_changed)
         self.chec_repeat_mode.stateChanged.connect(self._on_repeat_mode_changed)
-        self.lb_start = QLabel('Первый урок')
+        self.lb_start = QLabel('First lesson')
         self.ent_less = QLineEdit(text='1')
         self.ent_less.setStyleSheet(st.but_line_check)
-        self.lb_end = QLabel('Последний урок')
+        self.lb_end = QLabel('Last lesson')
         self.ent_less_end = QLineEdit(text=str(nbur))
-        self.all_test_without_filter = QCheckBox('Все слова без фильтрации')
+        self.all_test_without_filter = QCheckBox('All words without filtering')
         self.all_test_without_filter.setStyleSheet(st.checkbox)
 
         self.choose_one_lesson = QComboBox()
@@ -215,18 +215,18 @@ class Rand_window(QMainWindow):
         self.lb_err = QLabel('')
         self.lb_err.setStyleSheet(st.lb_err)
         self.frame_center=QFrame()
-        self.label = QLabel('Выберите что тестировать')
+        self.label = QLabel('Select what to test')
         self.label.setVisible(False)
         self.frame_center2=QFrame()
         self.frame_for_options1 = QFrame()
         self.frame_for_options2 = QFrame()
         self.frame_down = QFrame()
-        self.lb_max_ur = QLabel(f'Всего уроков = {self.len_of_words}')
-        self.btn3 = QPushButton("Включить тест")
+        self.lb_max_ur = QLabel(f'Total lessons = {self.len_of_words}')
+        self.btn3 = QPushButton("Enable test")
         self.btn3.setVisible(False)
         self.btn3.setStyleSheet(st.btn_test)
         self.btn3.setFixedSize(400, 50)
-        self.choose_lang = QLabel('Выберите предмет теста')
+        self.choose_lang = QLabel('Select test subject')
         self.choose_lang.setVisible(False)
         layout_frame_up = QVBoxLayout()
         layout_frame_up.addWidget(self.label_type_of_test)
@@ -235,7 +235,7 @@ class Rand_window(QMainWindow):
         layout_frame_up.addWidget(self.chec_all_answers)
         layout_frame_up.addWidget(self.lb_start)
         if self.current_sheet == 'Dictio':
-            self.chec_all_answers.setVisible(True)  # только Dictio (есть Kanji)
+            self.chec_all_answers.setVisible(True)  # Dictio only (has Kanji)
         else:
             self.chec_all_answers.setVisible(False)
         layout_frame_up.addWidget(self.ent_less)
@@ -290,20 +290,20 @@ class Rand_window(QMainWindow):
         self.setCentralWidget(self.scroll_area)
 
     def on_sheet_selected(self, sheet_name):
-        """Выбор таблицы: обновляем уроки и опции в окне параметров."""
+        """Table selection: refresh lessons and options in the parameters window."""
         self.menu_button.setText(sheet_name)
         self.current_sheet = sheet_name
         self.load_sheet_data(sheet_name)
         self.build_sheet_options()
 
     def build_sheet_options(self):
-        """Строит радиокнопки столбцов и (для Dictio) чекбоксы частей речи."""
+        """Builds the column radio buttons and (for Dictio) part-of-speech checkboxes."""
         self.clear_layout(self.layout_frame_centr1)
         self.clear_layout(self.layout_frame_centr2)
         self.choose_lang.setVisible(True)
         self.label.setVisible(False)
         self.btn3.setVisible(False)
-        # «Вариант со всеми ответами» только для вкладки Dictio
+        # "All-answers variant" only for the Dictio tab
         self.chec_all_answers.setVisible(self.current_sheet == 'Dictio')
         columns = self.get_filtered_columns(self.current_sheet)
         for column in columns:
@@ -323,7 +323,7 @@ class Rand_window(QMainWindow):
             self.clear_layout(self.layout_options1)
 
     def get_filtered_columns(self, sheet_name):
-        """Возвращает список столбцов таблицы без служебных."""
+        """Returns the table's columns without the service columns."""
         sheet = pd.read_sql(f'SELECT * FROM "{sheet_name}"', self.conn)
         sheet.columns = sheet.columns.astype(str).str.strip()
         columns = list(sheet.columns)
@@ -331,20 +331,20 @@ class Rand_window(QMainWindow):
         return [col for col in columns if col not in excluded_columns]
 
     def on_column_selected(self, column):
-        # Очищаем текущий слой с галочками
+        # Clear the current layer of checkboxes
         self.clear_layout(self.layout_frame_centr2)
         self.label.setVisible(True)
         self.btn3.setVisible(True)
         self.current_column = column
-        # Получаем список всех уникальных значений в выбранном столбце
+        # Get the list of all unique values in the selected column
         values = self.get_unique_values(self.current_sheet, column)
         if 'Mnem' in values:
             values.remove('Mnem')
-        # Добавляем галочки для каждого уникального значения
+        # Add a checkbox for each unique value
         self.checkbox_for_test = []
         for value in values:
             if value == '':
-                # Пропускаем пустые значения
+                # Skip empty values
                 continue
             checkbox = QCheckBox(str(value), self)
             checkbox.setStyleSheet(st.checkbox)
@@ -363,15 +363,15 @@ class Rand_window(QMainWindow):
                 child.widget().deleteLater()
 
     def _answer_columns_for_stats(self):
-        """Колонки ответов, по которым ведём статистику (включая On)."""
+        """Answer columns tracked by stats (including On)."""
         return list(self.test_for_answer) if self.test_for_answer else []
 
     def _columns_with_value(self, row):
-        """Колонки из test_for_answer, у которых в строке не пусто и не '0' (не записываем в статистику нули)."""
+        """Columns from test_for_answer that are non-empty and not '0' in the row (we don't record zeros in stats)."""
         return [c for c in self.test_for_answer if str(row.get(c, '')).strip() and str(row.get(c, '')) != '0']
 
     def _on_type_of_test_changed(self):
-        """При включении теста с 4 вариантами отключаем «Вариант со всеми ответами»."""
+        """When the 4-choice test is enabled, disable the "All-answers variant"."""
         if self.chec_type_of_test.isChecked():
             self.chec_all_answers.setChecked(False)
             self.chec_all_answers.setEnabled(False)
@@ -379,7 +379,7 @@ class Rand_window(QMainWindow):
             self.chec_all_answers.setEnabled(True)
 
     def _on_repeat_mode_changed(self):
-        """При включении режима повтора отключаем тестовый режим (4 варианта, без статистики)."""
+        """When repeat mode is enabled, disable quiz mode (4 choices, no stats)."""
         if self.chec_repeat_mode.isChecked():
             self.chec_type_of_test.setChecked(False)
             self.chec_type_of_test.setEnabled(False)
@@ -388,9 +388,9 @@ class Rand_window(QMainWindow):
 
     def checks(self):
         if self.chec_type_of_test.isChecked():
-            self.value_of_test = 1  # Тестовый режим с 4-мя вариантами ответов
+            self.value_of_test = 1  # Quiz mode with 4 answer choices
         else:
-            self.value_of_test = 0 # стандартный тест
+            self.value_of_test = 0 # standard test
         self.all_answers_variant = self.chec_all_answers.isChecked() if hasattr(self, 'chec_all_answers') else False
         self.test_for_answer=[]
         self.property_choose = []
@@ -402,14 +402,14 @@ class Rand_window(QMainWindow):
                 if rb.isChecked():
                     self.property_choose.append(rb.text())
         if self.test_for_answer == []:
-            self.lb_err.setText('Выберите хотя бы один\n вариант для теста')
+            self.lb_err.setText('Select at least one\n option to test')
         elif self.property_choose == [] and self.current_sheet in self._SHEETS_WITH_SUSH:
-            self.lb_err.setText('Выберите хотя бы одно\n свойство для теста')
+            self.lb_err.setText('Select at least one\n property to test')
         else:
-            if len(self.test_for_answer) >1 and self.value_of_test == 1: #тестовый режим с 4-мя вариантами ответов
-                self.lb_err.setText('Для этого типа теста нужно выбрать\nтолько один вариант что тестировать')
-            elif len(self.test_for_answer) >1 and self.all_answers_variant: # вариант теста «со всеми ответами»
-                self.lb_err.setText('Для теста со всеми ответами\nнужно выбрать только один вариант\n что тестировать')
+            if len(self.test_for_answer) >1 and self.value_of_test == 1: # quiz mode with 4 answer choices
+                self.lb_err.setText('For this test type, select\nonly one option to test')
+            elif len(self.test_for_answer) >1 and self.all_answers_variant: # "all answers" test variant
+                self.lb_err.setText('For the all-answers test\nselect only one option\n to test')
             else:
                 self.lb_err.setText('')
                 self.df2 = pd.read_sql(f'SELECT * FROM "{self.current_sheet}"', self.conn)
@@ -417,21 +417,21 @@ class Rand_window(QMainWindow):
                 self.df2 = self._normalize_lesson_column(self.df2)
                 self.alls  = self.df2.reset_index().to_dict('records')
                 self.lb_err.setText('')
-                if self.choose_one_lesson.currentText() =='Выбрать один урок':
+                if self.choose_one_lesson.currentText() =='Select one lesson':
                     if self.ent_less.text() == '' or self.ent_less_end.text() == '':
-                        self.lb_err.setText('Введите номер урока')
+                        self.lb_err.setText('Enter a lesson number')
                     else:
                         self.st = int(self.ent_less.text())
                         self.en = int(self.ent_less_end.text())
 
                         if self.st == 0 or self.en == 0:
-                            self.lb_err.setText('Введите номер урока')
+                            self.lb_err.setText('Enter a lesson number')
                         elif self.st > self.en:
-                            self.lb_err.setText('Начальный урок больше конечного')
+                            self.lb_err.setText('First lesson is greater than the last')
                         elif self.en > self.len_of_words:
-                            self.lb_err.setText('Конечный урок больше максимального')
+                            self.lb_err.setText('Last lesson is greater than the maximum')
                         elif self.st == None or self.en == None:
-                            self.lb_err.setText('Введите номер урока')
+                            self.lb_err.setText('Enter a lesson number')
                         else:
                             self.continue_check()
                 else:
@@ -439,7 +439,7 @@ class Rand_window(QMainWindow):
 
     def continue_check(self):
         self.lb_err.setText('')
-        if self.choose_one_lesson.currentText() =='Выбрать один урок':
+        if self.choose_one_lesson.currentText() =='Select one lesson':
             self.alls =  [i for i in self.alls if (i['Lesson'] >= self.st and i['Lesson'] <= self.en)]  
         else:
             self.alls =  [i for i in self.alls if i['Lesson'] == int(self.choose_one_lesson.currentText())]
@@ -466,17 +466,17 @@ class Rand_window(QMainWindow):
             )
         self.len_of_count_for_proc = len(self.alls)
         self.alls = stat.sort_items_for_choice_test(self.alls, self.stats, self.current_column, self.current_answer_column)
-        if self.value_of_test == 1: # тестовый режим с 4-мя вариантами ответов
+        if self.value_of_test == 1: # quiz mode with 4 answer choices
             self._apply_choice_test_merge()
             if len(self.alls) <=3:
-                self.lb_err.setText('Слишком мало слов для теста с 4-мя вариантами ответов')
+                self.lb_err.setText('Too few words for a 4-choice quiz')
                 return
         self.main2()
 
 
     def main2(self):
         self.frame_main.deleteLater()
-        self.setGeometry(300, 300, 700, 750)  # Увеличена высота окна для таблицы
+        self.setGeometry(300, 300, 700, 750)  # Taller window for the table
         self._test_content_width = 660
         self.frame_main = QFrame()
         self.frame_main.setStyleSheet("background-color: transparent;")
@@ -484,33 +484,33 @@ class Rand_window(QMainWindow):
         self.frame_up2 = QFrame()
         self.frame_down2 = QFrame()
         self.frame_know = QFrame()
-        self.btn_back = QPushButton("В начальное меню")
+        self.btn_back = QPushButton("Back to main menu")
         self.btn_back.setStyleSheet(st.but_line_check)
 
         layout_frame_up2 = QHBoxLayout()
         layout_frame_up2.addWidget(self.btn_back)
         self.frame_up2.setLayout(layout_frame_up2)
 
-        self.btn_continue = QPushButton("Начать тест")
+        self.btn_continue = QPushButton("Start test")
         self.btn_continue.setStyleSheet(st.btn_test) 
         self.btn_continue.setFixedHeight(40)
         self.btn_continue.setFixedWidth(400)
-        self.label_total = QLabel("Всего слов")
+        self.label_total = QLabel("Total words")
         self.mnemonic_text = QLabel("")
         self.mnemonic_text.setStyleSheet("color: #8B0000;")
         self.name_of_difficulty = QLabel("")
         self.part_of_speech = QLabel("")
-        self.label_question = QTextEdit()  # Слово
+        self.label_question = QTextEdit()  # Word
         self.label_question.setReadOnly(True)  # Make it read-only.
         self.label_question.setFrameStyle(QFrame.NoFrame)  # No border.
         self.label_question.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)  # No vertical scroll bar.
         self.label_question.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)  # No horizontal scroll bar.
-        self.label_answer = QTextEdit("")    # Перевод
+        self.label_answer = QTextEdit("")    # Translation
         self.label_answer.setReadOnly(True)  # Make it read-only.
         self.label_answer.setFrameStyle(QFrame.NoFrame)  # No border.
         self.label_answer.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)  # No vertical scroll bar.
         self.label_answer.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)  # No horizontal scroll bar.
-        self.where_in_words_label = QLabel("")  # В каких словах в таблице Words есть это слово
+        self.where_in_words_label = QLabel("")  # Which entries in the Words table contain this word
         font1 = QFont()
         font2 = QFont()
         if self.current_column =='Kanji':
@@ -526,7 +526,7 @@ class Rand_window(QMainWindow):
         self.label_answer.setFont(font2)
         layout_frame_down2 = QVBoxLayout()
         layout_continue_row = QHBoxLayout()
-        self.context_button = QPushButton("Контекст")
+        self.context_button = QPushButton("Context")
         self.context_button.setVisible(False)
         self.context_button.setStyleSheet(st.btn_test)
         self.context_button.setFixedHeight(40)
@@ -546,12 +546,12 @@ class Rand_window(QMainWindow):
         layout_frame_know = QVBoxLayout()
         layout_context = QVBoxLayout()
         layout_buttons_row = QHBoxLayout()
-        self.but_know = QPushButton("Знаю")
+        self.but_know = QPushButton("Know")
         self.but_know.setVisible(False)
-        self.but_hard = QPushButton("Сложно")
+        self.but_hard = QPushButton("Hard")
         self.but_hard.setVisible(False)
         self.but_hard.setStyleSheet(st.btn_test)
-        self.but_easy = QPushButton("Легко")
+        self.but_easy = QPushButton("Easy")
         self.but_easy.setVisible(False)
         self.but_easy.setStyleSheet(st.btn_test)
         self.context_label = QLabel("")
@@ -559,7 +559,7 @@ class Rand_window(QMainWindow):
         self.context_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
         self.context_label.setWordWrap(True)
         context_font = QFont()
-        context_font.setPointSize(16)  # нужный размер
+        context_font.setPointSize(16)  # desired size
         self.context_label.setFont(context_font)
         self.but_know.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         self.but_hard.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
@@ -569,33 +569,33 @@ class Rand_window(QMainWindow):
         layout_buttons_row.addWidget(self.but_easy)
         layout_frame_know.addLayout(layout_buttons_row)
         self.table_widget = QTableWidget(self)
-        self.table_widget.setMinimumHeight(300)  # Минимальная высота таблицы
+        self.table_widget.setMinimumHeight(300)  # Minimum table height
         self.table_widget.setStyleSheet(st.table)
         if len(self.test_for_answer) == 1 and not getattr(self, 'all_answers_variant', False):
             self.table_widget.setVisible(False)
         elif getattr(self, 'all_answers_variant', False):
-            # В варианте «со всеми ответами» таблицу показываем только при нескольких колонках ответа
+            # In the "all answers" variant, show the table only with multiple answer columns
             self.table_widget.setVisible(len(self.test_for_answer) > 1)
         else:
             self.table_widget.setVisible(len(self.test_for_answer) > 1)
-        layout_frame_know.addWidget(self.table_widget, 1)  # Stretch factor = 1, таблица займет максимум места
-        # Кнопки по вариантам ответа (только при таблице: несколько колонок, без «всех ответов»)
+        layout_frame_know.addWidget(self.table_widget, 1)  # Stretch factor = 1, table takes maximum space
+        # Answer-option buttons (only with a table: multiple columns, without "all answers")
         self.frame_table_buttons = QFrame()
         self.layout_table_buttons = QHBoxLayout()
         self.frame_table_buttons.setLayout(self.layout_table_buttons)
         self.frame_table_buttons.setVisible(len(self.test_for_answer) > 1 and self.value_of_test == 0 and not getattr(self, 'all_answers_variant', False))
         self.table_column_buttons = []
         layout_frame_know.addWidget(self.frame_table_buttons)
-        # Блок кнопок «все ответы» (по одной на каждую строку группы) — только для варианта «со всеми ответами»
+        # "All answers" button block (one per group row) — only for the "all answers" variant
         self.frame_all_answer_buttons = QFrame()
         self.layout_all_answer_buttons = QGridLayout()
         self.frame_all_answer_buttons.setLayout(self.layout_all_answer_buttons)
         self.frame_all_answer_buttons.setVisible(False)
-        self.answer_row_buttons = []  # кнопки ответов по строкам (для all_answers_variant)
+        self.answer_row_buttons = []  # per-row answer buttons (for all_answers_variant)
         layout_frame_know.addWidget(self.frame_all_answer_buttons)
-        if self.value_of_test==0: # стандартный тест
+        if self.value_of_test==0: # standard test
             layout_frame_know.addWidget(self.label_answer)
-        else: # Тестовый режим с 4-мя вариантами ответов
+        else: # Quiz mode with 4 answer choices
             self.checkBoxes_in_test = []
             for _ in range(4):
                 checkBox, row_widget = self._create_answer_checkbox()
@@ -614,7 +614,7 @@ class Rand_window(QMainWindow):
         self.frame_main.setLayout(self.main_layout)
         self.frame_main.setMaximumWidth(self._test_content_width)
         self.scroll_with_backgr()
-        if self.value_of_test==0: # стандартный тест 
+        if self.value_of_test==0: # standard test
             self.btn_continue.clicked.connect(self.show_next_word)
         else:
             self.btn_continue.clicked.connect(self.show_next_word2)
@@ -626,22 +626,22 @@ class Rand_window(QMainWindow):
 
     def repeat_frame(self):
         self.frame_repeat = QFrame()
-        self.layout_frame_repeat = QVBoxLayout()  # Блок для повтора, статистики вернух слов и кнопки "Повторить"
+        self.layout_frame_repeat = QVBoxLayout()  # Block for repeat, returned-words stats and the "Repeat" button
         self.label_end = QLabel("")
         self.label_count_right = QLabel("")
-        self.again_but = QPushButton("Повторить")
+        self.again_but = QPushButton("Repeat")
         self.again_but.setFixedHeight(40)
         self.again_but.setFixedWidth(400)
         self.again_but.setVisible(False)
         self.again_but.setStyleSheet(st.btn_test)
-        self.again_unknow = QPushButton("Повторить не узнанные слова")
+        self.again_unknow = QPushButton("Repeat unrecognized words")
         self.again_unknow.setVisible(False)
         self.again_unknow.setStyleSheet(st.btn_test)
         self.again_unknow.setFixedHeight(40)
         self.again_unknow.setFixedWidth(400)
         self.again_label = QLabel("")
-        if self.value_of_test ==1: # тестовый режим с 4-мя вариантами ответов
-            # убрать все чекбоксы
+        if self.value_of_test ==1: # quiz mode with 4 answer choices
+            # remove all checkboxes
             for checkBox in self.checkBoxes_in_test:
                 self._set_answer_checkbox_visible(checkBox, False)
         self.layout_frame_repeat.addWidget(self.label_end)
@@ -662,7 +662,7 @@ class Rand_window(QMainWindow):
         self.options_for_again()
 
     def keyPressEvent(self, event):
-        if self.value_of_test == 0: # стандартный тест 
+        if self.value_of_test == 0: # standard test
             if event.key() == Qt.Key_Space:
                 self.show_next_word()
             if event.key() == Qt.Key_Return:
@@ -698,7 +698,7 @@ class Rand_window(QMainWindow):
         return checkBox, row_widget
 
     def _apply_choice_test_merge(self):
-        """Объединяет строки с одним значением вопроса для теста с 4 вариантами."""
+        """Merges rows with the same question value for the 4-choice test."""
         self.alls = merge_by_column(self.alls, self.current_column, self.test_for_answer[0])
         self.all_variations = deepcopy(self.alls)
 
@@ -734,14 +734,14 @@ class Rand_window(QMainWindow):
                         checkBox.answer_label.setStyleSheet("color: green;")
                         self._set_answer_checkbox_text(
                             checkBox,
-                            self._get_answer_checkbox_text(checkBox) + " - Правильно"
+                            self._get_answer_checkbox_text(checkBox) + " - Correct"
                         )
                         self.shet_know += 1
                     else:
                         checkBox.answer_label.setStyleSheet("color: red;")
                         self._set_answer_checkbox_text(
                             checkBox,
-                            self._get_answer_checkbox_text(checkBox) + " - Неправильно"
+                            self._get_answer_checkbox_text(checkBox) + " - Wrong"
                         )
                         self.unknown_words.append(self.past_word)
                         for other in self.checkBoxes_in_test:
@@ -749,10 +749,10 @@ class Rand_window(QMainWindow):
                                 other.answer_label.setStyleSheet("color: green;")
                                 self._set_answer_checkbox_text(
                                     other,
-                                    self._get_answer_checkbox_text(other) + " - Правильно"
+                                    self._get_answer_checkbox_text(other) + " - Correct"
                                 )
             self.btn_continue.setVisible(True)
-            self.btn_continue.setText("Следующее слово")
+            self.btn_continue.setText("Next word")
             self.context_button.setVisible(self._should_show_context_button())
             
             
@@ -764,7 +764,7 @@ class Rand_window(QMainWindow):
                         strings = str(i['Kanji'])+', '+i['Trans']
                         lines.append(strings)
                     if len(lines)>=1:
-                        text = "Встречаются в словах:\n"+"\n".join(lines)
+                        text = "Found in words:\n"+"\n".join(lines)
                         self.label_question.setToolTip(text)
                         self.label_question.setStyleSheet('QTextEdit {color: #8B0000;}')
             elif self.current_sheet == 'Dictio' and self.current_column =='Trans':
@@ -780,7 +780,7 @@ class Rand_window(QMainWindow):
                             strings = str(i['Kanji'])+', '+i['Trans']
                             lines.append(strings)
                 if len(lines)>=1:
-                    text = "Встречаются в словах:\n"+"\n".join(lines)
+                    text = "Found in words:\n"+"\n".join(lines)
                     self.label_question.setToolTip(text)
                     self.label_question.setStyleSheet('QTextEdit {color: #8B0000;}')
         else:
@@ -823,13 +823,13 @@ class Rand_window(QMainWindow):
         secrets = load_ai_secrets()
         api_key = secrets["AI_API_KEY"]
         if not api_key:
-            return "Не найден API ключ. Заполните АИ настройки."
-        prompt = "Напиши пожалуйста предложение на русском и на японском, в котором может использовать это слово. Верни только предложение, без комментариев, выводов. Если данных недостаточно или есть противоречие, оишбка- ответь ровно: Есть ошибка в данных."
+            return "API key not found. Fill in the AI settings."
+        prompt = "Please write a sentence in Russian and in Japanese that can use this word. Return only the sentence, without comments or conclusions. If the data is insufficient or contradictory/erroneous, reply exactly: There is an error in the data."
         payload = {
             "model": secrets["AI_MODEL"],
             "messages": [
-                {"role": "system", "content": "Ты помощник по японскому языку."},
-                {"role": "user", "content": f"{prompt}\n\nДанные слова: {json.dumps(fields, ensure_ascii=False)}"}
+                {"role": "system", "content": "You are a Japanese language assistant."},
+                {"role": "user", "content": f"{prompt}\n\nWord data: {json.dumps(fields, ensure_ascii=False)}"}
             ],
             "temperature": 0.7
         }
@@ -849,31 +849,31 @@ class Rand_window(QMainWindow):
             parsed = json.loads(body)
             choices = parsed.get("choices", [])
             if not choices:
-                return "ИИ не вернул ответ."
+                return "The AI returned no answer."
             content = choices[0].get("message", {}).get("content", "")
-            return content.strip() if content else "ИИ вернул пустой ответ."
+            return content.strip() if content else "The AI returned an empty answer."
         except urllib.error.HTTPError as e:
             err_text = e.read().decode("utf-8", errors="ignore")
-            return f"Ошибка API ({e.code}): {err_text[:300]}"
+            return f"API error ({e.code}): {err_text[:300]}"
         except Exception as e:
-            return f"Ошибка запроса к ИИ: {e}"
+            return f"AI request error: {e}"
 
     def on_context_clicked(self):
-        # Контекст показываем только после показа ответа/выбора ответа.
+        # Context is shown only after the answer is revealed/selected.
         if not self.showing_translation and self.value_of_test == 0:
             return
         if not self._should_show_context_button():
             return
         if not self.current_word:
-            self.context_label.setText("Нет текущего слова для контекста.")
+            self.context_label.setText("No current word for context.")
             self.context_label.setVisible(True)
             return
         fields = self._build_context_fields(self.current_word)
         if not fields:
-            self.context_label.setText("Не удалось собрать данные слова для запроса.")
+            self.context_label.setText("Could not collect word data for the request.")
             self.context_label.setVisible(True)
             return
-        self.context_label.setText("Генерирую контекст...")
+        self.context_label.setText("Generating context...")
         QApplication.processEvents()
         ai_answer = self._request_context_from_ai(fields)
         self.context_label.setText(ai_answer)
@@ -881,7 +881,7 @@ class Rand_window(QMainWindow):
 
     def show_next_word(self):
         if self.showing_translation:
-            self.btn_continue.setText("Показать ответ")
+            self.btn_continue.setText("Show answer")
             self.table_widget.clearContents()
             self.label_question.setStyleSheet('QTextEdit {color: #000000;}')
             self.label_question.setToolTip('')
@@ -907,11 +907,11 @@ class Rand_window(QMainWindow):
                 if self.known_clicked == True:
                     self.known_clicked = False
                 else:
-                    # Не нажали «Знаю» — добавляем в невыученные и пишем wrong по неотмеченным
+                    # "Know" was not pressed — add to unlearned and record wrong for unmarked items
                     if getattr(self, 'all_answers_variant', False):
-                        # Вариант «со всеми ответами»: wrong по неотмеченным (строка, колонка) или по целым строкам
+                        # "All answers" variant: wrong for unmarked (row, column) or for whole rows
                         if len(self.test_for_answer) > 1:
-                            # Кнопки по элементам: wrong только по не нажатым (row, col)
+                            # Per-element buttons: wrong only for unpressed (row, col)
                             for row in getattr(self, 'current_table_rows', []):
                                 missed = False
                                 for col in self._columns_with_value(row):
@@ -934,7 +934,7 @@ class Rand_window(QMainWindow):
                         self.unknown_words.append(self.past_word)
                         if self._uses_stats():
                             if len(self.test_for_answer) > 1:
-                                # Для таблицы: wrong только по колонкам, которые не отмечали (Kanji/Kun/Trans)
+                                # For the table: wrong only for columns that were not marked (Kanji/Kun/Trans)
                                 for row in getattr(self, 'current_table_rows', []):
                                     for col in self._columns_with_value(row):
                                         if col not in getattr(self, 'clicked_columns_for_current', set()):
@@ -951,9 +951,9 @@ class Rand_window(QMainWindow):
                     self._clear_all_answer_buttons()
                     self.answered_right_nums = set()
                     self.answered_right_pairs = set()
-            if not self.alls: #Если все слова закончились
+            if not self.alls: # If all words are exhausted
                 self.past_word = ''
-                self.label_question.setText("Тест завершен.")
+                self.label_question.setText("Test finished.")
                 self.mnemonic_text.setText('')
                 self.mnemonic_text.setToolTip('')
                 self.name_of_difficulty.setText('')
@@ -977,14 +977,14 @@ class Rand_window(QMainWindow):
                 if len(self.unknown_words) > 0:
                     self.again_unknow.setVisible(True)
                 if self.len_of_count_for_proc==0:
-                    self.label_count_right.setText('Нет слов для теста')
+                    self.label_count_right.setText('No words for the test')
                 else:
                     prots = int(round((100 / self.len_of_count_for_proc * self.shet_know), 2))
-                    self.label_count_right.setText(f'Общее число={self.len_of_count_for_proc}, Верно={self.shet_know}, процент верных = {prots}.')
+                    self.label_count_right.setText(f'Total={self.len_of_count_for_proc}, Correct={self.shet_know}, correct percentage = {prots}.')
                 return
 
             if getattr(self, 'all_answers_variant', False):
-                # Группа по совпадению кандзи/куна/она: все строки с тем же значением current_column
+                # Group by matching kanji/kun/on: all rows with the same current_column value
                 first = self.alls[0]
                 self.current_word_test = first[self.current_column]
                 self.current_table_rows = [r for r in self.alls if r[self.current_column] == self.current_word_test]
@@ -999,33 +999,33 @@ class Rand_window(QMainWindow):
                 self.current_word_test = self.current_word[self.current_column]
             num_key, item_key = stat.get_item_key(self.current_word, self.current_column, self.current_answer_column)
             difficulty = self.stats.get(num_key, {}).get(item_key, {}).get('difficulty', 'normal')
-            self.name_of_difficulty.setText(f'Сложность: {difficulty}')
+            self.name_of_difficulty.setText(f'Difficulty: {difficulty}')
             if len(self.property_choose) > 1 and not getattr(self, 'all_answers_variant', False):
-                self.part_of_speech.setText(f'Часть речи: {self.current_word.get("Sush", "")}')
+                self.part_of_speech.setText(f'Part of speech: {self.current_word.get("Sush", "")}')
             for i in self.alls:
                 if cell_has_value(i.get('Mnem')):
                     if i.get('Trans') == self.current_word['Trans'] or i_get_read(i, self.current_word, self.current_sheet):
-                        self.mnemonic_text.setText('есть мнемоника')
+                        self.mnemonic_text.setText('has mnemonic')
                         self.mnemonic_text.setToolTip(str(i['Mnem']))
                         break
                 else:
                     self.mnemonic_text.setText('')
                     self.mnemonic_text.setToolTip('')
             self.past_word = self.current_word
-            t = f'Количество слов= {len(self.alls)}'
+            t = f'Word count= {len(self.alls)}'
             self.label_total.setText(t)
-            if self.current_sheet == 'Dictio' and self.current_column == 'Kanji': # тип теста, где сначала показывается кандзи, а потом перевод
+            if self.current_sheet == 'Dictio' and self.current_column == 'Kanji': # test type where kanji is shown first, then the translation
                 lines = []
                 text=''
                 for i in self.alls_words:
                     if self.current_word_test in i['Kanji'] and len(lines)<=5:
                         lines.append(i['Trans'])
                     if len(lines)>=1:
-                        text = "Встречаются в словах:\n"+"\n".join(lines)
+                        text = "Found in words:\n"+"\n".join(lines)
                         self.label_question.setToolTip(text)
                         self.label_question.setStyleSheet('QTextEdit {color: #8B0000;}')
-            elif self.current_sheet == 'Dictio' and self.current_column =='Trans':  # тип теста, где сначала показывается перевод, а потом кандзи
-                lines = [] # список слов в которых встречается кандзи
+            elif self.current_sheet == 'Dictio' and self.current_column =='Trans':  # test type where the translation is shown first, then the kanji
+                lines = [] # list of words that contain the kanji
                 text=''
                 lines_translations2=[]
                 for i in self.alls:
@@ -1036,17 +1036,17 @@ class Rand_window(QMainWindow):
                         if j in i['Kanji'] and len(lines)<=5:
                             lines.append(i['Trans'])
                 if len(lines)>=1:
-                    text = "Встречаются в словах:\n"+"\n".join(lines)
+                    text = "Found in words:\n"+"\n".join(lines)
                     self.label_question.setToolTip(text)
                     self.label_question.setStyleSheet('QTextEdit {color: #8B0000;}')
             self.label_question.setText(self.current_word_test)
             self.label_answer.setText("")
         else:
-            self.btn_continue.setText("Следующее слово")
+            self.btn_continue.setText("Next word")
             self.but_know.setDisabled(False)
             self._reset_difficulty_buttons_style()
             self.but_hard.setEnabled(True)
-            self.but_easy.setEnabled(False)  # "Легко" доступна только после нажатия "Знаю"
+            self.but_easy.setEnabled(False)  # "Easy" is available only after pressing "Know"
             self.showing_translation = True
             self.context_button.setVisible(self._should_show_context_button())
             self.context_label.setVisible(False)
@@ -1059,7 +1059,7 @@ class Rand_window(QMainWindow):
                         strings = str(i['Kanji'])+', '+i['Trans']
                         lines.append(strings)
                     if len(lines)>=1:
-                        text = "Встречаются в словах:\n"+"\n".join(lines)
+                        text = "Found in words:\n"+"\n".join(lines)
                         self.label_question.setToolTip(text)
                         self.label_question.setStyleSheet('QTextEdit {color: #8B0000;}')
             elif self.current_sheet == 'Dictio' and self.current_column =='Trans':
@@ -1075,14 +1075,14 @@ class Rand_window(QMainWindow):
                             strings = str(i['Kanji'])+', '+i['Trans']
                             lines.append(strings)
                 if len(lines)>=1:
-                    text = "Встречаются в словах:\n"+"\n".join(lines)
+                    text = "Found in words:\n"+"\n".join(lines)
                     self.label_question.setToolTip(text)
                     self.label_question.setStyleSheet('QTextEdit {color: #8B0000;}')
             
             if getattr(self, 'all_answers_variant', False):
                 self._clear_all_answer_buttons()
                 if len(self.current_table_rows) == 1:
-                    # Один ответ — показываем текстом, как в обычном режиме
+                    # Single answer — show as text, like in normal mode
                     row = self.current_table_rows[0]
                     if len(self.test_for_answer) == 1:
                         self.label_answer.setText(str(row.get(self.test_for_answer[0], '')))
@@ -1091,7 +1091,7 @@ class Rand_window(QMainWindow):
                         self.label_answer.setText(" | ".join(parts))
                     self.frame_all_answer_buttons.setVisible(False)
                 elif len(self.test_for_answer) > 1:
-                    # Несколько колонок ответа: таблица + кнопка на каждый элемент (учёба, まなぶ, ガク, ...)
+                    # Multiple answer columns: table + a button per element (study, まなぶ, ガク, ...)
                     self.label_answer.setText("")
                     self.update_table(
                         [self.current_word.get(p, '') for p in self.test_for_answer],
@@ -1114,7 +1114,7 @@ class Rand_window(QMainWindow):
                             idx += 1
                     self.frame_all_answer_buttons.setVisible(True)
                 else:
-                    # Несколько строк, одна колонка — кнопки по одному на каждую строку группы
+                    # Multiple rows, one column — one button per group row
                     self.label_answer.setText("")
                     cols_per_row = 3
                     for i, row in enumerate(self.current_table_rows):
@@ -1127,7 +1127,7 @@ class Rand_window(QMainWindow):
                         self.answer_row_buttons.append(btn)
                     self.frame_all_answer_buttons.setVisible(True)
             elif len(self.test_for_answer) == 1:
-                # Только один элемент — ответ текущей строки, не все с тем же кандзи
+                # Only one element — the answer of the current row, not all with the same kanji
                 self.translations = str(self.current_word.get(self.test_for_answer[0], ''))
                 self.label_answer.setText(self.translations)
                 if self.current_word in self.alls:
@@ -1144,9 +1144,9 @@ class Rand_window(QMainWindow):
         for checkBox in self.checkBoxes_in_test:
                 self._set_answer_checkbox_visible(checkBox, True)
         self.btn_continue.setVisible(False)   
-        if not self.alls: #Если все слова закончились
+        if not self.alls: # If all words are exhausted
             self.past_word = ''
-            self.label_question.setText("Тест завершен.")
+            self.label_question.setText("Test finished.")
             self.mnemonic_text.setText('')
             self.mnemonic_text.setToolTip('')
             self.name_of_difficulty.setText('')
@@ -1159,30 +1159,30 @@ class Rand_window(QMainWindow):
             if len(self.unknown_words) > 0:
                 self.again_unknow.setVisible(True)
             if self.len_of_count_for_proc==0:
-                self.label_count_right.setText('Нет слов для теста')
+                self.label_count_right.setText('No words for the test')
             else:
                 prots = int(round((100 / self.len_of_count_for_proc * self.shet_know), 2))
-                self.label_count_right.setText(f'Общее число={self.len_of_count_for_proc}, Верно={self.shet_know}, процент верных = {prots}.')
+                self.label_count_right.setText(f'Total={self.len_of_count_for_proc}, Correct={self.shet_know}, correct percentage = {prots}.')
             return
 
         self.current_word = self.alls[0]
         self.current_word_test = self.current_word[self.current_column]
         num_key, item_key = stat.get_item_key(self.current_word, self.current_column, self.current_answer_column)
         difficulty = self.stats.get(num_key, {}).get(item_key, {}).get('difficulty', 'normal')
-        self.name_of_difficulty.setText(f'Сложность: {difficulty}')
+        self.name_of_difficulty.setText(f'Difficulty: {difficulty}')
         self.past_word = self.current_word
 
         for i in self.alls:
             if cell_has_value(i.get('Mnem')):
                 if i.get('Trans') == self.current_word['Trans'] or i_get_read(i, self.current_word, self.current_sheet):
-                    self.mnemonic_text.setText('есть мнемоника')
+                    self.mnemonic_text.setText('has mnemonic')
                     self.mnemonic_text.setToolTip(str(i['Mnem']))
                     break
             else:
                 self.mnemonic_text.setText('')
                 self.mnemonic_text.setToolTip('')
 
-        t = f'Количество слов= {len(self.alls)}'
+        t = f'Word count= {len(self.alls)}'
         self.label_total.setText(t)
         if self.current_sheet == 'Words' and self.current_column == 'Kanji':
             reading = self.current_word_test + ' - ' + self.current_word['Read']
@@ -1195,14 +1195,14 @@ class Rand_window(QMainWindow):
         correct_kanji = self.current_word['Kanji']
         question_val = self.current_word[self.current_column]
 
-        # Кандидаты: не текущее слово; при наличии кандзи — другой кандзи
+        # Candidates: not the current word; if a kanji exists — a different kanji
         filtered_words = [
             word for word in self.all_variations
             if word[self.current_column] != question_val
             and (not cell_has_value(correct_kanji) or word.get('Kanji') != correct_kanji)
         ]
 
-        # Уникальные неправильные ответы (без повтора правильного и дублей строк)
+        # Unique wrong answers (no repeat of the correct one and no duplicate rows)
         wrong_pool = []
         seen_answers = set()
         for word in filtered_words:
@@ -1220,18 +1220,18 @@ class Rand_window(QMainWindow):
 
         wrong_answers = sample(wrong_pool, 3)
 
-        # Смешиваем правильный ответ с неправильными
+        # Mix the correct answer with the wrong ones
         all_answers = wrong_answers + [correct_answer]
         shuffle(all_answers)
 
-        # Устанавливаем текст для чекбоксов
+        # Set the text for the checkboxes
         for i, checkBox in enumerate(self.checkBoxes_in_test):
             self._set_answer_checkbox_text(checkBox, all_answers[i])
             checkBox.setEnabled(True)
             checkBox.setChecked(False)
             checkBox.userData = (all_answers[i] == correct_answer)
 
-        # Удаляем только текущее слово, а не все с тем же кандзи/переводом
+        # Remove only the current word, not all with the same kanji/translation
         if self.current_word in self.alls:
             self.alls.remove(self.current_word)
 
@@ -1265,12 +1265,12 @@ class Rand_window(QMainWindow):
         self.frame_repeat.deleteLater()
         self.known_clicked = False
         if self.value_of_test ==0:
-            self.show_next_word() # стандартный тест 
+            self.show_next_word() # standard test
         else:
-            self.show_next_word2() # тестовый режим с 4-мя вариантами ответов
+            self.show_next_word2() # quiz mode with 4 answer choices
 
     def _reset_difficulty_buttons_style(self):
-        """Сброс стиля кнопок Сложно/Легко к обычному."""
+        """Reset the Hard/Easy button styles to normal."""
         self.but_hard.setStyleSheet(st.btn_test)
         self.but_easy.setStyleSheet(st.btn_test)
 
@@ -1299,7 +1299,7 @@ class Rand_window(QMainWindow):
                     self._update_merged_stat(self.current_word, self.current_answer_column, s)
 
     def on_table_column_clicked(self, col):
-        """Нажатие на кнопку On/Kun/Trans: right только этой колонке для текущей строки."""
+        """Pressing the On/Kun/Trans button: right only for that column of the current row."""
         if not self._uses_stats():
             return
         rows = getattr(self, 'current_table_rows', [])
@@ -1318,12 +1318,12 @@ class Rand_window(QMainWindow):
                 break
 
     def know(self):
-        if self.showing_translation:  # Обновляем статистику только если показано слово, а не перевод
+        if self.showing_translation:  # Update stats only when the word is shown, not the translation
             if self.known_clicked == False:
                 self.but_know.setStyleSheet('QPushButton {background-color: lime; color: white;}')
                 if self._uses_stats():
                     if getattr(self, 'all_answers_variant', False):
-                        # Вариант «со всеми ответами»: right всем строкам группы
+                        # "All answers" variant: right for all rows of the group
                         for row in getattr(self, 'current_table_rows', []):
                             for col in self._columns_with_value(row):
                                 if col in self.stats_tables_dict:
@@ -1343,14 +1343,14 @@ class Rand_window(QMainWindow):
                 self.shet_know += 1
                 self.known_clicked = True
                 if not getattr(self, 'all_answers_variant', False):
-                    # "Легко" доступна только после "Знаю" и только если у слова не стоит сложность hard
+                    # "Easy" is available only after "Know" and only if the word is not marked hard
                     if self.current_answer_column and self.current_answer_column in self._columns_with_value(self.current_word):
                         self.but_easy.setEnabled(stat.can_press_easy_db(self.conn, self.stats_tables_dict[self.current_answer_column], self.current_word, self.current_column, self.current_answer_column))
                     else:
                         self.but_easy.setEnabled(True)
 
     def back(self):
-        # Сохраняем статистику один раз при выходе из теста (вместо сохранения при каждом слове)
+        # Save stats once when leaving the test (instead of saving on every word)
         self._save_all_stats()
         self.load_data_from_db()
         self.options_for_zero()
@@ -1358,7 +1358,7 @@ class Rand_window(QMainWindow):
         self.main()       
 
     def _clear_all_answer_buttons(self):
-        """Удаляет кнопки ответов в варианте «со всеми ответами»."""
+        """Removes the answer buttons in the "all answers" variant."""
         self.answer_row_buttons.clear()
         while self.layout_all_answer_buttons.count():
             child = self.layout_all_answer_buttons.takeAt(0)
@@ -1367,7 +1367,7 @@ class Rand_window(QMainWindow):
         self.frame_all_answer_buttons.setVisible(False)
 
     def _on_answer_row_clicked(self, row):
-        """Нажатие на кнопку одного из ответов: right для этой строки, «Знаю» отключается."""
+        """Pressing one of the answer buttons: right for that row, "Know" is disabled."""
         if not self._uses_stats():
             return
         self.answered_right_nums.add(row.get('Num'))
@@ -1378,7 +1378,7 @@ class Rand_window(QMainWindow):
         self.per_element_clicked = True
         self.but_know.setEnabled(False)
         self.but_know.setStyleSheet('QPushButton {background-color: gray; color: white;}')
-        # Найти кнопку для этой row и сделать зелёной, неактивной
+        # Find the button for this row and make it green and disabled
         for btn in self.answer_row_buttons:
             if getattr(btn, '_row_data', None) and btn._row_data.get('Num') == row.get('Num'):
                 btn.setEnabled(False)
@@ -1386,7 +1386,7 @@ class Rand_window(QMainWindow):
                 break
 
     def _on_answer_element_clicked(self, row, col):
-        """Нажатие на кнопку одного элемента (ячейки): right для этой (строка, колонка), «Знаю» отключается."""
+        """Pressing a single element (cell) button: right for that (row, column), "Know" is disabled."""
         if not self._uses_stats():
             return
         self.answered_right_pairs.add((row.get('Num'), col))
@@ -1404,7 +1404,7 @@ class Rand_window(QMainWindow):
                 break
 
     def update_table(self, translations, current_word, single_word=None, multiple_words=None, remove_from_alls=True, show_column_buttons=True):
-        # single_word / multiple_words — явный список строк; иначе берём из self.alls по current_word
+        # single_word / multiple_words — an explicit list of rows; otherwise taken from self.alls by current_word
         if multiple_words is not None:
             filtered_words = list(multiple_words)
         elif single_word is not None:
@@ -1429,7 +1429,7 @@ class Rand_window(QMainWindow):
         self.current_table_rows = list(filtered_words)
         self.clicked_columns_for_current = set()
 
-        # Кнопки по названиям колонок (On, Kun, Trans) — только если не режим «по элементам»
+        # Buttons by column name (On, Kun, Trans) — only when not in "per-element" mode
         self.clear_layout(self.layout_table_buttons)
         self.table_column_buttons.clear()
         if show_column_buttons and filtered_words:
@@ -1462,33 +1462,33 @@ class Rand_window(QMainWindow):
         header.setStretchLastSection(True)
                 
 '''
-Заметки:
-self.current_column # выбранный столбец для теста, то что показываестя в качестве вопроса
-self.test_for_answer # список выбранных вариантов для теста (кандзи/кун/он)- то что показывается в качестве ответа
+Notes:
+self.current_column # the column chosen for the test — what is shown as the question
+self.test_for_answer # list of chosen test options (kanji/kun/on) — what is shown as the answer
 
-self.value_of_test = 1 # Тестовый режим с 4-мя вариантами ответов
-self.value_of_test = 0 # стандартный тест
-self.current_sheet # выбранная таблица словаря
-self.current_word = None # текущее слово в виде словаря:
+self.value_of_test = 1 # Quiz mode with 4 answer choices
+self.value_of_test = 0 # standard test
+self.current_sheet # the chosen dictionary table
+self.current_word = None # the current word as a dict:
 Words:
-{'index': 514, 'Lesson': 140, 'Num': 567, 'Kanji': '理由）', 'Read': 'りゆう', 'Trans': 'причина', 'Mnem': ''}
+{'index': 514, 'Lesson': 140, 'Num': 567, 'Kanji': '理由）', 'Read': 'りゆう', 'Trans': 'reason', 'Mnem': ''}
 Dictio:
-{'index': 1027, 'Lesson': 140, 'Num': 1095, 'Kanji': '求', 'On': 'キュウ、グ', 'Kun': 'もとめる', 'Trans': 'требовать 'Sush': 'Сущ', 'Mnem': ''}
+{'index': 1027, 'Lesson': 140, 'Num': 1095, 'Kanji': '求', 'On': 'キュウ、グ', 'Kun': 'もとめる', 'Trans': 'demand', 'Sush': 'Сущ', 'Mnem': ''}
 Kana:
-{'index': 1027, 'Lesson': 140, 'Num': 1095, 'Kun': 'もとめる', 'Trans': 'требовать 'Sush': 'Сущ', 'Mnem': ''}
-self.len_of_count_for_proc = 0 # количество слов в тесте для подсчета процента верных ответов
-self.current_word_test = None # текущее слово в виде строки
-self.current_table_rows = []  # строки таблицы для статистики (режим с несколькими ответами)
-self.clicked_columns_for_current = set()  # какие колонки (On/Kun/Trans) отмечены для текущего слова
-self.all_variations = {} # список всех вариантов слов для теста. фильтрация по кандзи но не помню что конкретно это делает
-self.all_answers_variant = False  # вариант теста «со всеми ответами» (группа по кандзи/куну/ону)
-self.answered_right_nums = set()  # Num строк, по которым нажали кнопку ответа (right)
-self.answered_right_pairs = set()  # (Num, col) — по каким (строка, колонка) нажали (для кнопок по элементам)
-self.property_choose # список выбранных свойств для теста (часть речи)
-self.past_word # предыдущее слово в виде словаря
+{'index': 1027, 'Lesson': 140, 'Num': 1095, 'Kun': 'もとめる', 'Trans': 'demand', 'Sush': 'Сущ', 'Mnem': ''}
+self.len_of_count_for_proc = 0 # number of words in the test, used to compute the correct-answer percentage
+self.current_word_test = None # the current word as a string
+self.current_table_rows = []  # table rows for stats (multiple-answers mode)
+self.clicked_columns_for_current = set()  # which columns (On/Kun/Trans) are marked for the current word
+self.all_variations = {} # list of all word variants for the test; filters by kanji (exact purpose unclear)
+self.all_answers_variant = False  # "all answers" test variant (group by kanji/kun/on)
+self.answered_right_nums = set()  # Num of rows whose answer button was pressed (right)
+self.answered_right_pairs = set()  # (Num, col) — which (row, column) were pressed (for per-element buttons)
+self.property_choose # list of chosen test properties (part of speech)
+self.past_word # the previous word as a dict
 
-self.unknown_words = [] # список неизвестных слов для повторного теста
-self.shet_know = 0 # счетчик знаю или не знаю слово
-self.known_clicked = False # флаг нажатия кнопки "Знаю"
-self.per_element_clicked = False  # нажата кнопка по одному варианту (таблица)
+self.unknown_words = [] # list of unknown words for a repeat test
+self.shet_know = 0 # counter of known/unknown words
+self.known_clicked = False # flag that the "Know" button was pressed
+self.per_element_clicked = False  # a per-option button was pressed (table)
 '''

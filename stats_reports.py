@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Расчёт отчётов по таблицам словаря и статистике (Jp.db)."""
+"""Builds reports from the dictionary tables and statistics (Jp.db)."""
 from datetime import date
 import os
 import sqlite3
@@ -15,6 +15,7 @@ from stats_script import (
 DB_NAME = 'Jp.db'
 MIN_ATTEMPTS_DEFAULT = 5
 SOURCES_WITH_SUSH = frozenset({'Dictio', 'Kana'})
+# Part-of-speech codes stored in the DB (Noun, Adjective, Verb, Adverb)
 SUSH_ORDER = ['Сущ', 'Прил', 'Глаг', 'Нар']
 
 SOURCE_WORD_COLUMNS = {
@@ -48,6 +49,13 @@ def format_pct(value):
     if value is None:
         return '—'
     return f'{value * 100:.1f}%'
+
+
+def _has_lesson(value):
+    """True if the word has a lesson number (not empty and not a dash)."""
+    if value is None:
+        return False
+    return str(value).strip() not in ('', '—')
 
 
 def _direction_label(table_name, prefix):
@@ -199,7 +207,7 @@ def build_num_aggregates(conn, source, today=None, dict_only=False):
 
 
 def count_orphaned_stats(conn, source):
-    """Записи статистики с num, которого уже нет в таблице словаря."""
+    """Stats records whose num no longer exists in the dictionary table."""
     dictionary = _load_dictionary(conn, source)
     stats_by_num = _load_stats_index(conn, source)
     return len(set(stats_by_num) - set(dictionary))
@@ -237,7 +245,9 @@ def lesson_breakdown(conn, source, today=None):
     groups = {}
     for r in rows:
         lesson = r.get('lesson')
-        key = str(lesson).strip() if lesson is not None and str(lesson).strip() else '—'
+        if not _has_lesson(lesson):
+            continue
+        key = str(lesson).strip()
         groups.setdefault(key, []).append(r)
 
     out = []
@@ -335,7 +345,10 @@ def direction_breakdown(conn, source, today=None):
 def word_rankings(conn, source, min_attempts=MIN_ATTEMPTS_DEFAULT, hardest=True, today=None):
     today = today or date.today()
     rows = build_num_aggregates(conn, source, today, dict_only=True)
-    filtered = [r for r in rows if r['attempts'] >= min_attempts and r['efficiency'] is not None]
+    filtered = [
+        r for r in rows
+        if r['attempts'] >= min_attempts and r['efficiency'] is not None and _has_lesson(r.get('lesson'))
+    ]
     filtered.sort(
         key=lambda x: (x['efficiency'], -x['attempts']),
         reverse=not hardest,
@@ -348,13 +361,15 @@ def stuck_words(conn, source, today=None):
     rows = build_num_aggregates(conn, source, today, dict_only=True)
     out = []
     for r in rows:
+        if not _has_lesson(r.get('lesson')):
+            continue
         reasons = []
         if r['hard']:
             reasons.append('hard')
         if r['session_wrong']:
-            reasons.append('ошибка в сессии')
+            reasons.append('session error')
         if r['attempts'] >= 3 and r['efficiency'] is not None and r['efficiency'] < 0.5:
-            reasons.append('низкая эффективность')
+            reasons.append('low efficiency')
         if not reasons:
             continue
         out.append({**r, 'reasons': ', '.join(reasons)})
@@ -365,7 +380,7 @@ def stuck_words(conn, source, today=None):
 def srs_due_words(conn, source, today=None):
     today = today or date.today()
     rows = build_num_aggregates(conn, source, today, dict_only=True)
-    due_rows = [r for r in rows if r['due']]
+    due_rows = [r for r in rows if r['due'] and _has_lesson(r.get('lesson'))]
     due_rows.sort(
         key=lambda x: (
             0 if x['hard'] else 1,
@@ -381,6 +396,8 @@ def direction_asymmetry(conn, source, min_attempts=MIN_ATTEMPTS_DEFAULT, today=N
     rows = build_num_aggregates(conn, source, today, dict_only=True)
     out = []
     for r in rows:
+        if not _has_lesson(r.get('lesson')):
+            continue
         dir_effs = []
         for direction, stat in r['directions'].items():
             ra, wa = stat.get('right_all', 0), stat.get('wrong_all', 0)

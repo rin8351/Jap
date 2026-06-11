@@ -1,2 +1,9 @@
 ai_secrets.py
 errors.json
+
+# Python
+__pycache__/
+*.py[cod]
+
+# App runtime/debug files
+table_debug.log

@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 """
-SRS-статистика для теста японских слов.
-Хранение в SQLite (Jp.db). Функции с суффиксом _db работают с БД.
+SRS statistics for the Japanese vocabulary test.
+Stored in SQLite (Jp.db). Functions with the _db suffix work with the database.
 """
 from datetime import datetime, date
 import random
 
-# Интервалы (дней): когда показывать слово после last_right
-# Начальные интервалы после первого правильного ответа
+# Intervals (days): when to show a word again after last_right
+# Initial intervals after the first correct answer
 EASY_DAYS_INITIAL = 4
 NORMAL_DAYS_INITIAL = 2
-# Геометрическая прогрессия: следующий интервал = текущий * множитель
-# normal: 2 → 4 → 8 → 16 → 30 (cap)
-# easy: 4 → 10 → 25 → 30 (cap)
-NORMAL_INTERVAL_MULTIPLIER = 2.0   # удвоение после каждого правильного
-EASY_INTERVAL_MULTIPLIER = 2.5     # для лёгких рост быстрее
+# Geometric progression: next interval = current * multiplier
+# normal: 2 -> 4 -> 8 -> 16 -> 30 (cap)
+# easy: 4 -> 10 -> 25 -> 30 (cap)
+NORMAL_INTERVAL_MULTIPLIER = 2.0   # double after each correct answer
+EASY_INTERVAL_MULTIPLIER = 2.5     # easy words grow faster
 MAX_INTERVAL_DAYS = 190
 
 
@@ -29,9 +29,9 @@ def _parse_date(s):
 
 def get_item_key(item, question, answer_column=None):
     """
-    Уникальный ключ элемента: (num_key, item_key).
-    item_key = "вопрос|ответ" (например "一|один"), если задан answer_column,
-    иначе только значение вопроса (для обратной совместимости).
+    Unique key of an item: (num_key, item_key).
+    item_key = "question|answer" (e.g. "一|one") if answer_column is given,
+    otherwise just the question value (for backward compatibility).
     """
     num = item.get("Num")
     q = str(item.get(question, "")).strip()
@@ -42,29 +42,29 @@ def get_item_key(item, question, answer_column=None):
 
 
 def _ensure_num(stats, num_key):
-    """Верхний уровень stats — по номерам (Num). Под каждым номером — разрезы по парам вопрос|ответ."""
+    """Top level of stats is keyed by Num. Under each Num, slices by question|answer pairs."""
     if num_key not in stats:
         stats[num_key] = {}
     return stats[num_key]
 
 
 def _difficulty_rank(d):
-    """Слабые первые: hard=0, normal=1, easy=2."""
+    """Weakest first: hard=0, normal=1, easy=2."""
     return {"hard": 0, "normal": 1, "easy": 2}.get(d, 1)
 
 
 def sort_items_for_choice_test(items, stats=None, question=None, answer_column=None):
     """
-    Для режима с 4 вариантами: статистика не меняется, порядок — слабые первые.
-    Сортировка: сначала слова, которых ещё нет в stats (in_stats=0), затем остальные.
-    Среди остальных: по уровню (hard → normal → easy), внутри уровня по убыванию wrong,
-    при равном wrong — случайный порядок.
+    For the 4-choice mode: stats are not changed, order is weakest first.
+    Sorting: words not yet in stats first (in_stats=0), then the rest.
+    Among the rest: by level (hard -> normal -> easy), within a level by descending wrong,
+    and random order when wrong is equal.
     """
     keyed = []
     for item in items:
         num_key, item_key = get_item_key(item, question, answer_column)
         stat = (stats.get(num_key) or {}).get(item_key)
-        in_stats = 1 if stat else 0  # 0 — нет в статистике (первые), 1 — есть
+        in_stats = 1 if stat else 0  # 0 = not in stats (shown first), 1 = present
         if not stat:
             stat = {}
         difficulty = stat.get("difficulty", "normal")
@@ -75,7 +75,7 @@ def sort_items_for_choice_test(items, stats=None, question=None, answer_column=N
 
 
 def get_or_create_stat(stats, item, question=None, answer_column=None):
-    """Возвращает словарь статистики для элемента"""
+    """Returns the stats dict for an item."""
     num_key, item_key = get_item_key(item, question, answer_column)
     by_num = _ensure_num(stats, num_key)
     if item_key not in by_num:
@@ -91,17 +91,17 @@ def get_or_create_stat(stats, item, question=None, answer_column=None):
 
 def _stat_qualifies_for_test(stat, today):
     """
-    Проверяет, нужно ли включать элемент в тест по одной записи статистики.
-    Возвращает (include: bool, extra_copies: int).
-    extra_copies: 0 = один раз, 1 = добавить ещё один раз (для hard с wrong >= 3).
+    Checks whether an item should be included in the test based on a single stat record.
+    Returns (include: bool, extra_copies: int).
+    extra_copies: 0 = once, 1 = add one more time (for hard with wrong >= 3).
     """
     if not stat:
-        # Новый элемент (его ещё нет в файле) — показываем
+        # New item (not yet recorded) — show it
         return True, 0
     difficulty = stat.get("difficulty", "normal")
     wrong = stat.get("wrong", 0)
     if difficulty == "hard":
-        return True, (1 if wrong >= 3 else 0)  # 1 extra = всего 2 копии
+        return True, (1 if wrong >= 3 else 0)  # 1 extra = 2 copies total
     if wrong > 0:
         return True, 0
     if difficulty == "easy":
@@ -117,25 +117,25 @@ def _stat_qualifies_for_test(stat, today):
 
 def filter_items_for_test(items, stats=None, question=None, answer_column=None, answer_columns=None):
     """
-    Возвращает список элементов для теста по SRS.
-    answer_column — одна колонка ответа (для обратной совместимости).
-    answer_columns — список колонок ответа; если задан, используется вместо answer_column.
-    Логика при нескольких колонках: элемент попадает в тест, если хотя бы в одном
-    из выбранных файлов статистики выполняются условия: новый элемент, hard, wrong > 0
-    или наступила дата по интервалу. Проверяются только выбранные колонки (файлы).
-    Условия по одной записи:
-    - easy: показывать только если прошло interval_days после last_right.
-    - normal: то же, свой интервал.
-    - hard: всегда; при wrong >= 3 — два раза.
-    - wrong > 0: всегда в тесте.
-    - Дубликаты по Num отбрасываются (остаётся первое вхождение).
+    Returns the list of items for an SRS test.
+    answer_column — a single answer column (for backward compatibility).
+    answer_columns — a list of answer columns; if given, used instead of answer_column.
+    Logic with multiple columns: an item is included if at least one of the
+    selected stat tables meets a condition: new item, hard, wrong > 0,
+    or the interval date has arrived. Only the selected columns (tables) are checked.
+    Conditions per record:
+    - easy: show only if interval_days have passed since last_right.
+    - normal: same, with its own interval.
+    - hard: always; with wrong >= 3 — twice.
+    - wrong > 0: always in the test.
+    - Duplicates by Num are dropped (the first occurrence is kept).
     """
     today = date.today()
     columns = answer_columns if answer_columns is not None else ([answer_column] if answer_column is not None else [])
     if not columns:
         return []
 
-    # Убираем дубликаты по Num — оставляем первое вхождение каждой карточки
+    # Remove duplicates by Num — keep the first occurrence of each card
     seen_num = set()
     items_unique = []
     for item in items:
@@ -171,15 +171,15 @@ def filter_items_for_test(items, stats=None, question=None, answer_column=None, 
 
 def filter_items_for_repeat(items, stats=None, question=None, answer_column=None, answer_columns=None):
     """
-    Режим повтора: включаем только элементы со статистикой, у которых difficulty ∈ {normal, easy},
-    и которые проходят SRS-проверку (wrong > 0 или наступила дата по интервалу).
+    Repeat mode: include only items that have stats with difficulty in {normal, easy}
+    and that pass the SRS check (wrong > 0 or the interval date has arrived).
 
-    Важно:
-    - Новые элементы (без записи в stats) исключаются.
-    - hard исключаются полностью.
-    - При нескольких колонках ответа: элемент включается, если хотя бы по одной выбранной колонке
-      есть запись в stats (normal/easy) и она qualifies по _stat_qualifies_for_test.
-    - Дубликаты по Num отбрасываются (остаётся первое вхождение).
+    Important:
+    - New items (without a stat record) are excluded.
+    - hard items are fully excluded.
+    - With multiple answer columns: an item is included if at least one selected column
+      has a stat record (normal/easy) that qualifies per _stat_qualifies_for_test.
+    - Duplicates by Num are dropped (the first occurrence is kept).
     """
     today = date.today()
     if stats is None:
@@ -188,7 +188,7 @@ def filter_items_for_repeat(items, stats=None, question=None, answer_column=None
     if not columns:
         return []
 
-    # Убираем дубликаты по Num — оставляем первое вхождение каждой карточки
+    # Remove duplicates by Num — keep the first occurrence of each card
     seen_num = set()
     items_unique = []
     for item in items:
@@ -209,7 +209,7 @@ def filter_items_for_repeat(items, stats=None, question=None, answer_column=None
             by_num = stats.get(num_key, {})
             stat = by_num.get(item_key)
             if not stat:
-                continue  # новые исключаем
+                continue  # exclude new items
             difficulty = stat.get("difficulty", "normal")
             if difficulty == "hard":
                 continue
@@ -225,15 +225,15 @@ def filter_items_for_repeat(items, stats=None, question=None, answer_column=None
 
 def record_correct(stats, item, question=None, answer_column=None):
     """
-    Учитывает правильный ответ: сбрасывает wrong, обновляет last_right, right_all, right и interval_days.
-    Сложность (easy/hard) меняется только через кнопки «Легко»/«Сложно» (set_difficulty_only в UI).
-    - hard → normal: после 2 правильных подряд.
-    - normal → easy: после 4 правильных подряд.
+    Records a correct answer: resets wrong, updates last_right, right_all, right and interval_days.
+    Difficulty (easy/hard) is changed only via the "Easy"/"Hard" buttons (set_difficulty_only in the UI).
+    - hard -> normal: after 2 correct answers in a row.
+    - normal -> easy: after 4 correct answers in a row.
     """
     stat = get_or_create_stat(stats, item, question, answer_column)
 
     stat["last_right"] = date.today().strftime("%d.%m.%Y")
-    stat["wrong"] = 0  # правильный ответ — сбрасываем счётчик ошибок, слово снова по интервалу
+    stat["wrong"] = 0  # correct answer — reset the error counter, the word goes back on its interval
     stat["right_all"] = stat.get("right_all", 0) + 1
     stat["wrong_all"] = stat.get("wrong_all", 0)
 
@@ -279,8 +279,8 @@ def record_correct(stats, item, question=None, answer_column=None):
 
 def set_difficulty_only(stats, item, difficulty, question=None, answer_column=None):
     """
-    Меняет только ключ difficulty для элемента. Остальная статистика (right, wrong, last_right и т.д.) не трогается.
-    difficulty: "easy", "hard" или "normal".
+    Changes only the difficulty key for an item. Other stats (right, wrong, last_right, etc.) are untouched.
+    difficulty: "easy", "hard" or "normal".
     """
     stat = get_or_create_stat(stats, item, question, answer_column)
     stat["difficulty"] = difficulty
@@ -291,7 +291,7 @@ def set_difficulty_only(stats, item, difficulty, question=None, answer_column=No
 def record_wrong(stats, item, question=None, answer_column=None):
     """
     +1 wrong, right = 0.
-    Если количество ошибок == 3: normal → hard, easy → normal.
+    If the error count == 3: normal -> hard, easy -> normal.
     """
     stat = get_or_create_stat(stats, item, question, answer_column)
     stat["wrong"] = stat.get("wrong", 0) + 1
@@ -310,14 +310,14 @@ def record_wrong(stats, item, question=None, answer_column=None):
         
 
 def can_press_easy(stats, item, question=None, answer_column=None):
-    """Если сложность уже 'hard', кнопку 'Легко' не показывать."""
+    """If difficulty is already 'hard', do not show the 'Easy' button."""
     stat = get_or_create_stat(stats, item, question, answer_column)
     return stat.get("difficulty") != "hard"
 
 
-# ---------- Работа с SQLite ----------
+# ---------- Working with SQLite ----------
 
-# Таблица словаря -> (префикс таблиц статистики, столбцы вопроса/ответа в тесте)
+# Dictionary table -> (stats table prefix, question/answer columns used in the test)
 STATS_SOURCES = {
     'Dictio': ('dictio', ('Trans', 'Kanji', 'Kun', 'On')),
     'Words': ('words', ('Trans', 'Kanji', 'Read')),
@@ -331,12 +331,12 @@ STATS_PREFIXES = tuple({prefix for prefix, _ in STATS_SOURCES.values()})
 
 
 def stats_table_name(prefix, question_col, answer_col):
-    """Имя таблицы статистики: {prefix}_{вопрос}_{ответ} в нижнем регистре."""
+    """Stats table name: {prefix}_{question}_{answer} in lowercase."""
     return f'{prefix}_{question_col.lower()}_{answer_col.lower()}'
 
 
 def iter_stats_table_names(prefix, columns):
-    """Все пары направлений (вопрос, ответ) для столбцов теста."""
+    """All direction pairs (question, answer) for the test columns."""
     for question_col in columns:
         for answer_col in columns:
             if question_col != answer_col:
@@ -345,7 +345,7 @@ def iter_stats_table_names(prefix, columns):
 
 def stats_column_role(table_name, column_name):
     """
-    В таблице prefix_Q_A столбец Q синхронизируется в value, A — в answer.
+    In a table prefix_Q_A, column Q is synced into value, A into answer.
     """
     parts = str(table_name).lower().split('_', 2)
     if len(parts) >= 2 and parts[1] == str(column_name).lower():
@@ -371,8 +371,8 @@ def _cell_has_value(val):
 
 def populate_stats_tables_for_source(conn, source_table):
     """
-    Создаёт таблицы статистики для source_table и заполняет строками из словаря.
-    Существующие записи (num, value, answer) не перезаписываются — сохраняется прогресс SRS.
+    Creates stats tables for source_table and fills them with rows from the dictionary.
+    Existing records (num, value, answer) are not overwritten — SRS progress is preserved.
     """
     spec = STATS_SOURCES.get(source_table)
     if not spec:
@@ -425,7 +425,7 @@ def populate_stats_tables_for_source(conn, source_table):
 
 
 def ensure_all_stats_tables(conn, source_tables=None):
-    """Создаёт и дополняет таблицы статистики для указанных таблиц словаря (по умолчанию — все из STATS_SOURCES)."""
+    """Creates and tops up stats tables for the given dictionary tables (default: all in STATS_SOURCES)."""
     tables = source_tables if source_tables is not None else list(STATS_SOURCES.keys())
     total = 0
     for source_table in tables:
@@ -450,8 +450,8 @@ STATS_TABLE_SCHEMA = '''
 
 
 def _row_to_stat(row):
-    """Преобразует строку БД (tuple/list) в словарь статистики."""
-    # Порядок: num, value, answer, difficulty, wrong, right, last_right, interval_days, right_all, wrong_all
+    """Converts a DB row (tuple/list) into a stats dict."""
+    # Order: num, value, answer, difficulty, wrong, right, last_right, interval_days, right_all, wrong_all
     return {
         "difficulty": row[3] or "normal",
         "wrong": int(row[4] or 0),
@@ -464,14 +464,14 @@ def _row_to_stat(row):
 
 
 def ensure_stats_table_exists(conn, table_name):
-    """Создаёт таблицу статистики, если её ещё нет."""
+    """Creates the stats table if it does not exist yet."""
     conn.execute(STATS_TABLE_SCHEMA.format(table=table_name))
 
 
 def load_stats_from_db(conn, stats_tables):
     """
-    Загружает статистику из БД по списку (col, table_name).
-    Возвращает объединённый словарь как _merge_stats: num_key -> { item_key -> stat }.
+    Loads stats from the DB for a list of (col, table_name).
+    Returns a merged dict like _merge_stats: num_key -> { item_key -> stat }.
     """
     merged = {}
     for col, table_name in stats_tables:
@@ -487,14 +487,14 @@ def load_stats_from_db(conn, stats_tables):
             if num_key not in merged:
                 merged[num_key] = {}
             merged[num_key][item_key] = _row_to_stat(row)
-    # Завершаем read-транзакцию, чтобы не блокировать последующие записи (database is locked)
+    # End the read transaction so it doesn't block later writes (database is locked)
     conn.rollback()
     return merged
 
 
 def get_or_create_stat_db(conn, table_name, item, question, answer_column):
     """
-    Возвращает словарь статистики для элемента из БД; при отсутствии создаёт запись и возвращает дефолт.
+    Returns the stats dict for an item from the DB; if missing, creates a record and returns defaults.
     """
     ensure_stats_table_exists(conn, table_name)
     num_key, item_key = get_item_key(item, question, answer_column)
@@ -513,7 +513,7 @@ def get_or_create_stat_db(conn, table_name, item, question, answer_column):
     if row is not None:
         return _row_to_stat(row)
 
-    # Новая запись
+    # New record
     conn.execute(
         f'''INSERT INTO "{table_name}" (num, value, answer, difficulty, wrong, "right", last_right, interval_days, right_all, wrong_all)
             VALUES (?, ?, ?, ?, 0, 0, NULL, 0, 0, 0)''',
@@ -532,7 +532,7 @@ def get_or_create_stat_db(conn, table_name, item, question, answer_column):
 
 
 def _update_stat_in_db(conn, table_name, item, question, answer_column, stat):
-    """Записывает словарь stat в БД для данного элемента."""
+    """Writes the stat dict to the DB for the given item."""
     num_key, item_key = get_item_key(item, question, answer_column)
     if "|" in item_key:
         value_part, answer_part = item_key.split("|", 1)
@@ -562,7 +562,7 @@ def _update_stat_in_db(conn, table_name, item, question, answer_column, stat):
 
 def record_correct_db(conn, table_name, item, question=None, answer_column=None):
     """
-    Учитывает правильный ответ в БД. Возвращает обновлённый словарь статистики (для обновления self.stats).
+    Records a correct answer in the DB. Returns the updated stats dict (to refresh self.stats).
     """
     stat = get_or_create_stat_db(conn, table_name, item, question, answer_column)
 
@@ -611,7 +611,7 @@ def record_correct_db(conn, table_name, item, question=None, answer_column=None)
 
 def record_wrong_db(conn, table_name, item, question=None, answer_column=None):
     """
-    +1 wrong в БД. Возвращает обновлённый словарь статистики.
+    +1 wrong in the DB. Returns the updated stats dict.
     """
     stat = get_or_create_stat_db(conn, table_name, item, question, answer_column)
     stat["wrong"] = stat.get("wrong", 0) + 1
@@ -633,7 +633,7 @@ def record_wrong_db(conn, table_name, item, question=None, answer_column=None):
 
 
 def set_difficulty_only_db(conn, table_name, item, difficulty, question=None, answer_column=None):
-    """Меняет только difficulty в БД. Возвращает обновлённый словарь статистики."""
+    """Changes only difficulty in the DB. Returns the updated stats dict."""
     stat = get_or_create_stat_db(conn, table_name, item, question, answer_column)
     stat["difficulty"] = difficulty
     if difficulty == "easy":
@@ -643,6 +643,6 @@ def set_difficulty_only_db(conn, table_name, item, difficulty, question=None, an
 
 
 def can_press_easy_db(conn, table_name, item, question=None, answer_column=None):
-    """Проверка по БД: можно ли показывать кнопку «Легко» (не hard)."""
+    """DB check: whether the 'Easy' button can be shown (not hard)."""
     stat = get_or_create_stat_db(conn, table_name, item, question, answer_column)
     return stat.get("difficulty") != "hard"

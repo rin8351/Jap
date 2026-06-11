@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-Логирование действий в окне таблицы (table.py) для отладки.
-Файл логов очищается при закрытии окна таблицы.
+Logging of actions in the table window (table.py) for debugging.
+The log file is cleared when the table window is closed.
 """
 from datetime import datetime
 import os
 import json
 
-# Файл логов в папке проекта
+# Log file in the project folder
 LOG_DIR = os.path.dirname(os.path.abspath(__file__))
 LOG_FILE = os.path.join(LOG_DIR, 'table_debug.log')
 
@@ -17,7 +17,7 @@ def _timestamp():
 
 
 def table_log(action, **kwargs):
-    """Записать в лог одну запись: время, действие и опциональные поля."""
+    """Write one log entry: timestamp, action, and optional fields."""
     try:
         row = {'time': _timestamp(), 'action': action}
         for k, v in kwargs.items():
@@ -34,7 +34,7 @@ def table_log(action, **kwargs):
 
 
 def clear_table_log():
-    """Очистить файл логов (вызывать при закрытии окна таблицы)."""
+    """Clear the log file (call when the table window is closed)."""
     try:
         with open(LOG_FILE, 'w', encoding='utf-8') as f:
             f.write('')
