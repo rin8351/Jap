@@ -22,9 +22,9 @@ from ai_settings import load_ai_secrets, ai_secrets_complete
 class Rand_window(QMainWindow):
     # Columns tracked by SRS stats (Words: reading is in the Read column, not Kun)
     _STAT_COLUMNS = ('Kanji', 'Trans', 'Kun', 'Read')
-    # Only the main test tables (no stats tables like dictio_* / words_* etc.)
-    _TEST_TABLE_ORDER = ('Dictio', 'Words', 'Frazes', 'Name', 'Kana')
-    _SHEETS_WITH_SUSH = ('Dictio', 'Kana')
+    # Only the main test tables (no stats tables like kanji_* / words_* etc.)
+    _TEST_TABLE_ORDER = ('Kanji', 'Words', 'Frazes', 'Name', 'Kana')
+    _SHEETS_WITH_SUSH = ('Kanji', 'Kana')
     _SHEETS_WITH_STATS = frozenset(STATS_SOURCES)
 
     def __init__(self):
@@ -234,8 +234,8 @@ class Rand_window(QMainWindow):
         layout_frame_up.addWidget(self.chec_type_of_test)
         layout_frame_up.addWidget(self.chec_all_answers)
         layout_frame_up.addWidget(self.lb_start)
-        if self.current_sheet == 'Dictio':
-            self.chec_all_answers.setVisible(True)  # Dictio only (has Kanji)
+        if self.current_sheet == 'Kanji':
+            self.chec_all_answers.setVisible(True)  # Kanji table only (has Kanji column)
         else:
             self.chec_all_answers.setVisible(False)
         layout_frame_up.addWidget(self.ent_less)
@@ -297,14 +297,14 @@ class Rand_window(QMainWindow):
         self.build_sheet_options()
 
     def build_sheet_options(self):
-        """Builds the column radio buttons and (for Dictio) part-of-speech checkboxes."""
+        """Builds the column radio buttons and (for Kanji) part-of-speech checkboxes."""
         self.clear_layout(self.layout_frame_centr1)
         self.clear_layout(self.layout_frame_centr2)
         self.choose_lang.setVisible(True)
         self.label.setVisible(False)
         self.btn3.setVisible(False)
-        # "All-answers variant" only for the Dictio tab
-        self.chec_all_answers.setVisible(self.current_sheet == 'Dictio')
+        # "All-answers variant" only for the Kanji table tab
+        self.chec_all_answers.setVisible(self.current_sheet == 'Kanji')
         columns = self.get_filtered_columns(self.current_sheet)
         for column in columns:
             radio_button = QRadioButton(column, self)
@@ -756,7 +756,7 @@ class Rand_window(QMainWindow):
             self.context_button.setVisible(self._should_show_context_button())
             
             
-            if self.current_sheet == 'Dictio' and self.current_column == 'Kanji':
+            if self.current_sheet == 'Kanji' and self.current_column == 'Kanji':
                 lines = []
                 text=''
                 for i in self.alls_words:
@@ -767,7 +767,7 @@ class Rand_window(QMainWindow):
                         text = "Found in words:\n"+"\n".join(lines)
                         self.label_question.setToolTip(text)
                         self.label_question.setStyleSheet('QTextEdit {color: #8B0000;}')
-            elif self.current_sheet == 'Dictio' and self.current_column =='Trans':
+            elif self.current_sheet == 'Kanji' and self.current_column =='Trans':
                 lines = []
                 text=''
                 lines_translations2=[]
@@ -1014,7 +1014,7 @@ class Rand_window(QMainWindow):
             self.past_word = self.current_word
             t = f'Word count= {len(self.alls)}'
             self.label_total.setText(t)
-            if self.current_sheet == 'Dictio' and self.current_column == 'Kanji': # test type where kanji is shown first, then the translation
+            if self.current_sheet == 'Kanji' and self.current_column == 'Kanji': # test type where kanji is shown first, then the translation
                 lines = []
                 text=''
                 for i in self.alls_words:
@@ -1024,7 +1024,7 @@ class Rand_window(QMainWindow):
                         text = "Found in words:\n"+"\n".join(lines)
                         self.label_question.setToolTip(text)
                         self.label_question.setStyleSheet('QTextEdit {color: #8B0000;}')
-            elif self.current_sheet == 'Dictio' and self.current_column =='Trans':  # test type where the translation is shown first, then the kanji
+            elif self.current_sheet == 'Kanji' and self.current_column =='Trans':  # test type where the translation is shown first, then the kanji
                 lines = [] # list of words that contain the kanji
                 text=''
                 lines_translations2=[]
@@ -1051,7 +1051,7 @@ class Rand_window(QMainWindow):
             self.context_button.setVisible(self._should_show_context_button())
             self.context_label.setVisible(False)
             self.context_label.setText("")
-            if self.current_sheet == 'Dictio' and self.current_column == 'Kanji':
+            if self.current_sheet == 'Kanji' and self.current_column == 'Kanji':
                 lines = []
                 text=''
                 for i in self.alls_words:
@@ -1062,7 +1062,7 @@ class Rand_window(QMainWindow):
                         text = "Found in words:\n"+"\n".join(lines)
                         self.label_question.setToolTip(text)
                         self.label_question.setStyleSheet('QTextEdit {color: #8B0000;}')
-            elif self.current_sheet == 'Dictio' and self.current_column =='Trans':
+            elif self.current_sheet == 'Kanji' and self.current_column =='Trans':
                 lines = []
                 text=''
                 lines_translations2=[]
@@ -1472,7 +1472,7 @@ self.current_sheet # the chosen dictionary table
 self.current_word = None # the current word as a dict:
 Words:
 {'index': 514, 'Lesson': 140, 'Num': 567, 'Kanji': '理由）', 'Read': 'りゆう', 'Trans': 'reason', 'Mnem': ''}
-Dictio:
+Kanji:
 {'index': 1027, 'Lesson': 140, 'Num': 1095, 'Kanji': '求', 'On': 'キュウ、グ', 'Kun': 'もとめる', 'Trans': 'demand', 'Sush': 'Сущ', 'Mnem': ''}
 Kana:
 {'index': 1027, 'Lesson': 140, 'Num': 1095, 'Kun': 'もとめる', 'Trans': 'demand', 'Sush': 'Сущ', 'Mnem': ''}

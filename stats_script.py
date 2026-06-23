@@ -319,7 +319,7 @@ def can_press_easy(stats, item, question=None, answer_column=None):
 
 # Dictionary table -> (stats table prefix, question/answer columns used in the test)
 STATS_SOURCES = {
-    'Dictio': ('dictio', ('Trans', 'Kanji', 'Kun', 'On')),
+    'Kanji': ('kanji', ('Trans', 'Kanji', 'Kun', 'On')),
     'Words': ('words', ('Trans', 'Kanji', 'Read')),
     'Kana': ('kana', ('Trans', 'Kun')),
     'Frazes': ('frazes', ('Trans', 'Kanji', 'Read')),

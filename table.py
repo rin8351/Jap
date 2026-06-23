@@ -23,7 +23,7 @@ SUSH_OPTIONS = ['Сущ', 'Прил', 'Глаг', 'Нар']
 DB_PATH = 'Jp.db'
 COLUMN_FONT_SIZES = {'Kanji': 14, 'On': 12, 'Kun': 12, 'Read': 12}
 # Tab order and list of tables to display (only these tables are shown)
-TABLE_TAB_ORDER = ['Dictio', 'Words', 'Frazes', 'Name', 'Kana']
+TABLE_TAB_ORDER = ['Kanji', 'Words', 'Frazes', 'Name', 'Kana']
 
 
 def _sanitize_table_name(name):
@@ -36,7 +36,7 @@ def _quote_ident(name):
     return '"' + str(name).replace('"', '""') + '"'
 
 
-# --- Sync of dictionary fields into the stats tables (dictio_*, words_*, frazes_*, name_*, ...) ---
+# --- Sync of dictionary fields into the stats tables (kanji_*, words_*, frazes_*, name_*, ...) ---
 
 _SYNC_COLUMNS_BY_SOURCE = SYNC_COLUMNS_BY_SOURCE
 
@@ -142,7 +142,7 @@ def get_connection():
 
 # Empty DB schema: table name -> list of columns
 _DEFAULT_SCHEMA = {
-    'Dictio': ['Num', 'Lesson', 'Kanji', 'On', 'Kun', 'Trans', 'Sush', 'Mnem'],
+    'Kanji': ['Num', 'Lesson', 'Kanji', 'On', 'Kun', 'Trans', 'Sush', 'Mnem'],
     'Words': ['Num', 'Lesson', 'Kanji', 'On', 'Kun', 'Trans', 'Sush', 'Mnem'],
     'Frazes': ['Num', 'Lesson', 'Kanji', 'Read', 'Trans'],
     'Name': ['Num', 'Lesson', 'Kanji', 'Read'],

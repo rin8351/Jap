@@ -7,7 +7,7 @@ example sentences via an AI API.
 
 ## Features
 
-- **Dictionary editor** — multiple tables (`Dictio`, `Words`, `Frazes`, `Name`,
+- **Dictionary editor** — multiple tables (`Kanji`, `Words`, `Frazes`, `Name`,
   `Kana`) backed by SQLite, with per-column filters, search (Ctrl+F),
   copy/paste, and inline editing.
 - **Test modes**

@@ -84,7 +84,7 @@ class StatsWindow(QWidget):
         kanji_count = get_unique_kanji_count(self.db_path)
         kana_count = get_words_without_kanji_count(self.db_path)
         header = QLabel(
-            f'Unique kanji in Dictio: {kanji_count}   |   '
+            f'Unique kanji in Kanji table: {kanji_count}   |   '
             f'Records in Kana: {kana_count}'
         )
         layout.addWidget(header)
@@ -124,7 +124,7 @@ class StatsWindow(QWidget):
         lay = QVBoxLayout(w)
         bar = QHBoxLayout()
         self.slice_source = self._source_combo()
-        self.slice_source.setCurrentText('Dictio')
+        self.slice_source.setCurrentText('Kanji')
         self.slice_type = QComboBox()
         self.slice_type.addItem('By lesson', 'lesson')
         self.slice_type.addItem('By part of speech', 'sush')
@@ -150,7 +150,7 @@ class StatsWindow(QWidget):
         lay = QVBoxLayout(w)
         bar = QHBoxLayout()
         self.words_source = self._source_combo()
-        self.words_source.setCurrentText('Dictio')
+        self.words_source.setCurrentText('Kanji')
         self.words_sort = QComboBox()
         self.words_sort.addItem('Hardest', True)
         self.words_sort.addItem('Easiest', False)
@@ -180,7 +180,7 @@ class StatsWindow(QWidget):
         lay = QVBoxLayout(w)
         bar = QHBoxLayout()
         self.srs_source = self._source_combo()
-        self.srs_source.setCurrentText('Dictio')
+        self.srs_source.setCurrentText('Kanji')
         bar.addWidget(QLabel('Table:'))
         bar.addWidget(self.srs_source)
         bar.addStretch()
@@ -199,7 +199,7 @@ class StatsWindow(QWidget):
         lay = QVBoxLayout(w)
         bar = QHBoxLayout()
         self.stuck_source = self._source_combo()
-        self.stuck_source.setCurrentText('Dictio')
+        self.stuck_source.setCurrentText('Kanji')
         bar.addWidget(QLabel('Table:'))
         bar.addWidget(self.stuck_source)
         bar.addStretch()
@@ -216,7 +216,7 @@ class StatsWindow(QWidget):
         lay = QVBoxLayout(w)
         bar = QHBoxLayout()
         self.asym_source = self._source_combo()
-        self.asym_source.setCurrentText('Dictio')
+        self.asym_source.setCurrentText('Kanji')
         self.asym_min_attempts = QSpinBox()
         self.asym_min_attempts.setRange(1, 100)
         self.asym_min_attempts.setValue(MIN_ATTEMPTS_DEFAULT)

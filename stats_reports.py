@@ -14,12 +14,12 @@ from stats_script import (
 
 DB_NAME = 'Jp.db'
 MIN_ATTEMPTS_DEFAULT = 5
-SOURCES_WITH_SUSH = frozenset({'Dictio', 'Kana'})
+SOURCES_WITH_SUSH = frozenset({'Kanji', 'Kana'})
 # Part-of-speech codes stored in the DB (Noun, Adjective, Verb, Adverb)
 SUSH_ORDER = ['Сущ', 'Прил', 'Глаг', 'Нар']
 
 SOURCE_WORD_COLUMNS = {
-    'Dictio': ('Kanji', 'Trans'),
+    'Kanji': ('Kanji', 'Trans'),
     'Words': ('Kanji', 'Trans'),
     'Kana': ('Kun', 'Trans'),
     'Frazes': ('Kanji', 'Trans'),
@@ -429,7 +429,7 @@ def get_unique_kanji_count(db_path=None):
     conn = open_db(db_path)
     try:
         cur = conn.execute(
-            'SELECT DISTINCT "Kanji" FROM Dictio '
+            'SELECT DISTINCT "Kanji" FROM "Kanji" '
             "WHERE \"Kanji\" IS NOT NULL AND TRIM(\"Kanji\") != '' "
             "AND \"Kanji\" != 0 AND TRIM(CAST(\"Kanji\" AS TEXT)) NOT IN ('0', '0.0')"
         )
