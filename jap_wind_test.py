@@ -7,7 +7,7 @@ import urllib.request
 import pandas as pd
 from random import sample,shuffle
 
-from PyQt5.QtWidgets import QMainWindow, QFrame, QTableWidgetItem,QTableWidget, QScrollArea, QLabel, QComboBox, QLineEdit,QCheckBox, QRadioButton, QVBoxLayout, QHBoxLayout, QGridLayout, QPushButton,QMenu,QAction,QApplication,QMessageBox,QTextEdit, QSizePolicy, QWidget
+from PyQt5.QtWidgets import QMainWindow, QFrame, QTableWidgetItem,QTableWidget, QScrollArea, QLabel, QComboBox, QLineEdit,QCheckBox, QRadioButton, QVBoxLayout, QHBoxLayout, QGridLayout, QPushButton,QMenu,QAction,QApplication,QMessageBox,QTextEdit, QSizePolicy, QWidget, QHeaderView
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QFont, QCloseEvent
 
@@ -570,6 +570,10 @@ class Rand_window(QMainWindow):
         layout_frame_know.addLayout(layout_buttons_row)
         self.table_widget = QTableWidget(self)
         self.table_widget.setMinimumHeight(300)  # Minimum table height
+        self.table_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.table_widget.setWordWrap(True)
+        self.table_widget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.table_widget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.table_widget.setStyleSheet(st.table)
         if len(self.test_for_answer) == 1 and not getattr(self, 'all_answers_variant', False):
             self.table_widget.setVisible(False)
@@ -605,16 +609,17 @@ class Rand_window(QMainWindow):
                 self._set_answer_checkbox_visible(checkBox, False)
         layout_context.addWidget(self.context_label)
         layout_frame_know.addLayout(layout_context)
+        self.frame_know.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.frame_know.setLayout(layout_frame_know)
 
         self.main_layout = QVBoxLayout()
         self.main_layout.addWidget(self.frame_up2)
         self.main_layout.addWidget(self.frame_down2)
-        self.main_layout.addWidget(self.frame_know)
+        self.main_layout.addWidget(self.frame_know, 1)
         self.frame_main.setLayout(self.main_layout)
-        self.frame_main.setMaximumWidth(self._test_content_width)
+        self.frame_main.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         self.scroll_with_backgr()
-        if self.value_of_test==0: # standard test
+        if self.value_of_test==0: # стандартный тест 
             self.btn_continue.clicked.connect(self.show_next_word)
         else:
             self.btn_continue.clicked.connect(self.show_next_word2)
@@ -1459,7 +1464,8 @@ class Rand_window(QMainWindow):
                     self.alls.remove(w)
 
         header = self.table_widget.horizontalHeader()
-        header.setStretchLastSection(True)
+        header.setSectionResizeMode(QHeaderView.Stretch)
+        self.table_widget.resizeRowsToContents()
                 
 '''
 Notes:
