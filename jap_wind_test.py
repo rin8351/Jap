@@ -1197,7 +1197,7 @@ class Rand_window(QMainWindow):
 
         answer_col = self.test_for_answer[0]
         correct_answer = self.current_word[answer_col]
-        correct_kanji = self.current_word['Kanji']
+        correct_kanji = self.current_word.get('Kanji')
         question_val = self.current_word[self.current_column]
 
         # Candidates: not the current word; if a kanji exists — a different kanji

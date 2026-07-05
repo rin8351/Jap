@@ -64,7 +64,7 @@ class Jap_app(QtWidgets.QMainWindow):
         self.container_layout = QtWidgets.QVBoxLayout(self.container)
         self.container_layout.addWidget(self.frame_UP_main)
     
-        self.resize(450, 450)
+        self.setFixedSize(450, 450)
 
     def open_table_window(self):
         self.new_window2 = Table_window()

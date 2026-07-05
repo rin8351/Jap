@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Logging of actions in the table window (table.py) for debugging.
-The log file is cleared when the table window is closed.
+The log file is cleared when the table window is opened again.
 """
 from datetime import datetime
 import os
@@ -34,7 +34,7 @@ def table_log(action, **kwargs):
 
 
 def clear_table_log():
-    """Clear the log file (call when the table window is closed)."""
+    """Clear the log file (call when the table window is open)."""
     try:
         with open(LOG_FILE, 'w', encoding='utf-8') as f:
             f.write('')

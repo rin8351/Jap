@@ -860,6 +860,7 @@ class Table_window(QTabWidget):
 
     def __init__(self):
         super().__init__()
+        clear_table_log()
         if not init_db():
             QMessageBox.critical(self, 'Error', 'Failed to open or initialize the DB ' + DB_PATH)
             return
@@ -880,5 +881,4 @@ class Table_window(QTabWidget):
                 w._submit_all_with_validation(show_message=False)
             elif hasattr(w, '_model'):
                 w._model.submitAll()
-        clear_table_log()
         event.accept()
