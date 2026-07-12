@@ -11,11 +11,11 @@ DB_PATH = os.path.join(os.path.dirname(__file__), 'Jp.db')
 TODAY = date.today()
 
 KANJI_ROWS = [
-    (1, 1, '日', 'ニチ、ジツ', 'ひ、-び', 'day, sun', 'Сущ', ''),
-    (2, 1, '人', 'ジン、ニン', 'ひと', 'person', 'Сущ', ''),
-    (3, 1, '本', 'ホン', 'ほん、もと', 'book', 'Сущ', ''),
-    (4, 1, '火', 'カ', 'ひ、-び', 'fire', 'Сущ', ''),
-    (5, 1, '学', 'ガク', 'まな.ぶ', 'study, learning', 'Сущ', ''),
+    (1, 1, '日', 'ニチ、ジツ', 'ひ、-び', 'day, sun', 'Noun', ''),
+    (2, 1, '人', 'ジン、ニン', 'ひと', 'person', 'Noun', ''),
+    (3, 1, '本', 'ホン', 'ほん、もと', 'book', 'Noun', ''),
+    (4, 1, '火', 'カ', 'ひ、-び', 'fire', 'Noun', ''),
+    (5, 1, '学', 'ガク', 'まな.ぶ', 'study, learning', 'Noun', ''),
 ]
 
 WORDS_ROWS = [
@@ -33,12 +33,12 @@ FRAZES_ROWS = [
 ]
 
 KANA_ROWS = [
-    (1, 1, 'どうぞ', 'please / go ahead', 'Нар', ''),
-    (2, 1, 'ねこ', 'cat', 'Сущ', ''),
-    (3, 1, 'つぎ', 'next', 'Нар', ''),
-    (4, 1, 'いい', 'good', 'Прил', ''),
-    (5, 1, 'すぐ', 'immediately', 'Нар', ''),
-    (6, 1, 'また', 'again', 'Нар', ''),
+    (1, 1, 'どうぞ', 'please / go ahead', 'Adverb', ''),
+    (2, 1, 'ねこ', 'cat', 'Noun', ''),
+    (3, 1, 'つぎ', 'next', 'Adverb', ''),
+    (4, 1, 'いい', 'good', 'Adjective', ''),
+    (5, 1, 'すぐ', 'immediately', 'Adverb', ''),
+    (6, 1, 'また', 'again', 'Adverb', ''),
 ]
 
 NAME_ROWS = [

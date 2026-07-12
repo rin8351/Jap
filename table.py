@@ -20,7 +20,7 @@ from table_logger import table_log, clear_table_log
 from stats_script import SYNC_COLUMNS_BY_SOURCE, STATS_PREFIXES, ensure_all_stats_tables, stats_column_role
 
 # Part-of-speech codes stored in the DB (Noun, Adjective, Verb, Adverb)
-SUSH_OPTIONS = ['Сущ', 'Прил', 'Глаг', 'Нар']
+SUSH_OPTIONS = ['Noun', 'Adjective', 'Verb', 'Adverb']
 DB_PATH = 'Jp.db'
 COLUMN_FONT_SIZES = {'Kanji': 14, 'On': 12, 'Kun': 12, 'Read': 12}
 # Tab order and list of tables to display (only these tables are shown)
@@ -108,7 +108,7 @@ def _ensure_stats_tables():
 
 
 def _normalize_sush_columns(db):
-    """Existing data: Sush=NULL/empty/not in the list -> 'Сущ' in all tables with the Sush column."""
+    """Existing data: Sush=NULL/empty/not in the list -> 'Noun' in all tables with the Sush column."""
     if not db or not db.isOpen():
         return
     q = QSqlQuery(db)
@@ -118,7 +118,7 @@ def _normalize_sush_columns(db):
             continue
         qtable = _quote_ident(table_name)
         qcol = _quote_ident('Sush')
-        sql = f"UPDATE {qtable} SET {qcol} = 'Сущ' WHERE {qcol} IS NULL OR {qcol} NOT IN ({allowed})"
+        sql = f"UPDATE {qtable} SET {qcol} = 'Noun' WHERE {qcol} IS NULL OR {qcol} NOT IN ({allowed})"
         if not q.exec_(sql):
             table_log('NORMALIZE_SUSH', error=f'{table_name}: {q.lastError().text()}')
 
@@ -169,7 +169,7 @@ _DEFAULT_SCHEMA = {
 
 def _create_empty_table(q, table_name, columns):
     """Creates a single empty table with the given columns."""
-    SUSH_CHECK = "CHECK({col} IN ('Сущ', 'Прил', 'Глаг', 'Нар'))"
+    SUSH_CHECK = "CHECK({col} IN ('Noun', 'Adjective', 'Verb', 'Adverb'))"
     parts = []
     for col in columns:
         col_quoted = _quote_ident(col)
@@ -254,6 +254,10 @@ class SushDelegate(QStyledItemDelegate):
         combo = QComboBox(parent)
         for o in self.options:
             combo.addItem(o)
+        # Popup must fit the longest label even if the cell is narrow
+        fm = combo.fontMetrics()
+        popup_w = max(fm.horizontalAdvance(o) for o in self.options) + 40
+        combo.view().setMinimumWidth(popup_w)
         return combo
 
     def setEditorData(self, editor, index):
@@ -385,6 +389,8 @@ class SheetTableWidget(QWidget):
                 for v in SUSH_OPTIONS:
                     combo.addItem(v, v)
                 combo.setCurrentIndex(0)
+                combo.setMinimumContentsLength(len(max(SUSH_OPTIONS, key=len)))
+                combo.setSizeAdjustPolicy(QComboBox.AdjustToContents)
                 col_layout.addWidget(combo)
                 self._filter_widgets[col] = ('sush', combo)
             else:
@@ -432,6 +438,15 @@ class SheetTableWidget(QWidget):
         # Do not show the Num column
         if 'Num' in self._columns:
             self.table.setColumnHidden(self._columns.index('Num'), True)
+        # Sush: keep wide enough for "Adjective" / "Adverb" (ResizeToContents
+        # otherwise shrinks to short values like "Noun")
+        if self._has_sush and 'Sush' in self._columns:
+            sush_idx = self._columns.index('Sush')
+            header = self.table.horizontalHeader()
+            header.setSectionResizeMode(sush_idx, QHeaderView.Interactive)
+            fm = self.table.fontMetrics()
+            sush_w = max(fm.horizontalAdvance(o) for o in SUSH_OPTIONS) + 36
+            self.table.setColumnWidth(sush_idx, max(sush_w, header.sectionSize(sush_idx)))
         self.table.horizontalHeader().sectionClicked.connect(self._on_header_clicked)
         layout.addWidget(self.table)
 
@@ -585,14 +600,14 @@ class SheetTableWidget(QWidget):
         return str(value).strip() == ''
 
     def _row_has_meaningful_data(self, row):
-        """Whether the row has content (besides Num/Lesson; Sush='Сущ' is treated as the default)."""
+        """Whether the row has content (besides Num/Lesson; Sush='Noun' is treated as the default)."""
         for col_idx, col_name in enumerate(self._columns):
             if col_name in ('Num', 'Lesson'):
                 continue
             idx = self._model.index(row, col_idx)
             value = self._model.data(idx, Qt.EditRole)
             text = '' if value is None else str(value).strip()
-            if col_name == 'Sush' and text == 'Сущ':
+            if col_name == 'Sush' and text == 'Noun':
                 continue
             if text != '':
                 return True
@@ -637,7 +652,7 @@ class SheetTableWidget(QWidget):
         return self._columns.index('Sush')
 
     def _normalize_sush_in_model(self):
-        """Replaces empty/NULL/invalid value in the Sush column with 'Сущ' in all rows of the model."""
+        """Replaces empty/NULL/invalid value in the Sush column with 'Noun' in all rows of the model."""
         sush_idx = self._sush_col_index()
         if sush_idx < 0:
             return
@@ -646,7 +661,7 @@ class SheetTableWidget(QWidget):
             value = self._model.data(idx, Qt.EditRole)
             text = '' if value is None else str(value).strip()
             if text not in SUSH_OPTIONS:
-                self._model.setData(idx, 'Сущ', Qt.EditRole)
+                self._model.setData(idx, 'Noun', Qt.EditRole)
 
     @staticmethod
     def _is_locked_error(err):
@@ -761,7 +776,7 @@ class SheetTableWidget(QWidget):
                 elif col == 'Lesson':
                     rec.setValue(c, None)
                 elif col == 'Sush' and self._has_sush:
-                    rec.setValue(c, 'Сущ')
+                    rec.setValue(c, 'Noun')
                 else:
                     rec.setValue(c, '')
             if not self._model.insertRecord(self._model.rowCount(), rec):
@@ -870,9 +885,9 @@ class SheetTableWidget(QWidget):
         QApplication.clipboard().setText('\n'.join(lines))
 
     def _clear_value_for_column(self, col):
-        """Value when clearing a cell: for Sush — 'Сущ', otherwise empty string."""
+        """Value when clearing a cell: for Sush — 'Noun', otherwise empty string."""
         sush_idx = self._sush_col_index()
-        return 'Сущ' if (sush_idx >= 0 and col == sush_idx) else ''
+        return 'Noun' if (sush_idx >= 0 and col == sush_idx) else ''
 
 
     def _clear_selection(self):
@@ -923,7 +938,7 @@ class SheetTableWidget(QWidget):
                     break
                 text = value.strip()
                 if c == sush_idx and text not in SUSH_OPTIONS:
-                    text = 'Сущ'
+                    text = 'Noun'
                 self._model.setData(self._model.index(r, c), text, Qt.EditRole)
 
 

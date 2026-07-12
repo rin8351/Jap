@@ -16,7 +16,7 @@ DB_NAME = 'Jp.db'
 MIN_ATTEMPTS_DEFAULT = 5
 SOURCES_WITH_SUSH = frozenset({'Kanji', 'Kana'})
 # Part-of-speech codes stored in the DB (Noun, Adjective, Verb, Adverb)
-SUSH_ORDER = ['Сущ', 'Прил', 'Глаг', 'Нар']
+SUSH_ORDER = ['Noun', 'Adjective', 'Verb', 'Adverb']
 
 SOURCE_WORD_COLUMNS = {
     'Kanji': ('Kanji', 'Trans'),

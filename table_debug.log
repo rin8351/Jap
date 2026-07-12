@@ -1,0 +1,6 @@
+{"time": "2026-07-13 01:56:36.124", "action": "FILTER", "sheet": "Kanji"}
+{"time": "2026-07-13 01:56:36.134", "action": "FILTER", "sheet": "Words"}
+{"time": "2026-07-13 01:56:36.137", "action": "FILTER", "sheet": "Frazes"}
+{"time": "2026-07-13 01:56:36.139", "action": "FILTER", "sheet": "Name"}
+{"time": "2026-07-13 01:56:36.144", "action": "FILTER", "sheet": "Kana"}
+{"time": "2026-07-13 01:56:36.145", "action": "TABLE_OPEN", "sheets": ["Kanji", "Words", "Frazes", "Name", "Kana"]}

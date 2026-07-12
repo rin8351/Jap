@@ -1488,9 +1488,9 @@ self.current_word = None # the current word as a dict:
 Words:
 {'index': 514, 'Lesson': 140, 'Num': 567, 'Kanji': '理由）', 'Read': 'りゆう', 'Trans': 'reason', 'Mnem': ''}
 Kanji:
-{'index': 1027, 'Lesson': 140, 'Num': 1095, 'Kanji': '求', 'On': 'キュウ、グ', 'Kun': 'もとめる', 'Trans': 'demand', 'Sush': 'Сущ', 'Mnem': ''}
+{'index': 1027, 'Lesson': 140, 'Num': 1095, 'Kanji': '求', 'On': 'キュウ、グ', 'Kun': 'もとめる', 'Trans': 'demand', 'Sush': 'Noun', 'Mnem': ''}
 Kana:
-{'index': 1027, 'Lesson': 140, 'Num': 1095, 'Kun': 'もとめる', 'Trans': 'demand', 'Sush': 'Сущ', 'Mnem': ''}
+{'index': 1027, 'Lesson': 140, 'Num': 1095, 'Kun': 'もとめる', 'Trans': 'demand', 'Sush': 'Noun', 'Mnem': ''}
 self.len_of_count_for_proc = 0 # number of words in the test, used to compute the correct-answer percentage
 self.current_word_test = None # the current word as a string
 self.current_table_rows = []  # table rows for stats (multiple-answers mode)
