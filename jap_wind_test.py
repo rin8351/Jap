@@ -90,6 +90,15 @@ class Rand_window(QMainWindow):
     def load_data_from_db(self):
         """Loads data from SQLite (Jp.db)."""
         self.db_path = os.path.join(os.path.dirname(__file__), 'Jp.db')
+
+        # Close the previous connection to avoid accumulating open connections and holding a database lock
+        old_conn = getattr(self, 'conn', None)
+        if old_conn is not None:
+            try:
+                old_conn.close()
+            except Exception:
+                pass
+
         self.conn = sqlite3.connect(self.db_path, timeout=10)
         stat.ensure_all_stats_tables(self.conn)
         cur = self.conn.execute(

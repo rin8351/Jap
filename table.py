@@ -13,6 +13,7 @@ from PyQt5.QtCore import Qt, QEvent, QIdentityProxyModel
 from PyQt5.QtGui import QIcon, QBrush, QColor, QFont
 from PyQt5.QtSql import QSqlDatabase, QSqlTableModel, QSqlQuery
 import re
+import time
 from others_scripts import resource_path
 import styles as st
 from table_logger import table_log, clear_table_log
@@ -106,6 +107,22 @@ def _ensure_stats_tables():
                 pass
 
 
+def _normalize_sush_columns(db):
+    """Existing data: Sush=NULL/empty/not in the list -> 'Сущ' in all tables with the Sush column."""
+    if not db or not db.isOpen():
+        return
+    q = QSqlQuery(db)
+    allowed = ', '.join("'" + o.replace("'", "''") + "'" for o in SUSH_OPTIONS)
+    for table_name in get_table_names():
+        if 'Sush' not in get_table_columns(table_name):
+            continue
+        qtable = _quote_ident(table_name)
+        qcol = _quote_ident('Sush')
+        sql = f"UPDATE {qtable} SET {qcol} = 'Сущ' WHERE {qcol} IS NULL OR {qcol} NOT IN ({allowed})"
+        if not q.exec_(sql):
+            table_log('NORMALIZE_SUSH', error=f'{table_name}: {q.lastError().text()}')
+
+
 def _create_sync_trans_triggers(db):
     """
     Creates triggers on the dictionary tables: on UPDATE of synced columns,
@@ -180,12 +197,14 @@ def init_db():
     q.exec_("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")
     has_tables = q.next()
     if has_tables:
+        _normalize_sush_columns(db)
         _ensure_stats_tables()
         _create_sync_trans_triggers(db)
         return True
     for table_name, columns in _DEFAULT_SCHEMA.items():
         if not _create_empty_table(q, table_name, columns):
             table_log('DB_INIT', error=f'CREATE TABLE {table_name}: {q.lastError().text()}')
+    _normalize_sush_columns(db)
     _ensure_stats_tables()
     _create_sync_trans_triggers(db)
     return True
@@ -611,17 +630,60 @@ class SheetTableWidget(QWidget):
             QMessageBox.warning(self, 'Data validation', msg)
         return len(invalid_rows) == 0, invalid_rows
 
+    def _sush_col_index(self):
+        """Index of the Sush column in the model or -1 if it doesn't exist."""
+        if not self._has_sush or 'Sush' not in self._columns:
+            return -1
+        return self._columns.index('Sush')
+
+    def _normalize_sush_in_model(self):
+        """Replaces empty/NULL/invalid value in the Sush column with 'Сущ' in all rows of the model."""
+        sush_idx = self._sush_col_index()
+        if sush_idx < 0:
+            return
+        for row in range(self._model.rowCount()):
+            idx = self._model.index(row, sush_idx)
+            value = self._model.data(idx, Qt.EditRole)
+            text = '' if value is None else str(value).strip()
+            if text not in SUSH_OPTIONS:
+                self._model.setData(idx, 'Сущ', Qt.EditRole)
+
+    @staticmethod
+    def _is_locked_error(err):
+        """Does the error message look like a temporary database lock?"""
+        e = (err or '').lower()
+        return 'locked' in e or 'is busy' in e or 'database is busy' in e
+
+
     def _submit_all_with_validation(self, show_message=True):
+        """submitAll() with the required-Lesson check and retry on temporary database lock."""
+        self._normalize_sush_in_model()
         """submitAll() with the required-Lesson check."""
         ok, invalid_rows = self._validate_required_lesson(show_message=show_message)
         if not ok:
             table_log('VALIDATE_LESSON', sheet=self.sheet_name, success=False, invalid_rows=invalid_rows)
             return False
-        if self._model.submitAll():
-            return True
-        err = self._model.lastError().text()
+
+        max_attempts = 5
+        err = ''
+        for attempt in range(max_attempts):
+            if self._model.submitAll():
+                return True
+            err = self._model.lastError().text()
+            if self._is_locked_error(err) and attempt < max_attempts - 1:
+                QApplication.processEvents()
+                time.sleep(0.4)
+                continue
+            break
+
         table_log('SAVE', sheet=self.sheet_name, success=False, error=err)
-        if show_message:
+        if self._is_locked_error(err):
+            QMessageBox.warning(
+                self, 'Database is busy',
+                'The database is currently busy with another window (e.g., a test).\n'
+                'Your changes are not lost — close the other window and click "Save" again.'
+            )
+        else:
             QMessageBox.critical(self, 'Error', f'Failed to save: {err}')
         return False
 
@@ -807,16 +869,22 @@ class SheetTableWidget(QWidget):
             lines.append('\t'.join(line))
         QApplication.clipboard().setText('\n'.join(lines))
 
+    def _clear_value_for_column(self, col):
+        """Value when clearing a cell: for Sush — 'Сущ', otherwise empty string."""
+        sush_idx = self._sush_col_index()
+        return 'Сущ' if (sush_idx >= 0 and col == sush_idx) else ''
+
+
     def _clear_selection(self):
         idx = self.table.currentIndex()
         if not idx.isValid():
             return
         sel = self.table.selectedIndexes()
         if not sel:
-            self._model.setData(idx, '', Qt.EditRole)
+            self._model.setData(idx, self._clear_value_for_column(idx.column()), Qt.EditRole)
             return
         for i in sel:
-            self._model.setData(i, '', Qt.EditRole)
+            self._model.setData(i, self._clear_value_for_column(i.column()), Qt.EditRole)
 
     def _delete_selected_rows(self):
         sel = self.table.selectedIndexes()
@@ -844,6 +912,7 @@ class SheetTableWidget(QWidget):
         col0 = idx.column() if idx.isValid() else 0
         max_row = self._model.rowCount() - 1
         max_col = self._model.columnCount() - 1
+        sush_idx = self._sush_col_index()
         for r_off, line in enumerate(lines):
             r = row0 + r_off
             if r > max_row:
@@ -852,7 +921,10 @@ class SheetTableWidget(QWidget):
                 c = col0 + c_off
                 if c > max_col:
                     break
-                self._model.setData(self._model.index(r, c), value.strip(), Qt.EditRole)
+                text = value.strip()
+                if c == sush_idx and text not in SUSH_OPTIONS:
+                    text = 'Сущ'
+                self._model.setData(self._model.index(r, c), text, Qt.EditRole)
 
 
 class Table_window(QTabWidget):

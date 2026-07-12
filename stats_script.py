@@ -466,6 +466,9 @@ def _row_to_stat(row):
 def ensure_stats_table_exists(conn, table_name):
     """Creates the stats table if it does not exist yet."""
     conn.execute(STATS_TABLE_SCHEMA.format(table=table_name))
+    # DDL — write operation: commit immediately to avoid leaving an open transaction (database is locked)
+    conn.commit()
+
 
 
 def load_stats_from_db(conn, stats_tables):
@@ -511,6 +514,8 @@ def get_or_create_stat_db(conn, table_name, item, question, answer_column):
     )
     row = cur.fetchone()
     if row is not None:
+        # End the open transaction to avoid blocking writes to the table (database is locked)
+        conn.rollback()
         return _row_to_stat(row)
 
     # New record

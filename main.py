@@ -66,17 +66,29 @@ class Jap_app(QtWidgets.QMainWindow):
     
         self.setFixedSize(450, 450)
 
+    def _open_window(self, attr_name, factory):
+        """Open a window, closing the previous instance (to avoid accumulating open windows and database connections)."""
+        old = getattr(self, attr_name, None)
+        if old is not None:
+            try:
+                old.close()
+            except Exception:
+                pass
+        window = factory()
+        # Ensure closeEvent is called and the object is destroyed when the window is closed
+        window.setAttribute(QtCore.Qt.WA_DeleteOnClose, True)
+        setattr(self, attr_name, window)
+        window.show()
+
+
     def open_table_window(self):
-        self.new_window2 = Table_window()
-        self.new_window2.show()
+        self._open_window('new_window2', Table_window)
             
     def jap_rand_window(self):
-        self.new_window = Rand_window()
-        self.new_window.show()
+        self._open_window('new_window', Rand_window)
 
     def stats_window(self):
-        self.new_window4 = StatsWindow()
-        self.new_window4.show()
+        self._open_window('new_window4', StatsWindow)
 
     def ai_settings_window(self):
         dialog = AISettingsWindow(self)
