@@ -7,12 +7,12 @@ from datetime import datetime, date
 import random
 
 # Intervals (days): when to show a word again after last_right
-# Initial intervals after the first correct answer
+# Initial interval bases (also used when promoting/demoting difficulty)
 EASY_DAYS_INITIAL = 4
 NORMAL_DAYS_INITIAL = 2
-# Geometric progression: next interval = current * multiplier
-# normal: 2 -> 4 -> 8 -> 16 -> 30 (cap)
-# easy: 4 -> 10 -> 25 -> 30 (cap)
+# Geometric progression: next interval = current * multiplier (capped at MAX_INTERVAL_DAYS)
+# normal: 2 -> 4 -> 8 -> 16 -> ... -> 190 (cap)
+# easy:   4 -> 10 -> 25 -> ~62 -> ~155 -> 190 (cap)
 NORMAL_INTERVAL_MULTIPLIER = 2.0   # double after each correct answer
 EASY_INTERVAL_MULTIPLIER = 2.5     # easy words grow faster
 MAX_INTERVAL_DAYS = 190
@@ -55,7 +55,7 @@ def _difficulty_rank(d):
 
 def sort_items_for_choice_test(items, stats=None, question=None, answer_column=None):
     """
-    For the 4-choice mode: stats are not changed, order is weakest first.
+    SRS presentation order for a test session (used by standard and 4-choice modes).
     Sorting: words not yet in stats first (in_stats=0), then the rest.
     Among the rest: by level (hard -> normal -> easy), within a level by descending wrong,
     and random order when wrong is equal.
@@ -124,11 +124,11 @@ def filter_items_for_test(items, stats=None, question=None, answer_column=None, 
     selected stat tables meets a condition: new item, hard, wrong > 0,
     or the interval date has arrived. Only the selected columns (tables) are checked.
     Conditions per record:
-    - easy: show only if interval_days have passed since last_right.
-    - normal: same, with its own interval.
-    - hard: always; with wrong >= 3 — twice.
-    - wrong > 0: always in the test.
-    - Duplicates by Num are dropped (the first occurrence is kept).
+    - new (no stats): always include;
+    - hard: always; with wrong >= 3 — twice;
+    - wrong > 0: always include;
+    - normal/easy: include only if interval_days have passed since last_right.
+    - Duplicates by Num are dropped (the first occurrence is kept), except hard doubling.
     """
     today = date.today()
     columns = answer_columns if answer_columns is not None else ([answer_column] if answer_column is not None else [])
@@ -226,9 +226,11 @@ def filter_items_for_repeat(items, stats=None, question=None, answer_column=None
 def record_correct(stats, item, question=None, answer_column=None):
     """
     Records a correct answer: resets wrong, updates last_right, right_all, right and interval_days.
-    Difficulty (easy/hard) is changed only via the "Easy"/"Hard" buttons (set_difficulty_only in the UI).
-    - hard -> normal: after 2 correct answers in a row.
+    Automatic difficulty changes (manual Easy/Hard are handled by set_difficulty_only):
+    - hard -> normal: after 3 correct answers in a row;
     - normal -> easy: after 4 correct answers in a row.
+    On promotion, the streak resets and interval_days is set to the new level's initial value.
+    Otherwise the interval grows by the level's multiplier (capped at MAX_INTERVAL_DAYS).
     """
     stat = get_or_create_stat(stats, item, question, answer_column)
 
@@ -279,8 +281,10 @@ def record_correct(stats, item, question=None, answer_column=None):
 
 def set_difficulty_only(stats, item, difficulty, question=None, answer_column=None):
     """
-    Changes only the difficulty key for an item. Other stats (right, wrong, last_right, etc.) are untouched.
+    Manual difficulty change via the Easy/Hard buttons.
+    Other counters (right, wrong, last_right, etc.) are untouched.
     difficulty: "easy", "hard" or "normal".
+    Setting "easy" also resets interval_days to EASY_DAYS_INITIAL.
     """
     stat = get_or_create_stat(stats, item, question, answer_column)
     stat["difficulty"] = difficulty
@@ -291,7 +295,8 @@ def set_difficulty_only(stats, item, difficulty, question=None, answer_column=No
 def record_wrong(stats, item, question=None, answer_column=None):
     """
     +1 wrong, right = 0.
-    If the error count == 3: normal -> hard, easy -> normal.
+    After 3 errors in a row: normal -> hard (interval_days = 1), easy -> normal
+    (interval_days = NORMAL_DAYS_INITIAL). hard stays hard (and with wrong >= 3 is shown twice).
     """
     stat = get_or_create_stat(stats, item, question, answer_column)
     stat["wrong"] = stat.get("wrong", 0) + 1
@@ -567,7 +572,8 @@ def _update_stat_in_db(conn, table_name, item, question, answer_column, stat):
 
 def record_correct_db(conn, table_name, item, question=None, answer_column=None):
     """
-    Records a correct answer in the DB. Returns the updated stats dict (to refresh self.stats).
+    Records a correct answer in the DB (same rules as record_correct).
+    Returns the updated stats dict (to refresh self.stats).
     """
     stat = get_or_create_stat_db(conn, table_name, item, question, answer_column)
 
@@ -616,7 +622,7 @@ def record_correct_db(conn, table_name, item, question=None, answer_column=None)
 
 def record_wrong_db(conn, table_name, item, question=None, answer_column=None):
     """
-    +1 wrong in the DB. Returns the updated stats dict.
+    +1 wrong in the DB (same rules as record_wrong). Returns the updated stats dict.
     """
     stat = get_or_create_stat_db(conn, table_name, item, question, answer_column)
     stat["wrong"] = stat.get("wrong", 0) + 1
@@ -638,7 +644,7 @@ def record_wrong_db(conn, table_name, item, question=None, answer_column=None):
 
 
 def set_difficulty_only_db(conn, table_name, item, difficulty, question=None, answer_column=None):
-    """Changes only difficulty in the DB. Returns the updated stats dict."""
+    """Manual difficulty change in the DB (same rules as set_difficulty_only). Returns the updated stats dict."""
     stat = get_or_create_stat_db(conn, table_name, item, question, answer_column)
     stat["difficulty"] = difficulty
     if difficulty == "easy":

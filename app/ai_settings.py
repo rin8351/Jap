@@ -1,11 +1,12 @@
-import importlib
+import importlib.util
 import os
 
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton, QHBoxLayout
 
-import styles
+from app import styles
+from app.others_scripts import PROJECT_ROOT
 
-SECRETS_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ai_secrets.py')
+SECRETS_PATH = os.path.join(PROJECT_ROOT, 'ai_secrets.py')
 
 
 def load_ai_secrets():
@@ -13,8 +14,9 @@ def load_ai_secrets():
     if not os.path.exists(SECRETS_PATH):
         return empty.copy()
     try:
-        import ai_secrets
-        importlib.reload(ai_secrets)
+        spec = importlib.util.spec_from_file_location('ai_secrets', SECRETS_PATH)
+        ai_secrets = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(ai_secrets)
         return {
             "AI_API_KEY": (getattr(ai_secrets, "AI_API_KEY", "") or "").strip(),
             "AI_MODEL": (getattr(ai_secrets, "AI_MODEL", "") or "").strip(),

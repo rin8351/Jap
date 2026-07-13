@@ -14,14 +14,14 @@ from PyQt5.QtGui import QIcon, QBrush, QColor, QFont
 from PyQt5.QtSql import QSqlDatabase, QSqlTableModel, QSqlQuery
 import re
 import time
-from others_scripts import resource_path
-import styles as st
-from table_logger import table_log, clear_table_log
-from stats_script import SYNC_COLUMNS_BY_SOURCE, STATS_PREFIXES, ensure_all_stats_tables, stats_column_role
+from app.others_scripts import resource_path, get_db_path
+from app import styles as st
+from app.table_logger import table_log, clear_table_log
+from app.stats_script import SYNC_COLUMNS_BY_SOURCE, STATS_PREFIXES, ensure_all_stats_tables, stats_column_role
 
 # Part-of-speech codes stored in the DB (Noun, Adjective, Verb, Adverb)
 SUSH_OPTIONS = ['Noun', 'Adjective', 'Verb', 'Adverb']
-DB_PATH = 'Jp.db'
+DB_PATH = get_db_path()
 COLUMN_FONT_SIZES = {'Kanji': 14, 'On': 12, 'Kun': 12, 'Read': 12}
 # Tab order and list of tables to display (only these tables are shown)
 TABLE_TAB_ORDER = ['Kanji', 'Words', 'Frazes', 'Name', 'Kana']
@@ -957,7 +957,7 @@ class Table_window(QTabWidget):
             w = SheetTableWidget(sheet_name, self)
             self._tabs[sheet_name] = w
             self.addTab(w, sheet_name)
-        japanese_logo_path = resource_path('japanese_logo.png')
+        japanese_logo_path = resource_path('media/japanese_logo.png')
         self.setWindowIcon(QIcon(japanese_logo_path))
         self.setWindowTitle('Tables')
         table_log('TABLE_OPEN', sheets=self.sheet_names)

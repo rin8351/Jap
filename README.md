@@ -33,18 +33,28 @@ example sentences via an AI API.
 
 ## Project structure
 
-| File | Responsibility |
-| --- | --- |
-| `main.py` | App entry point and main menu |
-| `jap_wind_test.py` | Test window and all test modes |
-| `table.py` | Dictionary table editor (QTableView + QSqlTableModel) |
-| `file_stats.py` | Reports window (UI) |
-| `stats_reports.py` | Report calculations |
-| `stats_script.py` | SRS logic and SQLite stats tables |
-| `ai_settings.py` | AI credentials dialog + storage |
-| `others_scripts.py` | Shared helpers |
-| `styles.py` | Qt stylesheets |
-| `table_logger.py` | Debug logging for the table window |
+```
+.
+├── main.py              # App entry point and main menu
+├── Jp.db                # SQLite dictionary + SRS stats
+├── ai_secrets.py        # Local AI credentials (gitignored)
+├── requirements.txt
+├── README.md
+├── TEST_AND_SRS.md      # Test modes and SRS statistics guide
+├── media/               # Images and icons
+├── app/                 # Application modules
+│   ├── jap_wind_test.py # Test window and all test modes
+│   ├── table.py         # Dictionary table editor
+│   ├── file_stats.py    # Reports window (UI)
+│   ├── stats_reports.py # Report calculations
+│   ├── stats_script.py  # SRS logic and SQLite stats tables
+│   ├── ai_settings.py   # AI credentials dialog + storage
+│   ├── others_scripts.py# Shared helpers / paths
+│   ├── styles.py        # Qt stylesheets
+│   └── table_logger.py  # Debug logging for the table window
+└── scripts/
+    └── seed_demo_db.py  # Optional demo DB seeder
+```
 
 ## Getting started
 
@@ -70,6 +80,11 @@ automatically. You can then add rows in the table editor.
 Open **AI Settings** from the main menu and provide an API key, model name, and
 an OpenAI-compatible chat completions URL. Credentials are stored locally in
 `ai_secrets.py` (this file is not meant to be committed).
+
+## Documentation
+
+- [Test modes and SRS statistics](TEST_AND_SRS.md) — how the review test works and how
+  spaced-repetition progress is recorded.
 
 ## Notes
 

@@ -3,11 +3,18 @@
 import os
 import random
 import sqlite3
+import sys
 from datetime import date, timedelta
 
-from stats_script import ensure_all_stats_tables, iter_stats_table_names, STATS_SOURCES
+# Allow running as: python scripts/seed_demo_db.py
+_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if _ROOT not in sys.path:
+    sys.path.insert(0, _ROOT)
 
-DB_PATH = os.path.join(os.path.dirname(__file__), 'Jp.db')
+from app.stats_script import ensure_all_stats_tables, iter_stats_table_names, STATS_SOURCES
+from app.others_scripts import get_db_path
+
+DB_PATH = get_db_path()
 TODAY = date.today()
 
 KANJI_ROWS = [

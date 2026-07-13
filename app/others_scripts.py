@@ -4,12 +4,22 @@ import math
 from PyQt5.QtWidgets import  QScrollArea
 from PyQt5.QtGui import QPixmap, QPainter
 
+# app/ -> project root
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+DB_NAME = 'Jp.db'
+
+
+def get_db_path():
+    """Absolute path to Jp.db at the project root."""
+    return os.path.join(PROJECT_ROOT, DB_NAME)
+
+
 def resource_path(relative_path):
     """Get the absolute path to a resource in the bundled app or the local filesystem."""
     try:
         base_path = sys._MEIPASS
     except Exception:
-        base_path = os.path.abspath(".")
+        base_path = PROJECT_ROOT
 
     return os.path.join(base_path, relative_path)
 

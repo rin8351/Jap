@@ -6,9 +6,9 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5.QtCore import Qt
 
-import styles
-from stats_script import STATS_SOURCES
-from stats_reports import (
+from app import styles
+from app.stats_script import STATS_SOURCES
+from app.stats_reports import (
     get_db_path,
     open_db,
     overview_all_sources,

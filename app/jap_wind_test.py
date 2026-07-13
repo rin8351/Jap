@@ -11,11 +11,11 @@ from PyQt5.QtWidgets import QMainWindow, QFrame, QTableWidgetItem,QTableWidget, 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QFont, QCloseEvent
 
-from others_scripts import resource_path, BackgroundScrollArea, cell_has_value, merge_by_column, i_get_read
-import styles as st
-import stats_script as stat
-from stats_script import STATS_SOURCES
-from ai_settings import load_ai_secrets, ai_secrets_complete
+from app.others_scripts import resource_path, BackgroundScrollArea, cell_has_value, merge_by_column, i_get_read, get_db_path
+from app import styles as st
+from app import stats_script as stat
+from app.stats_script import STATS_SOURCES
+from app.ai_settings import load_ai_secrets, ai_secrets_complete
 
 
 
@@ -29,7 +29,7 @@ class Rand_window(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        japanese_logo_path = resource_path('japanese_logo.png')
+        japanese_logo_path = resource_path('media/japanese_logo.png')
         self.setWindowIcon(QIcon(japanese_logo_path)) # window icon
         self.setWindowTitle('Testing')
         QApplication.setFont(QFont("Roboto  ", 10))
@@ -89,7 +89,7 @@ class Rand_window(QMainWindow):
 
     def load_data_from_db(self):
         """Loads data from SQLite (Jp.db)."""
-        self.db_path = os.path.join(os.path.dirname(__file__), 'Jp.db')
+        self.db_path = get_db_path()
 
         # Close the previous connection to avoid accumulating open connections and holding a database lock
         old_conn = getattr(self, 'conn', None)
@@ -291,7 +291,7 @@ class Rand_window(QMainWindow):
     def scroll_with_backgr(self):
         self.scroll_area = QScrollArea()
         self.scroll_area.setWidgetResizable(True)
-        background_image_path2 = resource_path('japanese_background2.png')
+        background_image_path2 = resource_path('media/japanese_background2.png')
         self.scroll_area = BackgroundScrollArea(background_image_path2)
         self.scroll_area.setWidget(self.frame_main)
         self.scroll_area.setWidgetResizable(True)
@@ -628,7 +628,7 @@ class Rand_window(QMainWindow):
         self.frame_main.setLayout(self.main_layout)
         self.frame_main.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
         self.scroll_with_backgr()
-        if self.value_of_test==0: # стандартный тест 
+        if self.value_of_test==0: # standard test
             self.btn_continue.clicked.connect(self.show_next_word)
         else:
             self.btn_continue.clicked.connect(self.show_next_word2)

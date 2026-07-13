@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
 """Builds reports from the dictionary tables and statistics (Jp.db)."""
 from datetime import date
-import os
 import sqlite3
 
-from stats_script import (
+from app.stats_script import (
     STATS_SOURCES,
     iter_stats_table_names,
     _parse_date,
     _stat_qualifies_for_test,
     _row_to_stat,
 )
+from app.others_scripts import get_db_path
 
-DB_NAME = 'Jp.db'
 MIN_ATTEMPTS_DEFAULT = 5
 SOURCES_WITH_SUSH = frozenset({'Kanji', 'Kana'})
 # Part-of-speech codes stored in the DB (Noun, Adjective, Verb, Adverb)
@@ -25,10 +24,6 @@ SOURCE_WORD_COLUMNS = {
     'Frazes': ('Kanji', 'Trans'),
     'Name': ('Kanji', 'Read'),
 }
-
-
-def get_db_path():
-    return os.path.join(os.path.dirname(os.path.abspath(__file__)), DB_NAME)
 
 
 def open_db(db_path=None):

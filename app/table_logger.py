@@ -7,9 +7,10 @@ from datetime import datetime
 import os
 import json
 
-# Log file in the project folder
-LOG_DIR = os.path.dirname(os.path.abspath(__file__))
-LOG_FILE = os.path.join(LOG_DIR, 'table_debug.log')
+from app.others_scripts import PROJECT_ROOT
+
+# Log file at the project root (gitignored)
+LOG_FILE = os.path.join(PROJECT_ROOT, 'table_debug.log')
 
 
 def _timestamp():

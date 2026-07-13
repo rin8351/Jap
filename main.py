@@ -1,12 +1,12 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtGui import QIcon
 
-from others_scripts import resource_path
-import styles
-from jap_wind_test import Rand_window
-from table import Table_window
-from file_stats import StatsWindow
-from ai_settings import AISettingsWindow
+from app.others_scripts import resource_path
+from app import styles
+from app.jap_wind_test import Rand_window
+from app.table import Table_window
+from app.file_stats import StatsWindow
+from app.ai_settings import AISettingsWindow
 
     
 class Jap_app(QtWidgets.QMainWindow):
@@ -17,8 +17,8 @@ class Jap_app(QtWidgets.QMainWindow):
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         
         # Background image
-        background_image_path = resource_path('japanese_background.png')
-        japanese_logo_path = resource_path('japanese_logo.png')
+        background_image_path = resource_path('media/japanese_background.png')
+        japanese_logo_path = resource_path('media/japanese_logo.png')
         self.background_image = QtGui.QPixmap(background_image_path)
         self.background_label = QtWidgets.QLabel(self)
         self.background_label.setPixmap(self.background_image)
