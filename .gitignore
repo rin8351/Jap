@@ -1,9 +1,30 @@
+# Secrets — never commit these
 ai_secrets.py
+.ai_secrets.py
+*.secret
+.env
+.env.*
+
+# App runtime / local data
 errors.json
-
-# Python
-__pycache__/
-*.py[cod]
-
-# App runtime/debug files
 table_debug.log
+
+# Python bytecode / cache (any folder, any depth)
+**/__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Local IDE / OS junk
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
