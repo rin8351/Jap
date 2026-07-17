@@ -1,8 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-SRS statistics for the Japanese vocabulary test.
-Stored in SQLite (Jp.db). Functions with the _db suffix work with the database.
-"""
 from datetime import datetime, date
 import random
 
