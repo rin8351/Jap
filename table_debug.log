@@ -1,6 +1,6 @@
-{"time": "2026-07-13 20:00:25.961", "action": "FILTER", "sheet": "Kanji"}
-{"time": "2026-07-13 20:00:25.971", "action": "FILTER", "sheet": "Words"}
-{"time": "2026-07-13 20:00:25.974", "action": "FILTER", "sheet": "Frazes"}
-{"time": "2026-07-13 20:00:25.977", "action": "FILTER", "sheet": "Name"}
-{"time": "2026-07-13 20:00:25.982", "action": "FILTER", "sheet": "Kana"}
-{"time": "2026-07-13 20:00:25.983", "action": "TABLE_OPEN", "sheets": ["Kanji", "Words", "Frazes", "Name", "Kana"]}
+{"time": "2026-08-13 13:50:47.681", "action": "FILTER", "sheet": "Kanji"}
+{"time": "2026-08-13 13:50:47.687", "action": "FILTER", "sheet": "Words"}
+{"time": "2026-08-13 13:50:47.690", "action": "FILTER", "sheet": "Frazes"}
+{"time": "2026-08-13 13:50:47.693", "action": "FILTER", "sheet": "Name"}
+{"time": "2026-08-13 13:50:47.697", "action": "FILTER", "sheet": "Kana"}
+{"time": "2026-08-13 13:50:47.697", "action": "TABLE_OPEN", "sheets": ["Kanji", "Words", "Frazes", "Name", "Kana"]}

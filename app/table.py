@@ -160,7 +160,7 @@ def get_connection():
 # Empty DB schema: table name -> list of columns
 _DEFAULT_SCHEMA = {
     'Kanji': ['Num', 'Lesson', 'Kanji', 'On', 'Kun', 'Trans', 'Sush', 'Mnem'],
-    'Words': ['Num', 'Lesson', 'Kanji', 'On', 'Kun', 'Trans', 'Sush', 'Mnem'],
+    'Words': ['Num', 'Lesson', 'Kanji', 'Read', 'Trans', 'Mnem'],
     'Frazes': ['Num', 'Lesson', 'Kanji', 'Read', 'Trans'],
     'Name': ['Num', 'Lesson', 'Kanji', 'Read'],
     'Kana': ['Num', 'Lesson', 'Kun', 'Trans', 'Sush', 'Mnem'],
